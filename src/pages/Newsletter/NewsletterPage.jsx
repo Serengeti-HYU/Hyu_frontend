@@ -19,7 +19,24 @@ const Title = styled.div`
 `;
 
 const NewsletterPage = () => {
-  return <Container></Container>;
+  return (
+    <Container>
+      <LetterInfo>
+        <Title></Title>
+        <Content></Content>
+      </LetterInfo>
+      <LetterInfo2></LetterInfo2>
+      <SendSetting>
+        <Logo></Logo>
+        <SubTitle></SubTitle>
+        <EmailInput></EmailInput>
+        <CollectPersonalInfo></CollectPersonalInfo>
+      </SendSetting>
+      <Envelope>
+        <Letter></Letter>
+      </Envelope>
+    </Container>
+  );
 };
 
 export default NewsletterPage;
