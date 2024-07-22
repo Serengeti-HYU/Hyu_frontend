@@ -17,6 +17,7 @@ const GlobalStyle = createGlobalStyle`
   flex-direction: column;
   position: relative;
   text-align: center;
+  margin: 0;
   }
 
 `;
