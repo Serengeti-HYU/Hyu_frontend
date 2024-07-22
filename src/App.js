@@ -17,6 +17,7 @@ import UpdateProfile from "./pages/Profile/UpdateProfile";
 import PersonalityTest from "./pages/Emotion/PersonalityTest";
 import Record1 from "./pages/Emotion/Record1";
 import Record2 from "./pages/Emotion/Record2";
+import NewsletterPage from "./pages/Newsletter/NewsletterPage";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
 
         {/* Newsletter routes */}
         <Route path="/rest-activity" element={<RestActivity />} />
+        <Route path="/newsletter-page" element={<NewsletterPage />} />
 
         {/* Profile routes */}
         <Route path="/mypage" element={<Mypage />} />
