@@ -2,27 +2,28 @@ import styled from "styled-components";
 
 const HeaderContainer = styled.div`
   background: ${(props) => props.theme.color.blue};
-  font-size: ${(props) => props.theme.fontSize.middle};
+  font-size: ${(props) => props.theme.fontSize.small};
   color: white;
   width: 100%;
-  height: 126px;
+  height: 75px;
   display: flex;
   align-items: center;
-  padding-left: 4.44rem;
+  padding-left: 5.94rem;
 
   #container {
     display: flex;
-    gap: 4.81rem;
-    padding-left: 41.81rem;
+    gap: 4.3rem;
+    padding-left: 48.38rem;
     align-items: center;
   }
 
   #login {
     font-weight: 700;
+    font-size: 0.875rem;
     border: 1px solid white;
     border-radius: 50%;
-    width: 4.6875rem;
-    height: 4.6875rem;
+    width: 3.125rem;
+    height: 3.125rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -34,8 +35,8 @@ function NoLoginHeader() {
     <HeaderContainer>
       <img
         src={`${process.env.PUBLIC_URL}/assets/logo/FaceLogoWhite.png`}
-        width={"70px"}
-        height={"70px"}
+        width={"50px"}
+        height={"50px"}
         id="logo"
       />
       <div id="container">
