@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-import Footer from "../../../components/footer";
+import Footer from "../../../components/Footer";
 import NoLoginHeader from "../../../components/NoLoginHeader";
 
 const Container = styled.div`
