@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import LetterInfo from "./LetterInfo";
 import NoLoginHeader from "../../components/NoLoginHeader";
-import Footer from "../../components/footer";
+import Footer from "../../components/Footer";
 
 const Container = styled.div`
   display: flex;
