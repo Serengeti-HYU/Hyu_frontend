@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
@@ -63,6 +63,7 @@ const LoginSec = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
   }
   .input {
     width: 30rem;
@@ -100,6 +101,12 @@ const LoginSec = styled.div`
     font-weight: 500;
   }
 `;
+const Warn = styled.div`
+  position: absolute;
+  top: 9rem;
+  color: red;
+  font-size: ${(props) => props.theme.fontSize.small};
+`;
 
 const Nav = styled.div`
   display: flex;
@@ -123,6 +130,22 @@ const Nav = styled.div`
 `;
 
 const Login = () => {
+  const navigate = useNavigate();
+  const [showWarn, setShowWarn] = useState(true);
+
+  const navigateTo = (path) => {
+    navigate(path);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault(); // Prevent the default form submission
+    navigate("/");
+  };
+
+  const handleFocus = () => {
+    setShowWarn(false);
+  };
+
   return (
     <Container>
       <NoLoginHeader />
@@ -149,21 +172,26 @@ const Login = () => {
             src={`${process.env.PUBLIC_URL}/assets/login/Line.png`}
             id="line"
           />
-          <form method="post">
+          <form method="post" onSubmit={handleSubmit}>
             <div className="input">
               <p>• 아이디</p>
-              <input></input>
+              <input id="id" onFocus={handleFocus}></input>
             </div>
             <div className="input">
               <p>• 비밀번호</p>
-              <input></input>
+              <input id="pw" onFocus={handleFocus} type="password"></input>
             </div>
+            {showWarn && (
+              <Warn onClick={handleFocus}>아이디 / 비밀번호를 확인하세요</Warn>
+            )}
             <Nav>
-              <p>아이디 찾기</p>
-              <p>비밀번호 찾기</p>
-              <p>회원가입</p>
+              <p onClick={() => navigateTo("/find-id")}>아이디 찾기</p>
+              <p onClick={() => navigateTo("/find-password")}>비밀번호 찾기</p>
+              <p onClick={() => navigateTo("/sign-up")}>회원가입</p>
             </Nav>
-            <button id="goLogin">로그인</button>
+            <button type="submit" id="goLogin">
+              로그인
+            </button>
           </form>
         </LoginSec>
       </div>
