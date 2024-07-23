@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import LetterInfo from "./LetterInfo";
 
 const Container = styled.div`
   display: flex;
@@ -9,25 +10,25 @@ const Container = styled.div`
   align-items: center;
   background: #fff;
 `;
-const LetterInfo = styled.div``;
-const Title = styled.div`
-  color: #35648c;
-  font-family: SUIT;
-  font-size: 48px;
-  font-style: normal;
-  font-weight: 900;
-  line-height: normal;
-`;
-const Content = styled.div`
-  color: #000;
-  font-family: SUIT;
-  font-size: 32px;
-  font-style: normal;
-  font-weight: 300;
-  line-height: normal;
-`;
 const LetterInfo2 = styled.div``;
-const RoundText = styled.div``;
+const RoundText = styled.div`
+  display: inline-flex;
+  height: 98.696px;
+  padding: 0px 49.844px 0px 49.348px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 89.724px;
+  background: #35648c;
+  box-shadow: 0px 3.589px 3.589px 0px rgba(0, 0, 0, 0.25),
+    0px 0px 6.819px 1.794px rgba(53, 100, 140, 0.35);
+  color: #fff;
+  font-family: SUIT;
+  font-size: 21.534px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+`;
 const SendSetting = styled.div``;
 const Logo = styled.div``;
 const SubTitle = styled.div``;
@@ -41,13 +42,7 @@ const NewsletterPage = () => {
   return (
     <Container>
       {/* 추후 컴포넌트로 빼기 */}
-      <LetterInfo>
-        <Title>휴~ 레터</Title>
-        <Content>
-          매주 쉬는 날 뭐하지? 하는 고민을 덜어주기 위해서 한 주에 한번
-          휴~레터가 쉼 활동을 추천해 줍니다.
-        </Content>
-      </LetterInfo>
+      <LetterInfo></LetterInfo>
       <LetterInfo2>
         <RoundText>휴일에 할 쉼, 힐링 활동</RoundText>
         <RoundText>
