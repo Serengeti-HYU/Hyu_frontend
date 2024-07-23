@@ -1,9 +1,10 @@
 import React from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import LetterInfo from "./LetterInfo";
 import EmailInput from "./EmailInput";
 import Letter from "./Letter";
-import NoLoginHeader from "../../components/NoLoginHeader";
+import LoginHeader from "../../components/LoginHeader";
 import Footer from "../../components/footer";
 
 const Container = styled.div`
@@ -14,6 +15,7 @@ const Container = styled.div`
   align-items: center;
   background: #fff;
 `;
+
 const LetterInfo2 = styled.div`
   height: 421px;
   #one {
@@ -29,6 +31,7 @@ const LetterInfo2 = styled.div`
     width: 30rem;
   }
 `;
+
 const RoundText = styled.div`
   display: flex;
   height: 98.696px;
@@ -47,6 +50,7 @@ const RoundText = styled.div`
   line-height: normal;
   margin-bottom: 5px;
 `;
+
 const SendSetting = styled.div``;
 const Logo = styled.img``;
 const SubTitle = styled.div`
@@ -59,6 +63,7 @@ const SubTitle = styled.div`
   margin-top: 1.5rem;
   margin-bottom: 2rem;
 `;
+
 const ViewTerms = styled.span`
   color: ${(props) => props.theme.color.blue};
   font-family: SUIT;
@@ -69,6 +74,7 @@ const ViewTerms = styled.span`
   letter-spacing: -0.176px;
   text-decoration-line: underline;
 `;
+
 const PrivacyConsent = styled.div`
   display: flex;
   align-items: center;
@@ -85,20 +91,50 @@ const PrivacyConsent = styled.div`
     text-align: left;
   }
 `;
+
 const Checkbox = styled.input`
   margin-right: 5px;
 `;
-const Envelope = styled.div``;
+const LetterContainer = styled.div`
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 1200px;
+  height: 675px;
+  margin: auto;
+  margin-top: 5rem;
+`;
+const Envelope = styled.img`
+  position: absolute;
+  top: 0;
+  z-index: 1;
+`;
+const LetterStyled = styled.div`
+  margin: auto;
+  margin-top: -1rem;
+  z-index: 2;
+`;
+const Front = styled.img`
+  position: absolute;
+  top: 18rem;
+  z-index: 3;
+`;
 const CollectPersonalInfo = styled.div`
   margin: auto;
   margin-top: 2rem;
   display: flex;
   justify-content: space-evenly;
 `;
+
 const NewsletterPage = () => {
+  const [showLetter, setShowLetter] = useState(false);
+
+  const handleUpdateClick = () => {
+    setShowLetter(true);
+  };
   return (
     <Container>
-      <NoLoginHeader />
+      <LoginHeader />
       <LetterInfo />
       <LetterInfo2>
         <RoundText id="one">휴일에 할 쉼, 힐링 활동</RoundText>
@@ -123,9 +159,21 @@ const NewsletterPage = () => {
           </PrivacyConsent>
         </CollectPersonalInfo>
       </SendSetting>
-      <Envelope>
-        <Letter></Letter>
-      </Envelope>
+      <LetterContainer>
+        <Envelope
+          src={`${process.env.PUBLIC_URL}/assets/newsletter/envelope.svg`}
+          width={"1170.881px"}
+          id="back"
+        />
+        <LetterStyled>
+          <Letter />
+        </LetterStyled>
+        <Front
+          src={`${process.env.PUBLIC_URL}/assets/newsletter/envelopefront.svg`}
+          width={"1170.881px"}
+          id="front"
+        />
+      </LetterContainer>
       <Footer />
     </Container>
   );

@@ -11,7 +11,7 @@ const Container = styled.div`
   margin-top: 3rem;
 `;
 const Text = styled.div`
-  padding-top: 6rem;
+  padding-top: 3rem;
   padding-left: 6rem;
   color: #35648c;
   font-family: SUIT;
@@ -36,7 +36,7 @@ const DayContainer = styled.div`
   justify-content: center;
   gap: 10px;
   padding: 20px;
-  margin-top: 2rem;
+  margin-top: 1.5rem;
 `;
 
 const DayButton = styled.button`
@@ -62,7 +62,7 @@ const DayButton = styled.button`
 `;
 const SubscribeBtn = styled.button`
   margin: auto;
-  margin-top: 3rem;
+  margin-top: 2rem;
   display: flex;
   width: 350px;
   padding: 18px 0px 17px 0px;
