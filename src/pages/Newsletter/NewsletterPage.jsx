@@ -9,7 +9,7 @@ import Footer from "../../components/footer";
 
 const Container = styled.div`
   display: flex;
-  width: 1440px;
+  width: 100%;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -158,22 +158,22 @@ const NewsletterPage = () => {
             <ViewTerms>약관보기</ViewTerms>
           </PrivacyConsent>
         </CollectPersonalInfo>
+        <LetterContainer>
+          <Envelope
+            src={`${process.env.PUBLIC_URL}/assets/newsletter/envelope.svg`}
+            width={"1170.881px"}
+            id="back"
+          />
+          <LetterStyled>
+            <Letter />
+          </LetterStyled>
+          <Front
+            src={`${process.env.PUBLIC_URL}/assets/newsletter/envelopefront.svg`}
+            width={"1170.881px"}
+            id="front"
+          />
+        </LetterContainer>
       </SendSetting>
-      <LetterContainer>
-        <Envelope
-          src={`${process.env.PUBLIC_URL}/assets/newsletter/envelope.svg`}
-          width={"1170.881px"}
-          id="back"
-        />
-        <LetterStyled>
-          <Letter />
-        </LetterStyled>
-        <Front
-          src={`${process.env.PUBLIC_URL}/assets/newsletter/envelopefront.svg`}
-          width={"1170.881px"}
-          id="front"
-        />
-      </LetterContainer>
       <Footer />
     </Container>
   );

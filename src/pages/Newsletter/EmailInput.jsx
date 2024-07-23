@@ -10,6 +10,7 @@ const Container = styled.div`
 `;
 
 const EmailInputBox = styled.div`
+  margin: auto;
   display: flex;
   align-items: center;
   color: #35648c;
@@ -41,7 +42,7 @@ const Input = styled.input`
 
 const Arrow = styled.span`
   position: absolute;
-  right: 10px;
+  margin-left: 26.5rem;
   top: 30px;
   border: solid #007bff;
   border-width: 0 2px 2px 0;
@@ -54,12 +55,12 @@ const Arrow = styled.span`
 const Dropdown = styled.div`
   display: ${({ open }) => (open ? "block" : "none")};
   position: absolute;
-  top: 40px;
+  top: 52px;
   border: 1px solid #ccc;
   background-color: white;
   z-index: 1;
-  width: 45%;
-  margin-left: 53%;
+  width: 13%;
+  margin-left: 25%;
 `;
 
 const Option = styled.div`

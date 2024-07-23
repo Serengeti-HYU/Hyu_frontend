@@ -38,7 +38,7 @@ const LetterInfo = () => {
     <Container>
       <Title>휴~ 레터</Title>
       <Content>
-        매주 쉬는 날 뭐하지? 하는 고민을 덜어주기 위해서 <br />한 주에 한번
+        매주 쉬는 날 뭐하지? 하는 고민을 덜어주기 위해서 <br />한 주에 한 번{" "}
         <span id="hyu">휴~레터</span>가 쉼 활동을 추천해 줍니다.
       </Content>
       <LetterPic>

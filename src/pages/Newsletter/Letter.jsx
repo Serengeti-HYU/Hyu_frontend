@@ -29,8 +29,6 @@ const Text = styled.div`
     line-height: normal;
   }
 `;
-const days = ["월", "화", "수", "목", "금", "토", "일"];
-
 const DayContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -38,7 +36,6 @@ const DayContainer = styled.div`
   padding: 20px;
   margin-top: 1.5rem;
 `;
-
 const DayButton = styled.button`
   background: ${(props) => (props.selected ? (props) => "#35648c" : "white")};
   color: ${(props) => (props.selected ? "white" : "black")};
@@ -79,6 +76,7 @@ const SubscribeBtn = styled.button`
   line-height: normal;
   border: none;
 `;
+const days = ["월", "화", "수", "목", "금", "토", "일"];
 
 const Letter = () => {
   // 추후 selectedDay 전송
@@ -95,7 +93,7 @@ const Letter = () => {
           {" "}
           매주 금요일 00:00에 새로운 휴~레터 내용이 업로드
         </span>
-        됩니다. <br />∙ 휴~레터는 설정한 요일
+        됩니다. <br />∙ 휴~레터는 설정한 요일{" "}
         <span id="bluetext">오전 09:00에 발송</span>됩니다.
       </Text>
       <DayContainer>

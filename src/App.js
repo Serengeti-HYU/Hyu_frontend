@@ -9,6 +9,8 @@ import SignUp from "./pages/Main/SignUp/SignUp";
 import SignUpComplete from "./pages/Main/SignUp/SignUpComplete";
 import RestActivity from "./pages/Newsletter/RestActivity";
 
+import RestActivityDetail from "./pages/Newsletter/RestActivityDetail";
+
 // Profile imports
 import Mypage from "./pages/Profile/Mypage";
 import UpdateProfile from "./pages/Profile/UpdateProfile";
@@ -34,6 +36,7 @@ function App() {
 
         {/* Newsletter routes */}
         <Route path="/rest-activity" element={<RestActivity />} />
+        <Route path="/rest-activity-detail" element={<RestActivityDetail />} />
         <Route path="/newsletter-page" element={<NewsletterPage />} />
 
         {/* Profile routes */}
