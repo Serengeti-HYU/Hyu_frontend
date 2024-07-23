@@ -32,7 +32,7 @@ const Header = styled.div`
 
 const Social = styled.div`
   display: flex;
-  width: 21.875rem;
+  width: 23rem;
   height: 3.75rem;
   padding: 1.125rem 5.375rem 1.0625rem 5.375rem;
   justify-content: center;
@@ -175,11 +175,11 @@ const Login = () => {
           <form method="post" onSubmit={handleSubmit}>
             <div className="input">
               <p>• 아이디</p>
-              <input id="id" onFocus={handleFocus}></input>
+              <input id="id"></input>
             </div>
             <div className="input">
               <p>• 비밀번호</p>
-              <input id="pw" onFocus={handleFocus} type="password"></input>
+              <input id="pw" type="password"></input>
             </div>
             {showWarn && (
               <Warn onClick={handleFocus}>아이디 / 비밀번호를 확인하세요</Warn>
