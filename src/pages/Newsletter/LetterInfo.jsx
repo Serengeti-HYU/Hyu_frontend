@@ -4,7 +4,6 @@ import styled from "styled-components";
 const Container = styled.div`
   width: 1240px;
   height: 811px;
-  background: pink;
 `;
 const Title = styled.div`
   color: #35648c;
@@ -23,14 +22,16 @@ const Content = styled.div`
   font-weight: 300;
   line-height: normal;
   text-align: left;
-  margin-left: 2rem;
+  margin-left: 3rem;
   margin-top: 1rem;
   #hyu {
     color: #35648c;
     font-weight: 600;
   }
 `;
-const LetterPic = styled.div``;
+const LetterPic = styled.div`
+  margin-top: -4rem;
+`;
 
 const LetterInfo = () => {
   return (
@@ -40,7 +41,13 @@ const LetterInfo = () => {
         매주 쉬는 날 뭐하지? 하는 고민을 덜어주기 위해서 <br />한 주에 한번
         <span id="hyu">휴~레터</span>가 쉼 활동을 추천해 줍니다.
       </Content>
-      <LetterPic>여기 편지사진 띄울 예정</LetterPic>
+      <LetterPic>
+        <img
+          src={`${process.env.PUBLIC_URL}/assets/newsletter/lerttergroup.svg`}
+          width="760rem"
+          alt="letter"
+        />
+      </LetterPic>
     </Container>
   );
 };
