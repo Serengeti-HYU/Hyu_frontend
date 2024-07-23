@@ -84,18 +84,21 @@ function LoginHeader() {
         <button onClick={() => navigateTo("/NewletterPage")} id="NewletterPage">
           휴~레터
         </button>
-        <button onClick={() => navigateTo("/PersonalityTest")} id="PersonalityTest">
+        <button
+          onClick={() => navigateTo("/PersonalityTest")}
+          id="PersonalityTest"
+        >
           맞춤형 쉼
         </button>
         <button onClick={() => navigateTo("/Record1")} id="Record1">
           감정 기록
         </button>
         <img
-        src={`${process.env.PUBLIC_URL}/assets/logo/FaceLogoWhite.png`}
-        width={"50px"}
-        height={"50px"}
-        id="logo"
-      />
+          src={`${process.env.PUBLIC_URL}/assets/logo/FaceLogoWhite.png`}
+          width={"50px"}
+          height={"50px"}
+          id="logo"
+        />
       </div>
     </HeaderContainer>
   );
