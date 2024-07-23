@@ -8,7 +8,6 @@ const Container = styled.div`
 `;
 const Title = styled.div`
   color: #35648c;
-  font-family: SUIT;
   font-size: 48px;
   font-style: normal;
   font-weight: 900;

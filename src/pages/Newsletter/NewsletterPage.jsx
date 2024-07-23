@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import LetterInfo from "./LetterInfo";
+import NoLoginHeader from "../../components/NoLoginHeader";
+import Footer from "../../components/footer";
 
 const Container = styled.div`
   display: flex;
@@ -41,6 +43,7 @@ const Letter = styled.div``;
 const NewsletterPage = () => {
   return (
     <Container>
+      <NoLoginHeader />
       {/* 추후 컴포넌트로 빼기 */}
       <LetterInfo></LetterInfo>
       <LetterInfo2>
@@ -59,6 +62,7 @@ const NewsletterPage = () => {
       <Envelope>
         <Letter></Letter>
       </Envelope>
+      <Footer />
     </Container>
   );
 };
