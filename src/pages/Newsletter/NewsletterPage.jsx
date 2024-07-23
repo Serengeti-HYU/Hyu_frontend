@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import LetterInfo from "./LetterInfo";
+import EmailInput from "./EmailInput";
 import NoLoginHeader from "../../components/NoLoginHeader";
 import Footer from "../../components/footer";
 
@@ -13,8 +14,7 @@ const Container = styled.div`
   background: #fff;
 `;
 const LetterInfo2 = styled.div`
-  width: 1240px;
-  height: 321px;
+  height: 421px;
   #one {
     margin-left: 35px;
     width: 25rem;
@@ -47,14 +47,43 @@ const RoundText = styled.div`
   margin-bottom: 5px;
 `;
 const SendSetting = styled.div``;
-const Logo = styled.div``;
-const SubTitle = styled.div``;
-const EmailInput = styled.div``;
-const CollectPersonalInfo = styled.div``;
+const Logo = styled.img``;
+const SubTitle = styled.div`
+  color: #35648c;
+  font-family: SUIT;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-top: 1.5rem;
+  margin-bottom: 2rem;
+`;
+const ViewTerms = styled.span`
+  color: ${(props) => props.theme.color.blue};
+  font-family: SUIT;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  letter-spacing: -0.176px;
+  text-decoration-line: underline;
+`;
+const PrivacyConsent = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+`;
+const Checkbox = styled.input`
+  margin-right: 5px;
+`;
 const Envelope = styled.div``;
 const Letter = styled.div``;
-// const Title = styled.div``;
-
+const CollectPersonalInfo = styled.div`
+  margin: auto;
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-evenly;
+`;
 const NewsletterPage = () => {
   return (
     <Container>
@@ -68,10 +97,20 @@ const NewsletterPage = () => {
         <RoundText id="three">한 주를 마무리해주는 문구</RoundText>
       </LetterInfo2>
       <SendSetting>
-        <Logo></Logo>
-        <SubTitle></SubTitle>
-        <EmailInput></EmailInput>
-        <CollectPersonalInfo></CollectPersonalInfo>
+        <Logo
+          src={`${process.env.PUBLIC_URL}/assets/logo/FaceLogoBlue.png`}
+          width={"70px"}
+          id="logo"
+        />
+        <SubTitle>휴~레터가 찾아갈게요</SubTitle>
+        <EmailInput />
+        <CollectPersonalInfo>
+          <PrivacyConsent>
+            <Checkbox type="checkbox" />
+            <span>개인정보 수집 및 이용 동의(필수)</span>
+            <ViewTerms>약관보기</ViewTerms>
+          </PrivacyConsent>
+        </CollectPersonalInfo>
       </SendSetting>
       <Envelope>
         <Letter></Letter>
