@@ -12,14 +12,28 @@ const Container = styled.div`
   align-items: center;
   background: #fff;
 `;
-const LetterInfo2 = styled.div``;
+const LetterInfo2 = styled.div`
+  width: 1240px;
+  height: 321px;
+  #one {
+    margin-left: 35px;
+    width: 25rem;
+  }
+  #two {
+    margin-left: 600px;
+    width: 40rem;
+  }
+  #three {
+    margin-left: 20px;
+    width: 30rem;
+  }
+`;
 const RoundText = styled.div`
-  display: inline-flex;
+  display: flex;
   height: 98.696px;
-  padding: 0px 49.844px 0px 49.348px;
+  padding: 0px 19px 0px 19px;
   justify-content: center;
   align-items: center;
-  flex-shrink: 0;
   border-radius: 89.724px;
   background: #35648c;
   box-shadow: 0px 3.589px 3.589px 0px rgba(0, 0, 0, 0.25),
@@ -28,8 +42,9 @@ const RoundText = styled.div`
   font-family: SUIT;
   font-size: 21.534px;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 500;
   line-height: normal;
+  margin-bottom: 5px;
 `;
 const SendSetting = styled.div``;
 const Logo = styled.div``;
@@ -44,14 +59,13 @@ const NewsletterPage = () => {
   return (
     <Container>
       <NoLoginHeader />
-      {/* 추후 컴포넌트로 빼기 */}
-      <LetterInfo></LetterInfo>
+      <LetterInfo />
       <LetterInfo2>
-        <RoundText>휴일에 할 쉼, 힐링 활동</RoundText>
-        <RoundText>
+        <RoundText id="one">휴일에 할 쉼, 힐링 활동</RoundText>
+        <RoundText id="two">
           쉬면서 보기 좋은 추천 Vlog, ASMR, 힐링 플레이리스트
         </RoundText>
-        <RoundText>한 주를 마무리해주는 문구</RoundText>
+        <RoundText id="three">한 주를 마무리해주는 문구</RoundText>
       </LetterInfo2>
       <SendSetting>
         <Logo></Logo>
