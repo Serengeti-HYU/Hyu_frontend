@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
+  margin: 20px;
+  position: relative;
   display: flex;
   flex-direction: column;
   font-family: Arial, sans-serif;
@@ -10,70 +12,109 @@ const Container = styled.div`
 const EmailInputBox = styled.div`
   display: flex;
   align-items: center;
+  color: #35648c;
+  font-family: SUIT;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.176px;
+`;
+const TextBox = styled.div`
+  color: #1e1e1e;
+  font-family: SUIT;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 362%; /* 72.4px */
+  letter-spacing: -0.22px;
+  text-align: left;
+  width: 7rem;
 `;
 
 const Input = styled.input`
   padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  border: none;
+  border-bottom: 1px solid rgba(53, 100, 140, 0.35);
   margin-right: 5px;
 `;
 
-const Select = styled.select`
-  padding: 8px;
+const Arrow = styled.span`
+  position: absolute;
+  right: 10px;
+  top: 30px;
+  border: solid #007bff;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  padding: 3px;
+  transform: ${({ open }) => (open ? "rotate(225deg)" : "rotate(45deg)")};
+  cursor: pointer;
+`;
+
+const Dropdown = styled.div`
+  display: ${({ open }) => (open ? "block" : "none")};
+  position: absolute;
+  top: 40px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  background-color: white;
+  z-index: 1;
+  width: 45%;
+  margin-left: 53%;
+`;
+
+const Option = styled.div`
+  padding: 10px;
+  cursor: pointer;
+  &:hover {
+    background-color: #f1f1f1;
+  }
 `;
 
 const EmailInput = () => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [customInput, setCustomInput] = useState("");
   const [email1, setEmail1] = useState("");
-  const [email2, setEmail2] = useState("");
-  const [isDisabled, setIsDisabled] = useState(true);
 
-  const handleSelectChange = (e) => {
-    const value = e.target.value;
-
-    if (value === "0") {
-      setEmail2("");
-      setIsDisabled(true);
-    } else if (value === "9") {
-      setEmail2("");
-      setIsDisabled(false);
-    } else {
-      setEmail2(value);
-      setIsDisabled(true);
-    }
+  const handleOptionClick = (option) => {
+    setCustomInput(option === "직접 입력" ? "" : option);
+    setDropdownOpen(false);
   };
 
   return (
     <Container>
       <EmailInputBox>
+        <TextBox>∙ 이메일</TextBox>
         <Input
           type="text"
           name="email1"
           value={email1}
           onFocus={() => setEmail1("")}
           onChange={(e) => setEmail1(e.target.value)}
-          placeholder="아이디"
         />
-        @
+        @ &nbsp;
         <Input
           type="text"
-          name="email2"
-          value={email2}
-          onChange={(e) => setEmail2(e.target.value)}
-          disabled={isDisabled}
+          value={customInput}
+          onChange={(e) => setCustomInput(e.target.value)}
+          placeholder="직접 입력"
         />
-        {email2 === "" && (
-          <Select name="email" onChange={handleSelectChange}>
-            <option value="0">선택</option>
-            <option value="9">직접입력</option>
-            <option value="naver.com">naver.com</option>
-            <option value="gmail.com">gmail.com</option>
-            <option value="daum.net">daum.net</option>
-            <option value="hanmail.net">hanmail.net</option>
-          </Select>
-        )}
+        <Arrow
+          open={dropdownOpen}
+          onClick={() => setDropdownOpen(!dropdownOpen)}
+        />
+        <Dropdown open={dropdownOpen}>
+          {[
+            "직접 입력",
+            "naver.com",
+            "gmail.com",
+            "daum.net",
+            "hanmail.net",
+          ].map((option) => (
+            <Option key={option} onClick={() => handleOptionClick(option)}>
+              {option}
+            </Option>
+          ))}
+        </Dropdown>
       </EmailInputBox>
     </Container>
   );

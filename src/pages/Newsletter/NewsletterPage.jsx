@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import LetterInfo from "./LetterInfo";
 import EmailInput from "./EmailInput";
+import Letter from "./Letter";
 import NoLoginHeader from "../../components/NoLoginHeader";
 import Footer from "../../components/footer";
 
@@ -72,12 +73,22 @@ const PrivacyConsent = styled.div`
   display: flex;
   align-items: center;
   margin-top: 10px;
+  color: #000;
+  font-family: SUIT;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: normal;
+  letter-spacing: -0.176px;
+  #text {
+    width: 15rem;
+    text-align: left;
+  }
 `;
 const Checkbox = styled.input`
   margin-right: 5px;
 `;
 const Envelope = styled.div``;
-const Letter = styled.div``;
 const CollectPersonalInfo = styled.div`
   margin: auto;
   margin-top: 2rem;
@@ -107,7 +118,7 @@ const NewsletterPage = () => {
         <CollectPersonalInfo>
           <PrivacyConsent>
             <Checkbox type="checkbox" />
-            <span>개인정보 수집 및 이용 동의(필수)</span>
+            <span id="text">개인정보 수집 및 이용 동의(필수)</span>
             <ViewTerms>약관보기</ViewTerms>
           </PrivacyConsent>
         </CollectPersonalInfo>
