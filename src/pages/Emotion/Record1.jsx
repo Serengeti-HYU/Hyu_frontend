@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import Footer from "../../components/footer";
+import Footer from "../../components/Footer";
 import LoginHeader from "../../components/LoginHeader";
 
 const Container = styled.div`
@@ -111,7 +111,16 @@ const DayItem = styled.div`
 
 const Record1 = () => {
   const [selectedDate, setSelectedDate] = useState(new Date(2024, 0, 19));
-  
+  const [emotions, setEmotions] = useState({
+    14: "😐",
+    15: "😐",
+    16: "😐",
+    17: "😐",
+    18: "😐",
+    19: "😊",
+    20: "😐",
+  });
+
   const handleDateChange = (year, month, day) => {
     setSelectedDate(new Date(year, month - 1, day));
   };
@@ -125,7 +134,8 @@ const Record1 = () => {
   };
 
   const days = [14, 15, 16, 17, 18, 19, 20];
-  
+  const selectedDay = selectedDate.getDate();
+
   return (
     <Container>
       <LoginHeader />
@@ -137,7 +147,7 @@ const Record1 = () => {
           <DateInput type="text" value={String(selectedDate.getDate()).padStart(2, '0')} readOnly />
         </DateSelector>
         <MemoContainer>
-          <Circle>😊</Circle>
+          <Circle>{emotions[selectedDay] || "😐"}</Circle>
           <MemoInput placeholder="memo" />
         </MemoContainer>
         <Button>기록하기</Button>
@@ -153,7 +163,7 @@ const Record1 = () => {
         <DayContainer>
           {days.map(day => (
             <DayItem key={day} onClick={() => handleDateChange(2024, 1, day)}>
-              <Circle>{day === 19 ? "😊" : "😐"}</Circle>
+              <Circle>{emotions[day]}</Circle>
               <div>01.{String(day).padStart(2, '0')}</div>
             </DayItem>
           ))}
