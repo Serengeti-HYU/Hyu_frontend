@@ -1,3 +1,4 @@
+import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
@@ -20,17 +21,10 @@ const HeaderContainer = styled.div`
 
   #container {
     display: flex;
-    gap: 4.3rem;
-    padding-left: 48.38rem;
+    gap: 1rem; /* 간격을 조절하여 화면 크기에 맞게 조절 */
+    padding-left: 68rem; /* 좌우 여백 조절 */
     align-items: center;
-
-    @media (max-width: 768px) {
-      padding-left: 0;
-      gap: 1rem;
-      flex-direction: column;
-      align-items: flex-start;
-      width: 100%;
-    }
+    flex-wrap: wrap; /* 버튼들이 줄어들면서 줄 바꿈되도록 설정 */
   }
 
   button {
@@ -39,6 +33,7 @@ const HeaderContainer = styled.div`
     color: white;
     font-size: inherit;
     cursor: pointer;
+    white-space: nowrap; /* 버튼 글씨가 줄바꿈되지 않도록 설정 */
 
     &:focus {
       outline: none;

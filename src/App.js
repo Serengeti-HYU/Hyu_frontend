@@ -18,6 +18,7 @@ import UpdateProfile from "./pages/Profile/UpdateProfile";
 import PersonalityTest from "./pages/Emotion/PersonalityTest";
 import Record1 from "./pages/Emotion/Record1";
 import Record2 from "./pages/Emotion/Record2";
+import Record3 from "./pages/Emotion/Record3";
 import NewsletterPage from "./pages/Newsletter/NewsletterPage";
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
         <Route path="/personality-test" element={<PersonalityTest />} />
         <Route path="/record1" element={<Record1 />} />
         <Route path="/record2" element={<Record2 />} />
+        <Route path="/record3" element={<Record3 />} />
       </Routes>
     </BrowserRouter>
   );
