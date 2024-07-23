@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const HeaderContainer = styled.div`
   background: ${(props) => props.theme.color.blue};
@@ -10,11 +11,38 @@ const HeaderContainer = styled.div`
   align-items: center;
   padding-left: 5.94rem;
 
+  @media (max-width: 768px) {
+    padding-left: 1rem;
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   #container {
     display: flex;
     gap: 4.3rem;
     padding-left: 48.38rem;
     align-items: center;
+
+    @media (max-width: 768px) {
+      padding-left: 0;
+      gap: 1rem;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+    }
+  }
+
+  button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: inherit;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+    }
   }
 
   #login {
@@ -27,10 +55,23 @@ const HeaderContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+
+    @media (max-width: 768px) {
+      width: auto;
+      height: auto;
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+    }
   }
 `;
 
 function NoLoginHeader() {
+  const navigate = useNavigate();
+
+  const navigateTo = (path) => {
+    navigate(path);
+  };
+
   return (
     <HeaderContainer>
       <img
@@ -40,9 +81,15 @@ function NoLoginHeader() {
         id="logo"
       />
       <div id="container">
-        <div id="letter">휴~레터</div>
-        <div id="custiom">맞춤형 쉼</div>
-        <div id="emotion">감정 기록</div>
+        <button onClick={() => navigateTo("/NewletterPage")} id="NewletterPage">
+          휴~레터
+        </button>
+        <button onClick={() => navigateTo("/PersonalityTest")} id="PersonalityTest">
+          맞춤형 쉼
+        </button>
+        <button onClick={() => navigateTo("/Record1")} id="Record1">
+          감정 기록
+        </button>
         <div id="login">log in</div>
       </div>
     </HeaderContainer>
