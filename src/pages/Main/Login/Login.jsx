@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 import Footer from "../../../components/footer";
-import NoLoginHeader from "../../../components/LoginHeader";
+import NoLoginHeader from "../../../components/NoLoginHeader";
 
 const Container = styled.div`
   display: flex;
