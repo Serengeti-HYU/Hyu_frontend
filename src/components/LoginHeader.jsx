@@ -11,6 +11,7 @@ const HeaderContainer = styled.div`
   display: flex;
   align-items: center;
   padding-left: 5.94rem;
+  justify-content: space-between;
 
   @media (max-width: 768px) {
     padding-left: 1rem;
@@ -21,10 +22,16 @@ const HeaderContainer = styled.div`
 
   #container {
     display: flex;
-    gap: 1rem; /* 간격을 조절하여 화면 크기에 맞게 조절 */
-    padding-left: 68rem; /* 좌우 여백 조절 */
+    gap: 4.3rem;
     align-items: center;
-    flex-wrap: wrap; /* 버튼들이 줄어들면서 줄 바꿈되도록 설정 */
+
+    @media (max-width: 768px) {
+      padding-left: 0;
+      gap: 1rem;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+    }
   }
 
   button {
@@ -33,7 +40,6 @@ const HeaderContainer = styled.div`
     color: white;
     font-size: inherit;
     cursor: pointer;
-    white-space: nowrap; /* 버튼 글씨가 줄바꿈되지 않도록 설정 */
 
     &:focus {
       outline: none;
@@ -50,6 +56,7 @@ const HeaderContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-right: 4.56rem;
 
     @media (max-width: 768px) {
       width: auto;
