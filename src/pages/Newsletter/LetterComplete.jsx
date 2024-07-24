@@ -9,7 +9,19 @@ const Container = styled.div`
   box-shadow: 0px -4px 25.8px 0px rgba(0, 0, 0, 0.25);
   margin-top: 3rem;
 `;
-const Logo = styled.img``;
+const Logo = styled.img`
+  margin-top: 2rem;
+`;
+const TextBox = styled.div`
+  padding-top: 3rem;
+  color: #35648c;
+  text-align: center;
+  font-family: SUIT;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+`;
 const SubTitle = styled.div`
   color: #35648c;
   font-family: SUIT;
@@ -17,7 +29,7 @@ const SubTitle = styled.div`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-  margin-top: 1.5rem;
+  margin-top: 2rem;
   margin-bottom: 2rem;
 `;
 
@@ -44,6 +56,7 @@ const UpdateBtn = styled.button`
 const LetterComplete = ({ toggleLetter }) => {
   return (
     <Container>
+      <TextBox>(이메일)으로 매주 0요일 오전 9:00에</TextBox>
       <Logo
         src={`${process.env.PUBLIC_URL}/assets/logo/FaceLogoBlue.png`}
         width={"70px"}

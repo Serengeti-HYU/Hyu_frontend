@@ -3,6 +3,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
+  position: relative;
   width: 967px;
   height: 583px;
   border-radius: 25px;
@@ -77,6 +78,8 @@ const SubscribeBtn = styled.button`
   font-weight: 500;
   line-height: normal;
   border: none;
+  z-index: 10; /* 버튼이 최상위에 위치하도록 설정 */
+  position: relative; /* 버튼이 다른 요소보다 위에 위치하도록 설정 */
 `;
 const days = ["월", "화", "수", "목", "금", "토", "일"];
 
@@ -114,9 +117,7 @@ const Letter = ({ toggleLetter }) => {
           </DayButton>
         ))}
       </DayContainer>
-      <SubscribeBtn onClick={() => handleSubscribeClick()}>
-        구독하기
-      </SubscribeBtn>
+      <SubscribeBtn onClick={handleSubscribeClick}>구독하기</SubscribeBtn>
     </Container>
   );
 };

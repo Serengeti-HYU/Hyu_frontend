@@ -91,7 +91,6 @@ const PrivacyConsent = styled.div`
     text-align: left;
   }
 `;
-
 const Checkbox = styled.input`
   margin-right: 5px;
 `;
@@ -118,6 +117,9 @@ const Front = styled.img`
   position: absolute;
   top: 18rem;
   z-index: 3;
+  z-index: 999;
+  /* z-index를 무시하고 겹쳐있는 영역을 클릭했을때 뒤에 있는 click 이벤트 반응하게 하기 */
+  pointer-events: none;
 `;
 const CollectPersonalInfo = styled.div`
   margin: auto;
@@ -127,7 +129,7 @@ const CollectPersonalInfo = styled.div`
 `;
 
 const NewsletterPage = () => {
-  const [isLetterComplete, setIsLetterComplete] = useState(true);
+  const [isLetterComplete, setIsLetterComplete] = useState(false);
 
   const toggleLetter = () => {
     setIsLetterComplete((prev) => !prev);
