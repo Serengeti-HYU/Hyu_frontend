@@ -71,17 +71,20 @@ const DateSelector = styled.div`
   }
 `;
 
-const DateInput = styled.input`
-  width: 3.125rem;
+const DateInput = styled.select`
+  width: 4rem; /* Increase width to prevent text from being hidden */
   margin: 0 0.3125rem;
   text-align: center;
   border: none;
   background-color: transparent;
   font-size: 1.125rem;
   color: #35648c;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
   
   @media (max-width: 768px) {
-    width: 2.5rem;
+    width: 3.5rem;
     font-size: 1rem;
   }
 `;
@@ -289,6 +292,7 @@ const DayItem = styled.div`
 `;
 
 const Record1 = () => {
+  const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState(new Date(2024, 0, 19));
   const [emotions, setEmotions] = useState({
     14: "😐",
@@ -303,17 +307,9 @@ const Record1 = () => {
 
   const handleDateChange = (year, month, day) => {
     const newDate = new Date(year, month - 1, day);
-    const startOfWeek = new Date(selectedDate);
-    startOfWeek.setDate(selectedDate.getDate() - selectedDate.getDay() + 1); // 현재 주의 월요일
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 6); // 현재 주의 일요일
-
-    // 선택한 날짜가 현재 주 내에 있는지 확인
-    if (newDate >= startOfWeek && newDate <= endOfWeek) {
-        setSelectedDate(newDate);
-        setSelectedDay(day);
-    }
-};
+    setSelectedDate(newDate);
+    setSelectedDay(day);
+  };
 
   const handlePreviousWeek = () => {
     setSelectedDate((prevDate) => {
@@ -324,12 +320,38 @@ const Record1 = () => {
   };
 
   const handleNextWeek = () => {
-    setSelectedDate((prevDate) => {
-      const newDate = new Date(prevDate.getFullYear(), prevDate.getMonth(), prevDate.getDate() + 7);
-      setSelectedDay(newDate.getDate());
-      return newDate;
-    });
+    const weekDays = getWeekDays(selectedDate);
+    const isLastDaySelected = selectedDay === weekDays[weekDays.length - 1].getDate();
+    if (!isLastDaySelected) {
+      setSelectedDate((prevDate) => {
+        const newDate = new Date(prevDate.getFullYear(), prevDate.getMonth(), prevDate.getDate() + 7);
+        setSelectedDay(newDate.getDate());
+        return newDate;
+      });
+    }
   };
+
+  const handleManualDateChange = (type, value) => {
+    const newDate = new Date(selectedDate);
+    if (type === 'year') {
+      newDate.setFullYear(value);
+    } else if (type === 'month') {
+      newDate.setMonth(value - 1);
+    } else if (type === 'day') {
+      newDate.setDate(value);
+    }
+    setSelectedDate(newDate);
+    setSelectedDay(newDate.getDate());
+  };
+
+// Generate year, month, day options
+const generateOptions = (start, end) => {
+  const options = [];
+  for (let i = start; i <= end; i++) {
+    options.push(<option key={i} value={i}>{i}</option>);
+  }
+  return options;
+};
 
   const getWeekDays = (date) => {
     const weekDays = [];
@@ -352,9 +374,26 @@ const Record1 = () => {
       <TextContent>
         <Header>00님의 감정 기록</Header>
         <DateSelector>
-          <DateInput type="text" value={selectedDate.getFullYear()} readOnly />.
-          <DateInput type="text" value={String(selectedDate.getMonth() + 1).padStart(2, "0")} readOnly />.
-          <DateInput type="text" value={String(selectedDate.getDate()).padStart(2, "0")} readOnly />
+          <DateInput 
+            value={selectedDate.getFullYear()} 
+            onChange={(e) => handleManualDateChange('year', e.target.value)}
+          >
+            {generateOptions(2000, 2030)}
+          </DateInput>
+          .
+          <DateInput 
+  value={selectedDate.getMonth() + 1} 
+  onChange={(e) => handleManualDateChange('month', e.target.value)}
+>
+  {generateOptions(1, 12)}
+</DateInput>
+          .
+          <DateInput 
+            value={String(selectedDate.getDate()).padStart(2, "0")} 
+            onChange={(e) => handleManualDateChange('day', e.target.value)}
+          >
+            {generateOptions(1, 31)}
+          </DateInput>
         </DateSelector>
       </TextContent>
       <Content>
@@ -367,19 +406,36 @@ const Record1 = () => {
             <MemoInput placeholder="memo" />
           </MemoContainer>
         </TopContainer>
-        <Button>기록하기</Button>
+        <Button onClick={() => navigate("/Record2")}>기록하기</Button>
         <BottomContainer>
           <Navigation>
             <LeftNavButton onClick={handlePreviousWeek} />
             <DateSelector>
-              <DateInput type="text" value={selectedDate.getFullYear()} readOnly />.
-              <DateInput type="text" value={String(selectedDate.getMonth() + 1).padStart(2, "0")} readOnly />.
-              <DateInput type="text" value={String(selectedDate.getDate()).padStart(2, "0")} readOnly />
+              <DateInput 
+                value={selectedDate.getFullYear()} 
+                onChange={(e) => handleManualDateChange('year', e.target.value)}
+              >
+                {generateOptions(2000, 2030)}
+              </DateInput>
+              .
+              <DateInput 
+  value={selectedDate.getMonth() + 1} 
+  onChange={(e) => handleManualDateChange('month', Number(e.target.value))}
+>
+  {generateOptions(1, 12)}
+</DateInput>
+              .
+              <DateInput 
+                value={String(selectedDate.getDate()).padStart(2, "0")} 
+                onChange={(e) => handleManualDateChange('day', e.target.value)}
+              >
+                {generateOptions(1, 31)}
+              </DateInput>
             </DateSelector>
             <RightNavButton onClick={handleNextWeek} />
           </Navigation>
           <DayContainerWrapper>
-            {weekDays.map((day) => (
+            {weekDays.map((day, index) => (
               <DayContainer
                 key={day.getDate()}
                 selected={day.getDate() === selectedDay}
