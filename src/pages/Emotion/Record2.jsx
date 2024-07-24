@@ -325,6 +325,8 @@ const Record2 = () => {
             </EmotionButton>
           ))}
           <LockButton onClick={handleLockClick} />
+          <LockButton onClick={handleLockClick} />
+
         </EmotionBox>
         <ButtonContainer>
           <Button onClick={() => navigate(-1)}>이전으로</Button>
