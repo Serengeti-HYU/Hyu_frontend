@@ -181,7 +181,7 @@ const EmotionBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #e0e0e0; /* 연한 회색 배경 */
+  border: 0.125rem solid #e0e0e0; /* 연한 회색 테두리 */
   border-radius: 1.25rem;
   padding: 1rem;
   margin-bottom: 1.25rem;

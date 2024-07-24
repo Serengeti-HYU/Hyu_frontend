@@ -1,70 +1,106 @@
-import React from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const HeaderContainer = styled.div`
-  position: relative;
+  background: ${(props) => props.theme.color.blue};
+  font-size: ${(props) => props.theme.fontSize.small};
+  color: white;
   width: 100%;
-  background-color: #3a5a9a;
-  padding: 1.5rem 0; /* 패딩을 늘려서 세로 길이를 더 크게 만듭니다 */
-`;
-
-const Logo = styled.img`
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 50px;
-  height: 50px;
-`;
-
-const NavMenu = styled.div`
-  position: absolute;
-  left: 80%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  height: 75px;
   display: flex;
   align-items: center;
-`;
+  padding-left: 5.94rem;
+  justify-content: space-between;
 
-const NavItem = styled(Link)`
-  color: white;
-  text-decoration: none;
-  margin: 0 1rem;
-  font-size: 1rem;
-`;
+  @media (max-width: 768px) {
+    padding-left: 1rem;
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-const LoginButton = styled(Link)`
-  position: absolute;
-  right: 0.5rem; /* 오른쪽 여백을 줄여서 간격을 좁힙니다 */
-  top: 50%;
-  right: 5%;
-  transform: translateY(-50%);
-  color: white;
-  border: 1px solid white;
-  padding: 0.5rem 1rem;
-  border-radius: 25px;
-  text-decoration: none;
+  #container {
+    display: flex;
+    gap: 4.3rem;
+    align-items: center;
 
+    @media (max-width: 768px) {
+      padding-left: 0;
+      gap: 1rem;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+    }
+  }
 
-  &:hover {
-    background-color: white;
-    color: #3a5a9a;
+  button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: inherit;
+    cursor: pointer;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  #loginNav {
+    font-weight: 700;
+    font-size: 0.875rem;
+    border: 1px solid white;
+    border-radius: 50%;
+    width: 3.125rem;
+    height: 3.125rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 4.56rem;
+
+    @media (max-width: 768px) {
+      width: auto;
+      height: auto;
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+    }
   }
 `;
 
-const NoLoginHeader = () => {
+function NoLoginHeader() {
+  const navigate = useNavigate();
+
+  const navigateTo = (path) => {
+    navigate(path);
+  };
+
   return (
     <HeaderContainer>
-      <Logo src="/assets/logo/LogoWhite.png" alt="Logo" />
-      <NavMenu>
-        <NavItem to="/letter">휴~레터</NavItem>
-        <NavItem to="/custom-scent">맞춤형 쉼</NavItem>
-        <NavItem to="/emotion-record">감정 기록</NavItem>
-      </NavMenu>
-      <LoginButton to="/login">log in</LoginButton>
+      <img
+        src={`${process.env.PUBLIC_URL}/assets/logo/FaceLogoWhite.png`}
+        width={"50px"}
+        height={"50px"}
+        id="logo"
+      />
+      <div id="container">
+        <button
+          onClick={() => navigateTo("/newsletter-page")}
+          id="newsletter-page"
+        >
+          휴~레터
+        </button>
+        <button
+          onClick={() => navigateTo("/PersonalityTest")}
+          id="PersonalityTest"
+        >
+          맞춤형 쉼
+        </button>
+        <button onClick={() => navigateTo("/Record1")} id="Record1">
+          감정 기록
+        </button>
+        <div id="loginNav">log in</div>
+      </div>
     </HeaderContainer>
   );
-};
+}
 
 export default NoLoginHeader;
