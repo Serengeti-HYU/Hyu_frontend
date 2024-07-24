@@ -46,7 +46,6 @@ const Content = styled.div`
 
 const Header = styled.div`
   color: #35648c;
-  font-family: SUIT;
   font-size: 1.375rem;
   font-weight: 700;
   margin: 1.25rem 0;

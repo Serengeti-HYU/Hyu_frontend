@@ -15,7 +15,7 @@ const TextContent = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center; /* 중앙 정렬로 수정 */
+  align-items: center;
   padding: 2.5rem;
   width: 100%;
   max-width: 47.5rem;
@@ -51,11 +51,11 @@ const Header = styled.div`
   font-weight: 700;
   margin: 1.25rem 0;
   text-align: center;
-  margin-bottom: 1.5rem; /* margin 수정 */
+  margin-bottom: 1.5rem; 
   
   @media (max-width: 768px) {
     font-size: 1.125rem;
-    margin-bottom: 1rem; /* margin 수정 */
+    margin-bottom: 1rem; 
   }
 `;
 
@@ -106,7 +106,7 @@ const TopContainer = styled.div`
   width: 100%;
   max-width: 64rem;
   display: flex;
-  flex-direction: row; /* row로 수정 */
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   margin-bottom: 1.25rem;
@@ -119,7 +119,7 @@ const TopContainer = styled.div`
 const MemoContainer = styled.div`
   width: 100%;
   max-width: 31.25rem;
-  margin-left: 1.25rem; /* 추가: Circle과의 간격 조정 */
+  margin-left: 1.25rem; 
   align-items: center;
   border-radius: 1.25rem;
   border: 0.1875rem solid #35648C;
@@ -127,8 +127,8 @@ const MemoContainer = styled.div`
   
   @media (max-width: 768px) {
     max-width: 100%;
-    margin-left: 0; /* 모바일에서는 원래대로 */
-    margin-bottom: 1.25rem; /* 모바일에서 아래로 공간 추가 */
+    margin-left: 0; 
+    margin-bottom: 1.25rem; 
   }
 `;
 
@@ -151,7 +151,7 @@ const CircleContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 1.25rem; /* margin 수정 */
+  margin-right: 1.25rem; 
   
   @media (max-width: 768px) {
     justify-content: center;
@@ -181,10 +181,11 @@ const EmotionBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 0.125rem solid #e0e0e0; /* 연한 회색 테두리 */
+  border: 0.125rem solid #e0e0e0; 
   border-radius: 1.25rem;
   padding: 1rem;
   margin-bottom: 1.25rem;
+  position: relative;
 `;
 
 const EmotionButton = styled.div`
@@ -220,9 +221,46 @@ const LockButton = styled(EmotionButton)`
 
 const ButtonContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-end; /* 오른쪽 정렬 */
   align-items: center;
   margin-bottom: 1.25rem;
+  margin-left: 28rem;
+`;
+
+const PreviousButton = styled.button`
+  background-color: #ffffff;
+  color: #35648C;
+  padding: 0.625rem 1.25rem;
+  border: 0.125rem solid #35648C;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  margin: 0 0.625rem;
+
+  &:hover {
+    background-color: #f2f2f2;
+  }
+
+  @media (max-width: 768px) {
+    margin: 0.625rem 0;
+  }
+`;
+
+const ActionButton = styled.button`
+  background-color: #35648c;
+  color: #ffffff;
+  padding: 0.625rem 1.25rem;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  margin-left: 1rem;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+
+  @media (max-width: 768px) {
+    margin-top: 0.625rem;
+  }
 `;
 
 const Button = styled.button`
@@ -241,6 +279,32 @@ const Button = styled.button`
   @media (max-width: 768px) {
     margin: 0.625rem 0;
   }
+`;
+
+const CustomEmotionButton = styled.button`
+  color: #ffffff;
+  padding: 0.625rem 1.25rem;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(0deg, #35648C 0%, #F2E8C9 129.17%);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  margin-left: 1rem;
+  margin-top: 1rem;
+  height: 3rem;
+
+  &:hover {
+    background-color: #ff8c00;
+  }
+
+  @media (max-width: 768px) {
+    margin-top: 0.625rem;
+  }
+`;
+
+
+const CustomContainer = styled.div`
+  display: flex;
 `;
 
 const Record2 = () => {
@@ -315,22 +379,26 @@ const Record2 = () => {
             />
           </MemoContainer>
         </TopContainer>
-        <EmotionBox>
-          {["😴", "😐", "😊", "😆", "😢"].map((emotion, index) => (
-            <EmotionButton 
-              key={index}
-              onClick={() => setSelectedEmotion(emotion)}
-            >
-              {emotion}
-            </EmotionButton>
-          ))}
-          <LockButton onClick={handleLockClick} />
-          <LockButton onClick={handleLockClick} />
-
-        </EmotionBox>
+        <CustomContainer>
+          <EmotionBox>
+            {["😴", "😐", "😊", "😆", "😢"].map((emotion, index) => (
+              <EmotionButton 
+                key={index}
+                onClick={() => setSelectedEmotion(emotion)}
+              >
+                {emotion}
+              </EmotionButton>
+            ))}
+            <LockButton onClick={handleLockClick} />
+            <LockButton onClick={handleLockClick} />
+          </EmotionBox>
+          <CustomEmotionButton onClick={() => alert('감정 커스텀')}>
+            감정 커스텀 (Premium)
+          </CustomEmotionButton>
+        </CustomContainer>
         <ButtonContainer>
-          <Button onClick={() => navigate(-1)}>이전으로</Button>
-          <Button onClick={() => alert('저장하기')}>저장하기</Button>
+          <PreviousButton onClick={() => navigate(-1)}>이전으로</PreviousButton>
+          <ActionButton onClick={() => alert('저장하기')}>저장하기</ActionButton>
         </ButtonContainer>
       </Content>
       <Footer />
