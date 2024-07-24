@@ -10,6 +10,7 @@ const HeaderContainer = styled.div`
   display: flex;
   align-items: center;
   padding-left: 5.94rem;
+  justify-content: space-between;
 
   @media (max-width: 768px) {
     padding-left: 1rem;
@@ -21,7 +22,6 @@ const HeaderContainer = styled.div`
   #container {
     display: flex;
     gap: 4.3rem;
-    padding-left: 48.38rem;
     align-items: center;
 
     @media (max-width: 768px) {
@@ -45,7 +45,7 @@ const HeaderContainer = styled.div`
     }
   }
 
-  #login {
+  #loginNav {
     font-weight: 700;
     font-size: 0.875rem;
     border: 1px solid white;
@@ -55,6 +55,7 @@ const HeaderContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-right: 4.56rem;
 
     @media (max-width: 768px) {
       width: auto;
@@ -81,16 +82,22 @@ function NoLoginHeader() {
         id="logo"
       />
       <div id="container">
-        <button onClick={() => navigateTo("/NewletterPage")} id="NewletterPage">
+        <button
+          onClick={() => navigateTo("/newsletter-page")}
+          id="newsletter-page"
+        >
           휴~레터
         </button>
-        <button onClick={() => navigateTo("/PersonalityTest")} id="PersonalityTest">
+        <button
+          onClick={() => navigateTo("/PersonalityTest")}
+          id="PersonalityTest"
+        >
           맞춤형 쉼
         </button>
         <button onClick={() => navigateTo("/Record1")} id="Record1">
           감정 기록
         </button>
-        <div id="login">log in</div>
+        <div id="loginNav">log in</div>
       </div>
     </HeaderContainer>
   );

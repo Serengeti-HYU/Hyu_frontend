@@ -11,6 +11,7 @@ const HeaderContainer = styled.div`
   display: flex;
   align-items: center;
   padding-left: 5.94rem;
+  justify-content: space-between;
 
   @media (max-width: 768px) {
     padding-left: 1rem;
@@ -21,10 +22,16 @@ const HeaderContainer = styled.div`
 
   #container {
     display: flex;
-    gap: 1rem; /* 간격을 조절하여 화면 크기에 맞게 조절 */
-    padding-left: 68rem; /* 좌우 여백 조절 */
+    gap: 4.3rem;
     align-items: center;
-    flex-wrap: wrap; /* 버튼들이 줄어들면서 줄 바꿈되도록 설정 */
+
+    @media (max-width: 768px) {
+      padding-left: 0;
+      gap: 1rem;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 100%;
+    }
   }
 
   button {
@@ -33,14 +40,13 @@ const HeaderContainer = styled.div`
     color: white;
     font-size: inherit;
     cursor: pointer;
-    white-space: nowrap; /* 버튼 글씨가 줄바꿈되지 않도록 설정 */
 
     &:focus {
       outline: none;
     }
   }
 
-  #login {
+  #loginNav {
     font-weight: 700;
     font-size: 0.875rem;
     border: 1px solid white;
@@ -50,6 +56,7 @@ const HeaderContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-right: 4.56rem;
 
     @media (max-width: 768px) {
       width: auto;
@@ -79,7 +86,10 @@ function LoginHeader() {
         <button onClick={() => navigateTo("/NewletterPage")} id="NewletterPage">
           휴~레터
         </button>
-        <button onClick={() => navigateTo("/PersonalityTest")} id="PersonalityTest">
+        <button
+          onClick={() => navigateTo("/PersonalityTest")}
+          id="PersonalityTest"
+        >
           맞춤형 쉼
         </button>
         <button onClick={() => navigateTo("/Record1")} id="Record1">
@@ -89,7 +99,7 @@ function LoginHeader() {
           src={`${process.env.PUBLIC_URL}/assets/logo/FaceLogoWhite.png`}
           width={"50px"}
           height={"50px"}
-          id="logo"
+          id="loginNav"
         />
       </div>
     </HeaderContainer>

@@ -8,6 +8,9 @@ import Login from "./pages/Main/Login/Login";
 import SignUp from "./pages/Main/SignUp/SignUp";
 import SignUpComplete from "./pages/Main/SignUp/SignUpComplete";
 import RestActivity from "./pages/Newsletter/RestActivity";
+import Main from "./pages/Main/main";
+
+import RestActivityDetail from "./pages/Newsletter/RestActivityDetail";
 
 // Profile imports
 import Mypage from "./pages/Profile/Mypage";
@@ -25,7 +28,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         {/* Main routes */}
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<Main />} />
         <Route path="/find-id" element={<FindID />} />
         <Route path="/find-password" element={<FindPassword />} />
         <Route path="/login" element={<Login />} />
@@ -34,6 +37,7 @@ function App() {
 
         {/* Newsletter routes */}
         <Route path="/rest-activity" element={<RestActivity />} />
+        <Route path="/rest-activity-detail" element={<RestActivityDetail />} />
         <Route path="/newsletter-page" element={<NewsletterPage />} />
 
         {/* Profile routes */}
