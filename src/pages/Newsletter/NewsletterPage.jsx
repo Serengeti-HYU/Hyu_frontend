@@ -3,6 +3,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import LetterInfo from "./LetterInfo";
 import EmailInput from "./EmailInput";
+import LetterComplete from "./LetterComplete";
 import Letter from "./Letter";
 import LoginHeader from "../../components/LoginHeader";
 import Footer from "../../components/footer";
@@ -50,7 +51,6 @@ const RoundText = styled.div`
   line-height: normal;
   margin-bottom: 5px;
 `;
-
 const SendSetting = styled.div``;
 const Logo = styled.img``;
 const SubTitle = styled.div`
@@ -91,7 +91,6 @@ const PrivacyConsent = styled.div`
     text-align: left;
   }
 `;
-
 const Checkbox = styled.input`
   margin-right: 5px;
 `;
@@ -102,7 +101,7 @@ const LetterContainer = styled.div`
   width: 1200px;
   height: 675px;
   margin: auto;
-  margin-top: 5rem;
+  margin-top: 8rem;
 `;
 const Envelope = styled.img`
   position: absolute;
@@ -118,6 +117,9 @@ const Front = styled.img`
   position: absolute;
   top: 18rem;
   z-index: 3;
+  z-index: 999;
+  /* z-index를 무시하고 겹쳐있는 영역을 클릭했을때 뒤에 있는 click 이벤트 반응하게 하기 */
+  pointer-events: none;
 `;
 const CollectPersonalInfo = styled.div`
   margin: auto;
@@ -127,10 +129,11 @@ const CollectPersonalInfo = styled.div`
 `;
 
 const NewsletterPage = () => {
-  const [showLetter, setShowLetter] = useState(false);
+  const [isLetterComplete, setIsLetterComplete] = useState(false);
 
-  const handleUpdateClick = () => {
-    setShowLetter(true);
+  const toggleLetter = () => {
+    setIsLetterComplete((prev) => !prev);
+    console.log("상태" + isLetterComplete);
   };
   return (
     <Container>
@@ -165,7 +168,11 @@ const NewsletterPage = () => {
             id="back"
           />
           <LetterStyled>
-            <Letter />
+            {isLetterComplete ? (
+              <LetterComplete toggleLetter={toggleLetter} />
+            ) : (
+              <Letter toggleLetter={toggleLetter} />
+            )}
           </LetterStyled>
           <Front
             src={`${process.env.PUBLIC_URL}/assets/newsletter/envelopefront.svg`}
