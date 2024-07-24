@@ -166,9 +166,10 @@ const SignUp = () => {
   const [birthMonth, setBirthMonth] = useState("");
   const [birthDay, setBirthDay] = useState("");
   const [id, setId] = useState("");
+  const [email, setEmail] = useState("");
   const [phone1, setPhone1] = useState("");
   const [phone2, setPhone2] = useState("");
-  const [email, setEmail] = useState("");
+  const [phone3, setPhone3] = useState("");
 
   const handleInputChange = (e, nextRef) => {
     if (e.target.value.length >= e.target.maxLength) {
@@ -189,6 +190,11 @@ const SignUp = () => {
     const maxLength = 12;
     const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,12}$/;
     return regex.test(password);
+  };
+
+  const handlePhone2Change = (e) => {
+    setPhone2(e.target.value);
+    handleInputChange(e, inputRef2);
   };
 
   const handleSubmit = (event) => {
@@ -215,6 +221,7 @@ const SignUp = () => {
       confirmPassword &&
       phone1 &&
       phone2 &&
+      phone3 &&
       email &&
       domainInput &&
       password === confirmPassword &&
@@ -354,9 +361,7 @@ const SignUp = () => {
               <p className="label">• 전화번호</p>
               <select
                 className="phone"
-                value={phone1}
-                onChange={(e) => handleInputChange(e, inputRef2)}
-                required
+                onChange={(e) => setPhone1(e.target.value)}
               >
                 <option value="">선택</option>
                 <option value="010">010</option>
@@ -372,27 +377,23 @@ const SignUp = () => {
                 type="tel"
                 maxLength="4"
                 ref={inputRef1}
-                value={phone1}
-                onChange={(e) => setPhone1(e.target.value)}
-                required
-              />
+                onChange={handlePhone2Change}
+              ></input>
               <p className="hypen">-</p>
               <input
                 className="phone"
                 type="tel"
                 maxLength="4"
                 ref={inputRef2}
-                value={phone2}
-                onChange={(e) => setPhone2(e.target.value)}
-                required
-              />
+                onChange={(e) => setPhone3(e.target.value)}
+              ></input>
             </div>
 
             <div className="input">
               <p className="label">• 이메일 </p>
               <input
                 className="email"
-                type="email"
+                type="text"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -414,7 +415,13 @@ const SignUp = () => {
                 <option value="hanmail.net">hanmail.net</option>
               </select>
             </div>
-            {!isFormValid && <p id="warn2">모든 정보를 입력해주세요</p>}
+            <p
+              id="warn2"
+              style={{ visibility: isFormValid() ? "hidden" : "visible" }}
+            >
+              모든 정보를 입력해주세요
+            </p>
+
             <button type="submit" id="goLogin" disabled={!isFormValid()}>
               회원가입 완료
             </button>
