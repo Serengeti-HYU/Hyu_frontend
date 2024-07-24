@@ -53,8 +53,7 @@ const Social = styled.div`
 
 const LoginSec = styled.div`
   #line {
-    width: 60.9375rem;
-    height: 1.5625rem;
+    width: 70%;
     margin-top: 2.7rem;
   }
   form {
