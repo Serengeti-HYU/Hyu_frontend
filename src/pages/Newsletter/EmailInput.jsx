@@ -14,7 +14,6 @@ const EmailInputBox = styled.div`
   display: flex;
   align-items: center;
   color: #35648c;
-  font-family: SUIT;
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
@@ -23,7 +22,6 @@ const EmailInputBox = styled.div`
 `;
 const TextBox = styled.div`
   color: #1e1e1e;
-  font-family: SUIT;
   font-size: 20px;
   font-style: normal;
   font-weight: 500;

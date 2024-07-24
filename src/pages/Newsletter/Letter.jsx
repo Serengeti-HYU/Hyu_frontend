@@ -15,7 +15,6 @@ const Text = styled.div`
   padding-top: 3rem;
   padding-left: 6rem;
   color: #35648c;
-  font-family: SUIT;
   font-size: 24px;
   font-style: normal;
   font-weight: 300;
@@ -23,7 +22,6 @@ const Text = styled.div`
   text-align: left;
   #bluetext {
     color: #35648c;
-    font-family: SUIT;
     font-size: 24px;
     font-style: normal;
     font-weight: 700;
@@ -52,7 +50,6 @@ const DayButton = styled.button`
   &:hover {
     border: 2px solid #35648c;
   }
-  font-family: SUIT;
   font-size: 16.087px;
   font-style: normal;
   font-weight: 600;
@@ -72,7 +69,6 @@ const SubscribeBtn = styled.button`
   background: #35648c;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   color: #fff;
-  font-family: SUIT;
   font-size: 20px;
   font-style: normal;
   font-weight: 500;

@@ -51,19 +51,10 @@ const HeaderContainer = styled.div`
     font-size: 0.875rem;
     border: 1px solid white;
     border-radius: 50%;
-    width: 3.125rem;
-    height: 3.125rem;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-right: 4.56rem;
-
-    @media (max-width: 768px) {
-      width: auto;
-      height: auto;
-      padding: 0.5rem 1rem;
-      border-radius: 1rem;
-    }
   }
 `;
 
