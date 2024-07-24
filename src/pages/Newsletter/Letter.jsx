@@ -37,7 +37,7 @@ const DayContainer = styled.div`
   margin-top: 1.5rem;
 `;
 const DayButton = styled.button`
-  background: ${(props) => (props.selected ? (props) => "#35648c" : "white")};
+  background: ${(props) => (props.selected ? "#35648c" : "white")};
   color: ${(props) => (props.selected ? "white" : "black")};
   display: flex;
   width: 104.568px;
@@ -57,7 +57,9 @@ const DayButton = styled.button`
   font-weight: 600;
   line-height: normal;
 `;
+
 const SubscribeBtn = styled.button`
+  cursor: pointer;
   margin: auto;
   margin-top: 2rem;
   display: flex;
@@ -78,12 +80,17 @@ const SubscribeBtn = styled.button`
 `;
 const days = ["월", "화", "수", "목", "금", "토", "일"];
 
-const Letter = () => {
+const Letter = ({ toggleLetter }) => {
   // 추후 selectedDay 전송
   const [selectedDay, setSelectedDay] = useState(null);
 
   const handleClick = (day) => {
     setSelectedDay(day);
+    console.log("ㅇㅇ");
+  };
+  const handleSubscribeClick = () => {
+    console.log("구독하기 버튼 클릭됨");
+    toggleLetter(); // 상태 변경 함수 호출
   };
   return (
     <Container>
@@ -107,7 +114,9 @@ const Letter = () => {
           </DayButton>
         ))}
       </DayContainer>
-      <SubscribeBtn>구독하기</SubscribeBtn>
+      <SubscribeBtn onClick={() => handleSubscribeClick()}>
+        구독하기
+      </SubscribeBtn>
     </Container>
   );
 };

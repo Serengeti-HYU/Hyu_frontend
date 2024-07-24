@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -42,7 +41,7 @@ const UpdateBtn = styled.button`
   border: none;
 `;
 
-const LetterComplete = () => {
+const LetterComplete = ({ toggleLetter }) => {
   return (
     <Container>
       <Logo
@@ -51,7 +50,7 @@ const LetterComplete = () => {
         id="logo"
       />
       <SubTitle>휴~레터가 찾아갈게요</SubTitle>
-      <UpdateBtn>발송요일 수정하기</UpdateBtn>
+      <UpdateBtn onClick={toggleLetter}>발송요일 수정하기</UpdateBtn>
     </Container>
   );
 };

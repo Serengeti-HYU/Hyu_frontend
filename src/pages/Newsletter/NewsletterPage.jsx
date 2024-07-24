@@ -3,6 +3,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import LetterInfo from "./LetterInfo";
 import EmailInput from "./EmailInput";
+import LetterComplete from "./LetterComplete";
 import Letter from "./Letter";
 import LoginHeader from "../../components/LoginHeader";
 import Footer from "../../components/footer";
@@ -50,7 +51,6 @@ const RoundText = styled.div`
   line-height: normal;
   margin-bottom: 5px;
 `;
-
 const SendSetting = styled.div``;
 const Logo = styled.img``;
 const SubTitle = styled.div`
@@ -127,10 +127,11 @@ const CollectPersonalInfo = styled.div`
 `;
 
 const NewsletterPage = () => {
-  const [showLetter, setShowLetter] = useState(false);
+  const [isLetterComplete, setIsLetterComplete] = useState(true);
 
-  const handleUpdateClick = () => {
-    setShowLetter(true);
+  const toggleLetter = () => {
+    setIsLetterComplete((prev) => !prev);
+    console.log("상태" + isLetterComplete);
   };
   return (
     <Container>
@@ -165,7 +166,11 @@ const NewsletterPage = () => {
             id="back"
           />
           <LetterStyled>
-            <Letter />
+            {isLetterComplete ? (
+              <LetterComplete toggleLetter={toggleLetter} />
+            ) : (
+              <Letter toggleLetter={toggleLetter} />
+            )}
           </LetterStyled>
           <Front
             src={`${process.env.PUBLIC_URL}/assets/newsletter/envelopefront.svg`}
