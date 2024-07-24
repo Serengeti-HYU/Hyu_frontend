@@ -3,6 +3,7 @@ import { useState } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
+  position: relative;
   width: 967px;
   height: 583px;
   border-radius: 25px;
@@ -37,7 +38,7 @@ const DayContainer = styled.div`
   margin-top: 1.5rem;
 `;
 const DayButton = styled.button`
-  background: ${(props) => (props.selected ? (props) => "#35648c" : "white")};
+  background: ${(props) => (props.selected ? "#35648c" : "white")};
   color: ${(props) => (props.selected ? "white" : "black")};
   display: flex;
   width: 104.568px;
@@ -57,7 +58,9 @@ const DayButton = styled.button`
   font-weight: 600;
   line-height: normal;
 `;
+
 const SubscribeBtn = styled.button`
+  cursor: pointer;
   margin: auto;
   margin-top: 2rem;
   display: flex;
@@ -75,15 +78,22 @@ const SubscribeBtn = styled.button`
   font-weight: 500;
   line-height: normal;
   border: none;
+  z-index: 10; /* 버튼이 최상위에 위치하도록 설정 */
+  position: relative; /* 버튼이 다른 요소보다 위에 위치하도록 설정 */
 `;
 const days = ["월", "화", "수", "목", "금", "토", "일"];
 
-const Letter = () => {
+const Letter = ({ toggleLetter }) => {
   // 추후 selectedDay 전송
   const [selectedDay, setSelectedDay] = useState(null);
 
   const handleClick = (day) => {
     setSelectedDay(day);
+    console.log("ㅇㅇ");
+  };
+  const handleSubscribeClick = () => {
+    console.log("구독하기 버튼 클릭됨");
+    toggleLetter(); // 상태 변경 함수 호출
   };
   return (
     <Container>
@@ -107,7 +117,7 @@ const Letter = () => {
           </DayButton>
         ))}
       </DayContainer>
-      <SubscribeBtn>구독하기</SubscribeBtn>
+      <SubscribeBtn onClick={handleSubscribeClick}>구독하기</SubscribeBtn>
     </Container>
   );
 };
