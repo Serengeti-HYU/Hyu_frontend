@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import Footer from "../../components/footer";
@@ -36,7 +36,6 @@ const Content = styled.div`
   width: 100%;
   max-width: 43.75rem;
   margin: 0 auto;
-  margin-top: 0;
 
   @media (max-width: 768px) {
     padding: 1.25rem;
@@ -44,27 +43,13 @@ const Content = styled.div`
   }
 `;
 
-const Header = styled.div`
-  color: #35648c;
-  font-size: 1.375rem;
-  font-weight: 700;
-  margin: 1.25rem 0;
-  text-align: center;
-  margin-bottom: 1.5rem;
-
-  @media (max-width: 768px) {
-    font-size: 1.125rem;
-    margin-bottom: 1rem;
-  }
-`;
-
 const DateSelector = styled.div`
   display: flex;
-  justify-content: center;
   align-items: center;
   font-size: 1.125rem;
   color: #35648c;
-
+  margin-left: -30rem;
+  margin-top: 5rem;
   @media (max-width: 768px) {
     font-size: 1rem;
   }
@@ -94,7 +79,7 @@ const Line = styled.div`
   height: 0.1875rem;
   background: linear-gradient(to right, #f2e8c9, #35648c 50%, #f2e8c9);
   margin: 1.25rem 0;
-  margin-top: -2.375rem;
+  margin-top: -6.375rem;
 
   @media (max-width: 768px) {
     margin-top: -2.5rem;
@@ -178,13 +163,43 @@ const Circle = styled.div`
 
 const EmotionBox = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
+  align-items: left;
   border: 0.125rem solid #e0e0e0;
   border-radius: 1.25rem;
   padding: 1rem;
   margin-bottom: 1.25rem;
   position: relative;
+  overflow: hidden;
+  max-width: 30rem;
+  overflow-x: auto;
+
+  /* Custom scrollbar styles */
+  &::-webkit-scrollbar {
+    height: 12px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 51px;
+    background: linear-gradient(90deg, #35648C 0%, #F2E8C9 100%);
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-button {
+    display: none; /* Remove scrollbar arrows */
+  }
+
+  padding-left: 1rem; /* Add padding to the left */
+`;
+
+const EmotionContainer = styled.div`
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease;
+  width: max-content;
 `;
 
 const EmotionButton = styled.div`
@@ -223,18 +238,19 @@ const ButtonContainer = styled.div`
   justify-content: flex-end; /* 오른쪽 정렬 */
   align-items: center;
   margin-bottom: 1.25rem;
-  margin-left: 28rem;
+  margin-left: 20rem;
 `;
 
 const PreviousButton = styled.button`
   background-color: #ffffff;
   color: #35648c;
   padding: 0.625rem 1.25rem;
-  border: 0.125rem solid #35648c;
+  border: 0.125rem solid #ffffff;
   border-radius: 0.25rem;
   cursor: pointer;
   margin: 0 0.625rem;
-
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); /* 그림자 속성 추가 */
+  width: 10rem;
   &:hover {
     background-color: #f2f2f2;
   }
@@ -252,6 +268,8 @@ const ActionButton = styled.button`
   border-radius: 0.25rem;
   cursor: pointer;
   margin-left: 1rem;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); /* 그림자 속성 추가 */
+  width: 10rem;
 
   &:hover {
     background-color: #0056b3;
@@ -259,24 +277,6 @@ const ActionButton = styled.button`
 
   @media (max-width: 768px) {
     margin-top: 0.625rem;
-  }
-`;
-
-const Button = styled.button`
-  background-color: #35648c;
-  color: #ffffff;
-  padding: 0.625rem 1.25rem;
-  border: none;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  margin: 0 0.625rem;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-
-  @media (max-width: 768px) {
-    margin: 0.625rem 0;
   }
 `;
 
@@ -305,11 +305,47 @@ const CustomContainer = styled.div`
   display: flex;
 `;
 
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ModalContent = styled.div`
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 1rem;
+  text-align: center;
+`;
+
+const ModalButton = styled.button`
+  background-color: #35648c;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  cursor: pointer;
+  border-radius: 0.25rem;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+
 const Record2 = () => {
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState(new Date(2024, 0, 19));
   const [selectedEmotion, setSelectedEmotion] = useState("😐");
   const [memo, setMemo] = useState("");
+  const [isCustomModalOpen, setIsCustomModalOpen] = useState(false);
+  const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
+  const emotionContainerRef = useRef(null);
 
   const handleManualDateChange = (type, value) => {
     const newDate = new Date(selectedDate);
@@ -339,11 +375,26 @@ const Record2 = () => {
     alert("프리미엄 서비스를 사용하시겠습니까?");
   };
 
+  const handleCustomClick = () => {
+    setIsCustomModalOpen(true);
+  };
+
+  const closeCustomModal = () => {
+    setIsCustomModalOpen(false);
+  };
+
+  const handleSaveClick = () => {
+    setIsSaveModalOpen(true);
+  };
+
+  const closeSaveModal = () => {
+    setIsSaveModalOpen(false);
+  };
+
   return (
     <Container>
       <LoginHeader />
       <TextContent>
-        <Header>00님의 감정 기록</Header>
         <DateSelector>
           <DateInput
             value={selectedDate.getFullYear()}
@@ -383,28 +434,48 @@ const Record2 = () => {
         </TopContainer>
         <CustomContainer>
           <EmotionBox>
-            {["😴", "😐", "😊", "😆", "😢"].map((emotion, index) => (
-              <EmotionButton
-                key={index}
-                onClick={() => setSelectedEmotion(emotion)}
-              >
-                {emotion}
-              </EmotionButton>
-            ))}
-            <LockButton onClick={handleLockClick} />
-            <LockButton onClick={handleLockClick} />
+            <EmotionContainer ref={emotionContainerRef}>
+              {["😴", "😐", "😊", "😆", "😢"].map((emotion, index) => (
+                <EmotionButton
+                  key={index}
+                  onClick={() => setSelectedEmotion(emotion)}
+                >
+                  {emotion}
+                </EmotionButton>
+              ))}
+              <LockButton onClick={handleLockClick} />
+              <LockButton onClick={handleLockClick} />
+              <LockButton onClick={handleLockClick} />
+              <LockButton onClick={handleLockClick} />
+            </EmotionContainer>
           </EmotionBox>
-          <CustomEmotionButton onClick={() => alert("감정 커스텀")}>
+          <CustomEmotionButton onClick={handleCustomClick}>
             감정 커스텀 (Premium)
           </CustomEmotionButton>
         </CustomContainer>
         <ButtonContainer>
           <PreviousButton onClick={() => navigate(-1)}>이전으로</PreviousButton>
-          <ActionButton onClick={() => alert("저장하기")}>
+          <ActionButton onClick={handleSaveClick}>
             저장하기
           </ActionButton>
         </ButtonContainer>
       </Content>
+      {isCustomModalOpen && (
+        <ModalOverlay onClick={closeCustomModal}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <p>감정 커스텀 기능을 위한 <br/> Premium 서비스를 구독하시겠습니까?</p>
+            <ModalButton onClick={closeCustomModal}>확인</ModalButton>
+          </ModalContent>
+        </ModalOverlay>
+      )}
+      {isSaveModalOpen && (
+        <ModalOverlay onClick={closeSaveModal}>
+          <ModalContent onClick={(e) => e.stopPropagation()}>
+            <p>저장하시겠습니까?</p>
+            <ModalButton onClick={closeSaveModal}>확인</ModalButton>
+          </ModalContent>
+        </ModalOverlay>
+      )}
       <Footer />
     </Container>
   );
