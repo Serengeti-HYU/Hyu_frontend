@@ -7,6 +7,7 @@ const Container = styled.div`
   width: 100%;
   max-width: 900px;
 `;
+
 const EmotionContainer = styled.div`
   display: flex;
   justify-content: space-between;
@@ -14,54 +15,71 @@ const EmotionContainer = styled.div`
 
 const EmotionCard = styled.div`
   width: 16.5rem;
-  height: 15.7rem;
+  height: 14.7rem;
   border-radius: 14.265px;
   border: 0.848px solid #35648c;
   background: #fff;
-  #date {
-    color: #35648c;
-    font-size: 13.695px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-  }
-  #today-date {
-    color: #fff;
-    font-size: 13.695px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-  }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 `;
-const TodayEmotionCard = styled.div`
-  width: 16.5rem;
-  height: 15.8rem;
-  border-radius: 14.265px;
+
+const TodayEmotionCard = styled(EmotionCard)`
+  height: 14.8rem;
   background: #35648c;
+  color: #fff;
 `;
+
+const DateText = styled.div`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  color: ${(props) => (props.today ? "#fff" : "#35648c")};
+  font-size: 13.695px;
+  font-weight: 700;
+`;
+
 const TodayMark = styled.div`
-  position: absoluute;
+  position: absolute;
+  top: 10px;
+  right: 10px;
   color: #fff;
   font-size: 13.695px;
-  font-style: normal;
   font-weight: 700;
-  line-height: normal;
 `;
-const EmotionMemo = styled.p`
+
+const EmotionMemo = styled.div`
   margin-top: 1rem;
-  color: #000;
+  padding: 0.5rem;
+  width: 90%;
+  height: 30%;
+  text-align: left;
   font-size: 13.564px;
-  font-style: normal;
   font-weight: 500;
-  line-height: normal;
+  border-radius: 8px;
+  border: 0.848px solid #35648c;
+  background: ${(props) => (props.today ? "#fff" : "transparent")};
+  color: ${(props) => (props.today ? "#000" : "#000")};
+  #content {
+    display: -webkit-box;
+    word-break: break-word;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 `;
+
 const EmotionFace = styled.div`
   width: 84.776px;
   height: 84.776px;
-  flex-shrink: 0;
-  fill: #fff;
-  stroke-width: 2.543px;
-  stroke: #35648c;
+  background-color: #fff;
+  border-radius: 50%;
+  border: 2.543px solid #35648c;
+  margin-bottom: 0.5rem;
+  margin-top: 1rem;
 `;
 
 const EmotionRecords = () => {
@@ -69,20 +87,29 @@ const EmotionRecords = () => {
     <Container>
       <EmotionContainer>
         <EmotionCard>
-          <div id="date">01.18</div>
+          <DateText>01.18</DateText>
           <EmotionFace />
-          <EmotionMemo>memo............</EmotionMemo>
+          <EmotionMemo>
+            <div id="content">memo............</div>
+          </EmotionMemo>
         </EmotionCard>
         <EmotionCard>
-          <div id="date">01.19</div>
+          <DateText>01.19</DateText>
           <EmotionFace />
-          <EmotionMemo>memo............</EmotionMemo>
+          <EmotionMemo>
+            <div id="content">
+              memo............ffaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahjshjsahdufhduhfjkhdsjhfjfhhsjghsdjgdhjfgdhsgfyewfgdshjfgyghjsdfgdhjdgsgfyfgs
+              dhghjgh
+            </div>
+          </EmotionMemo>
         </EmotionCard>
         <TodayEmotionCard>
-          <div id="today-date">01.20</div>
+          <DateText today>01.20</DateText>
           <TodayMark>Today</TodayMark>
           <EmotionFace />
-          <EmotionMemo>memo............</EmotionMemo>
+          <EmotionMemo today>
+            <div id="content">memo............</div>
+          </EmotionMemo>
         </TodayEmotionCard>
       </EmotionContainer>
     </Container>
