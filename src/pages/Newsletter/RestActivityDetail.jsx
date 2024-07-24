@@ -87,20 +87,36 @@ const LinksWrapper = styled.div`
   margin-top: 2rem;
 `;
 
-const LinkButton = styled.button`
+const LinkBox = styled.div`
   display: flex;
-  align-items: center;
-  padding: 0.5rem 1rem;
-  background: #f1f1f1;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  display: flex;
+  width: 520px;
+  height: 60px;
+  padding: 18px 379px 17px 32px;
+  align-items: flex-start;
+  gap: 5px;
+  flex-shrink: 0;
+  border-radius: 50px;
+  background: #fff;
+  box-shadow: 0px 0px 15.4px 0px rgba(53, 100, 140, 0.35);
+  #link {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 430px;
+    color: #000;
+    font-family: SUIT;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+  }
 `;
 
 const LinkIcon = styled.img`
   margin-right: 0.5rem;
 `;
-const Btn = styled.button``;
+const Btn = styled.img``;
 const BtnWrapper = styled.div`
   margin-bottom: 20rem;
 `;
@@ -131,16 +147,25 @@ const RestActivityDetail = () => {
           <Description>
             쉼 활동 소개 글
             <LinksWrapper>
-              <LinkButton>
+              <LinkBox>
                 <LinkIcon
-                  src={`${process.env.PUBLIC_URL}/assets/icons/link.svg`}
+                  src={`${process.env.PUBLIC_URL}/assets/icons/link-one.svg`}
                   alt="link icon"
                 />
-                관련 링크
-              </LinkButton>
+                <span id="link">
+                  관련 링크
+                  https://www.figma.com/design/50vfzSJ9uv3DBIDO5x9BKb/%ED%9C%B4?node-id=52-212&m=dev
+                </span>
+              </LinkBox>
               <BtnWrapper>
-                <Btn>북마크</Btn>
-                <Btn>편집</Btn>
+                <Btn
+                  src={`${process.env.PUBLIC_URL}/assets/buttons/scrab.svg`}
+                  alt="scrab"
+                />
+                <Btn
+                  src={`${process.env.PUBLIC_URL}/assets/buttons/linkcopy.svg`}
+                  alt="copy"
+                />
               </BtnWrapper>
             </LinksWrapper>
           </Description>
