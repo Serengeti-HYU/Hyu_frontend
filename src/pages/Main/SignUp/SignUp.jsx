@@ -129,6 +129,13 @@ const SignupSec = styled.div`
   .email {
     width: 11.375rem;
   }
+  #warn2 {
+    color: red;
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: -0.00825rem;
+    margin: 0;
+  }
   #goLogin {
     display: flex;
     width: 21.875rem;
@@ -143,6 +150,7 @@ const SignupSec = styled.div`
     color: #fff;
     font-size: ${(props) => props.theme.fontSize.middle};
     font-weight: 500;
+    cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   }
 `;
 
@@ -154,6 +162,14 @@ const SignUp = () => {
   const [domainInput, setDomainInput] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [name, setName] = useState("");
+  const [birthYear, setBirthYear] = useState("");
+  const [birthMonth, setBirthMonth] = useState("");
+  const [birthDay, setBirthDay] = useState("");
+  const [id, setId] = useState("");
+  const [phone1, setPhone1] = useState("");
+  const [phone2, setPhone2] = useState("");
+  const [email, setEmail] = useState("");
 
   const handleInputChange = (e, nextRef) => {
     if (e.target.value.length >= e.target.maxLength) {
@@ -169,7 +185,6 @@ const SignUp = () => {
     }
   };
 
-  // Function to validate the password
   const validatePassword = (password) => {
     const minLength = 8;
     const maxLength = 12;
@@ -188,6 +203,24 @@ const SignUp = () => {
       return;
     }
     navigate("/");
+  };
+
+  const isFormValid = () => {
+    return (
+      name &&
+      birthYear &&
+      birthMonth &&
+      birthDay &&
+      id &&
+      password &&
+      confirmPassword &&
+      phone1 &&
+      phone2 &&
+      email &&
+      domainInput &&
+      password === confirmPassword &&
+      validatePassword(password)
+    );
   };
 
   return (
@@ -222,11 +255,22 @@ const SignUp = () => {
           <form method="post" onSubmit={handleSubmit}>
             <div className="input">
               <p className="label">• 이름</p>
-              <input id="name" type="text" required />
+              <input
+                id="name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
             </div>
             <div className="input">
               <p className="label">• 생년월일</p>
-              <select id="birth-year" required>
+              <select
+                id="birth-year"
+                value={birthYear}
+                onChange={(e) => setBirthYear(e.target.value)}
+                required
+              >
                 <option value="">년</option>
                 {Array.from({ length: 100 }, (_, i) => (
                   <option key={i} value={2024 - i}>
@@ -234,7 +278,12 @@ const SignUp = () => {
                   </option>
                 ))}
               </select>
-              <select id="birth-month" required>
+              <select
+                id="birth-month"
+                value={birthMonth}
+                onChange={(e) => setBirthMonth(e.target.value)}
+                required
+              >
                 <option value="">월</option>
                 {Array.from({ length: 12 }, (_, i) => (
                   <option key={i + 1} value={i + 1}>
@@ -242,7 +291,12 @@ const SignUp = () => {
                   </option>
                 ))}
               </select>
-              <select id="birth-day" required>
+              <select
+                id="birth-day"
+                value={birthDay}
+                onChange={(e) => setBirthDay(e.target.value)}
+                required
+              >
                 <option value="">일</option>
                 {Array.from({ length: 31 }, (_, i) => (
                   <option key={i + 1} value={i + 1}>
@@ -253,7 +307,13 @@ const SignUp = () => {
             </div>
             <div className="input">
               <p className="label">• 아이디</p>
-              <input id="id" type="text" required />
+              <input
+                id="id"
+                type="text"
+                value={id}
+                onChange={(e) => setId(e.target.value)}
+                required
+              />
             </div>
             <div className="input">
               <p className="label">• 비밀번호</p>
@@ -293,7 +353,12 @@ const SignUp = () => {
             </div>
             <div className="input">
               <p className="label">• 전화번호</p>
-              <select className="phone">
+              <select
+                className="phone"
+                value={phone1}
+                onChange={(e) => handleInputChange(e, inputRef2)}
+                required
+              >
                 <option value="">선택</option>
                 <option value="010">010</option>
                 <option value="011">011</option>
@@ -308,7 +373,8 @@ const SignUp = () => {
                 type="tel"
                 maxLength="4"
                 ref={inputRef1}
-                onChange={(e) => handleInputChange(e, inputRef2)}
+                value={phone1}
+                onChange={(e) => setPhone1(e.target.value)}
                 required
               />
               <p className="hypen">-</p>
@@ -317,13 +383,21 @@ const SignUp = () => {
                 type="tel"
                 maxLength="4"
                 ref={inputRef2}
+                value={phone2}
+                onChange={(e) => setPhone2(e.target.value)}
                 required
               />
             </div>
 
             <div className="input">
               <p className="label">• 이메일 </p>
-              <input className="email" type="email" required />
+              <input
+                className="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
               <p id="at">@</p>
               <input
                 className="email"
@@ -341,7 +415,8 @@ const SignUp = () => {
                 <option value="hanmail.net">hanmail.net</option>
               </select>
             </div>
-            <button type="submit" id="goLogin">
+            {!isFormValid && <p id="warn2">모든 정보를 입력해주세요</p>}
+            <button type="submit" id="goLogin" disabled={!isFormValid()}>
               회원가입 완료
             </button>
           </form>
