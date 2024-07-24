@@ -32,7 +32,10 @@ const Header = styled.div`
 
 const Social = styled.div`
   display: flex;
+<<<<<<< HEAD
   width: 24rem;
+=======
+>>>>>>> ed7030c9fde1fa69d2c27e5acaaf053266714e85
   height: 3.75rem;
   padding: 1.125rem 5.375rem 1.0625rem 5.375rem;
   justify-content: center;
