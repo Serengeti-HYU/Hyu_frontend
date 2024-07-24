@@ -46,7 +46,6 @@ const Content = styled.div`
 
 const Header = styled.div`
   color: #35648c;
-  font-family: SUIT;
   font-size: 1.375rem;
   font-weight: 700;
   margin: 1.25rem 0;
@@ -71,17 +70,20 @@ const DateSelector = styled.div`
   }
 `;
 
-const DateInput = styled.input`
-  width: 3.125rem;
+const DateInput = styled.select`
+  width: 4rem; /* Increase width to prevent text from being hidden */
   margin: 0 0.3125rem;
   text-align: center;
   border: none;
   background-color: transparent;
   font-size: 1.125rem;
   color: #35648c;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
   
   @media (max-width: 768px) {
-    width: 2.5rem;
+    width: 3.5rem;
     font-size: 1rem;
   }
 `;
@@ -186,6 +188,7 @@ const Circle1 = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 1.5rem;
+  background-color: #fff; /* Ensure circle remains white */
 `;
 
 const Button = styled.button`
@@ -257,14 +260,17 @@ const DayContainerWrapper = styled.div`
 
 const DayContainer = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start; /* Align items to the start (top-left) */
+  align-items: flex-start; /* Align items to the start (top-left) */
+  padding: 0.5rem;
   width: 5rem;
   height: 6.25rem;
   margin: 0 0.3125rem;
   border-radius: 1.052rem;
   border: 0.0625rem solid #35648c;
   margin-bottom: 0.625rem;
+  background-color: ${(props) => (props.selected ? '#35648c' : 'transparent')};
+  color: ${(props) => (props.selected ? '#fff' : '#000')}; /* Change text color when selected */
   
   @media (max-width: 768px) {
     width: 4rem;
@@ -275,15 +281,17 @@ const DayContainer = styled.div`
 const DayItem = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start; /* Align items to the start (top-left) */
+  justify-content: flex-start; /* Align items to the start (top-left) */
   font-size: 0.875rem;
   cursor: pointer;
   width: 100%;
   height: 100%;
+  border-radius: 1.052rem;
 `;
 
 const Record1 = () => {
+  const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState(new Date(2024, 0, 19));
   const [emotions, setEmotions] = useState({
     14: "😐",
@@ -294,18 +302,55 @@ const Record1 = () => {
     19: "😊",
     20: "😐",
   });
+  const [selectedDay, setSelectedDay] = useState(selectedDate.getDate());
 
   const handleDateChange = (year, month, day) => {
-    setSelectedDate(new Date(year, month - 1, day));
+    const newDate = new Date(year, month - 1, day);
+    setSelectedDate(newDate);
+    setSelectedDay(day);
   };
 
   const handlePreviousWeek = () => {
-    setSelectedDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth(), prevDate.getDate() - 7));
+    setSelectedDate((prevDate) => {
+      const newDate = new Date(prevDate.getFullYear(), prevDate.getMonth(), prevDate.getDate() - 7);
+      setSelectedDay(newDate.getDate());
+      return newDate;
+    });
   };
 
   const handleNextWeek = () => {
-    setSelectedDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth(), prevDate.getDate() + 7));
+    const weekDays = getWeekDays(selectedDate);
+    const isLastDaySelected = selectedDay === weekDays[weekDays.length - 1].getDate();
+    if (!isLastDaySelected) {
+      setSelectedDate((prevDate) => {
+        const newDate = new Date(prevDate.getFullYear(), prevDate.getMonth(), prevDate.getDate() + 7);
+        setSelectedDay(newDate.getDate());
+        return newDate;
+      });
+    }
   };
+
+  const handleManualDateChange = (type, value) => {
+    const newDate = new Date(selectedDate);
+    if (type === 'year') {
+      newDate.setFullYear(value);
+    } else if (type === 'month') {
+      newDate.setMonth(value - 1);
+    } else if (type === 'day') {
+      newDate.setDate(value);
+    }
+    setSelectedDate(newDate);
+    setSelectedDay(newDate.getDate());
+  };
+
+// Generate year, month, day options
+const generateOptions = (start, end) => {
+  const options = [];
+  for (let i = start; i <= end; i++) {
+    options.push(<option key={i} value={i}>{i}</option>);
+  }
+  return options;
+};
 
   const getWeekDays = (date) => {
     const weekDays = [];
@@ -321,7 +366,6 @@ const Record1 = () => {
   };
 
   const weekDays = getWeekDays(selectedDate);
-  const selectedDay = selectedDate.getDate();
 
   return (
     <Container>
@@ -329,9 +373,26 @@ const Record1 = () => {
       <TextContent>
         <Header>00님의 감정 기록</Header>
         <DateSelector>
-          <DateInput type="text" value={selectedDate.getFullYear()} readOnly />.
-          <DateInput type="text" value={String(selectedDate.getMonth() + 1).padStart(2, "0")} readOnly />.
-          <DateInput type="text" value={String(selectedDate.getDate()).padStart(2, "0")} readOnly />
+          <DateInput 
+            value={selectedDate.getFullYear()} 
+            onChange={(e) => handleManualDateChange('year', e.target.value)}
+          >
+            {generateOptions(2000, 2030)}
+          </DateInput>
+          .
+          <DateInput 
+  value={selectedDate.getMonth() + 1} 
+  onChange={(e) => handleManualDateChange('month', e.target.value)}
+>
+  {generateOptions(1, 12)}
+</DateInput>
+          .
+          <DateInput 
+            value={String(selectedDate.getDate()).padStart(2, "0")} 
+            onChange={(e) => handleManualDateChange('day', e.target.value)}
+          >
+            {generateOptions(1, 31)}
+          </DateInput>
         </DateSelector>
       </TextContent>
       <Content>
@@ -344,23 +405,44 @@ const Record1 = () => {
             <MemoInput placeholder="memo" />
           </MemoContainer>
         </TopContainer>
-        <Button>기록하기</Button>
+        <Button onClick={() => navigate("/Record2")}>기록하기</Button>
         <BottomContainer>
           <Navigation>
             <LeftNavButton onClick={handlePreviousWeek} />
             <DateSelector>
-              <DateInput type="text" value={selectedDate.getFullYear()} readOnly />.
-              <DateInput type="text" value={String(selectedDate.getMonth() + 1).padStart(2, "0")} readOnly />.
-              <DateInput type="text" value={String(selectedDate.getDate()).padStart(2, "0")} readOnly />
+              <DateInput 
+                value={selectedDate.getFullYear()} 
+                onChange={(e) => handleManualDateChange('year', e.target.value)}
+              >
+                {generateOptions(2000, 2030)}
+              </DateInput>
+              .
+              <DateInput 
+  value={selectedDate.getMonth() + 1} 
+  onChange={(e) => handleManualDateChange('month', Number(e.target.value))}
+>
+  {generateOptions(1, 12)}
+</DateInput>
+              .
+              <DateInput 
+                value={String(selectedDate.getDate()).padStart(2, "0")} 
+                onChange={(e) => handleManualDateChange('day', e.target.value)}
+              >
+                {generateOptions(1, 31)}
+              </DateInput>
             </DateSelector>
             <RightNavButton onClick={handleNextWeek} />
           </Navigation>
           <DayContainerWrapper>
-            {weekDays.map((day) => (
-              <DayContainer key={day.getDate()}>
-                <DayItem onClick={() => handleDateChange(day.getFullYear(), day.getMonth() + 1, day.getDate())}>
-                  <Circle1>{emotions[day.getDate()] || "😐"}</Circle1>
+            {weekDays.map((day, index) => (
+              <DayContainer
+                key={day.getDate()}
+                selected={day.getDate() === selectedDay}
+                onClick={() => handleDateChange(day.getFullYear(), day.getMonth() + 1, day.getDate())}
+              >
+                <DayItem selected={day.getDate() === selectedDay}>
                   <div>{`${String(day.getMonth() + 1).padStart(2, "0")}.${String(day.getDate()).padStart(2, "0")}`}</div>
+                  <Circle1>{emotions[day.getDate()] || "😐"}</Circle1>
                 </DayItem>
               </DayContainer>
             ))}

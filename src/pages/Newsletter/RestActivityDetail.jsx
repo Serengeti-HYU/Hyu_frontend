@@ -20,7 +20,6 @@ const Main = styled.main`
 `;
 const Title = styled.span`
   color: #35648c;
-  font-family: SUIT;
   font-size: 32px;
   font-style: normal;
   font-weight: 400;
@@ -42,7 +41,6 @@ const ActivityHeader = styled.div`
 const Line = styled.hr``;
 const ActivityTitle = styled.span`
   color: #000;
-  font-family: SUIT;
   font-size: 32px;
   font-style: normal;
   font-weight: 700;
@@ -51,7 +49,6 @@ const ActivityTitle = styled.span`
 
 const Category = styled.span`
   color: #7a7a7a;
-  font-family: "SUIT", sans-serif;
   font-size: 1rem;
 `;
 
@@ -75,7 +72,6 @@ const Image = styled.div`
 
 const Description = styled.div`
   width: 45%;
-  font-family: "SUIT", sans-serif;
   font-size: 1rem;
   color: #000;
 `;

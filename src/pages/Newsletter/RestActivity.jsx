@@ -32,7 +32,6 @@ const Main = styled.main`
 const Logo = styled.img``;
 const Title = styled.h1`
   color: #35648c;
-  font-family: SUIT;
   font-size: 32px;
   font-style: normal;
   font-weight: 400;
@@ -40,7 +39,6 @@ const Title = styled.h1`
 `;
 const Subtitle = styled.h2`
   color: #35648c;
-  font-family: SUIT;
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
@@ -50,7 +48,6 @@ const Subtitle = styled.h2`
 `;
 const Description = styled.p`
   color: #35648c;
-  font-family: SUIT;
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
@@ -86,7 +83,6 @@ const Button = styled.button`
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   border: none;
   color: #fff;
-  font-family: SUIT;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -116,7 +112,6 @@ const CardImage = styled.div`
 `;
 const CardTitle = styled.h3`
   color: #fff;
-  font-family: SUIT;
   font-size: 17.579px;
   font-style: normal;
   font-weight: 500;
@@ -124,7 +119,6 @@ const CardTitle = styled.h3`
 `;
 const CardDescription = styled.span`
   color: #fff;
-  font-family: SUIT;
   font-size: 14.063px;
   font-style: normal;
   font-weight: 400;
@@ -132,7 +126,6 @@ const CardDescription = styled.span`
 `;
 const CardCategoty = styled.span`
   color: #fff;
-  font-family: SUIT;
   font-size: 11.426px;
   font-style: normal;
   font-weight: 300;

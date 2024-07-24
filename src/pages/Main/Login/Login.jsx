@@ -32,7 +32,6 @@ const Header = styled.div`
 
 const Social = styled.div`
   display: flex;
-  width: 24rem;
   height: 3.75rem;
   padding: 1.125rem 5.375rem 1.0625rem 5.375rem;
   justify-content: center;
@@ -54,8 +53,7 @@ const Social = styled.div`
 
 const LoginSec = styled.div`
   #line {
-    width: 60.9375rem;
-    height: 1.5625rem;
+    width: 70%;
     margin-top: 2.7rem;
   }
   form {
