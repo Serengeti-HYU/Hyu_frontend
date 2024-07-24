@@ -44,7 +44,6 @@ const RoundText = styled.div`
   box-shadow: 0px 3.589px 3.589px 0px rgba(0, 0, 0, 0.25),
     0px 0px 6.819px 1.794px rgba(53, 100, 140, 0.35);
   color: #fff;
-  font-family: SUIT;
   font-size: 21.534px;
   font-style: normal;
   font-weight: 500;
@@ -55,7 +54,6 @@ const SendSetting = styled.div``;
 const Logo = styled.img``;
 const SubTitle = styled.div`
   color: #35648c;
-  font-family: SUIT;
   font-size: 36px;
   font-style: normal;
   font-weight: 700;
@@ -66,7 +64,6 @@ const SubTitle = styled.div`
 
 const ViewTerms = styled.span`
   color: ${(props) => props.theme.color.blue};
-  font-family: SUIT;
   font-size: 16px;
   font-style: normal;
   font-weight: 300;
@@ -80,7 +77,6 @@ const PrivacyConsent = styled.div`
   align-items: center;
   margin-top: 10px;
   color: #000;
-  font-family: SUIT;
   font-size: 16px;
   font-style: normal;
   font-weight: 300;

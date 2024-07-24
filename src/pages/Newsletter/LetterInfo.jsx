@@ -16,7 +16,6 @@ const Title = styled.div`
 `;
 const Content = styled.div`
   color: #000;
-  font-family: SUIT;
   font-size: 24px;
   font-style: normal;
   font-weight: 300;

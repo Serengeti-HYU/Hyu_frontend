@@ -16,7 +16,6 @@ const TextBox = styled.div`
   padding-top: 3rem;
   color: #35648c;
   text-align: center;
-  font-family: SUIT;
   font-size: 24px;
   font-style: normal;
   font-weight: 500;
@@ -24,7 +23,6 @@ const TextBox = styled.div`
 `;
 const SubTitle = styled.div`
   color: #35648c;
-  font-family: SUIT;
   font-size: 36px;
   font-style: normal;
   font-weight: 700;
@@ -45,7 +43,6 @@ const UpdateBtn = styled.button`
   background: #35648c;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   color: #fff;
-  font-family: SUIT;
   font-size: 20px;
   font-style: normal;
   font-weight: 500;
