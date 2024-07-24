@@ -46,7 +46,7 @@ const HeaderContainer = styled.div`
     }
   }
 
-  #login {
+  #loginNav {
     font-weight: 700;
     font-size: 0.875rem;
     border: 1px solid white;
@@ -99,7 +99,7 @@ function LoginHeader() {
           src={`${process.env.PUBLIC_URL}/assets/logo/FaceLogoWhite.png`}
           width={"50px"}
           height={"50px"}
-          id="logo"
+          id="loginNav"
         />
       </div>
     </HeaderContainer>

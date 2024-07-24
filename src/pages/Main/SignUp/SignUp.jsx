@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
 import Footer from "../../../components/footer";
-import NoLoginHeader from "../../../components/LoginHeader";
+import NoLoginHeader from "../../../components/NoLoginHeader";
 
 const Container = styled.div`
   display: flex;
@@ -54,8 +54,7 @@ const Social = styled.div`
 
 const SignupSec = styled.div`
   #line {
-    width: 60.9375rem;
-    height: 1.5625rem;
+    width: 70vw;
     margin-top: 4rem;
   }
   form {
