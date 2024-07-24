@@ -81,10 +81,16 @@ function NoLoginHeader() {
         id="logo"
       />
       <div id="container">
-        <button onClick={() => navigateTo("/NewletterPage")} id="NewletterPage">
+        <button
+          onClick={() => navigateTo("/newsletter-page")}
+          id="newsletter-page"
+        >
           휴~레터
         </button>
-        <button onClick={() => navigateTo("/PersonalityTest")} id="PersonalityTest">
+        <button
+          onClick={() => navigateTo("/PersonalityTest")}
+          id="PersonalityTest"
+        >
           맞춤형 쉼
         </button>
         <button onClick={() => navigateTo("/Record1")} id="Record1">
