@@ -11,19 +11,26 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
 `;
-const Logo = styled.img``;
 const Main = styled.main`
   width: 100%;
   max-width: 1200px;
   margin-top: 3rem;
   text-align: left;
 `;
-const Title = styled.span`
+const Logo = styled.img`
+  position: absolute;
+  margin-top: 2rem;
+  margin-left: 1rem;
+`;
+const Title = styled.div`
   color: #35648c;
   font-size: 32px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+  margin-left: 7rem;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
 `;
 const ActivityHeader = styled.div`
   display: flex;
@@ -86,7 +93,7 @@ const LinksWrapper = styled.div`
 const LinkBox = styled.div`
   display: flex;
   display: flex;
-  width: 520px;
+  width: 32.5rem;
   height: 60px;
   padding: 18px 379px 17px 32px;
   align-items: flex-start;
@@ -101,7 +108,6 @@ const LinkBox = styled.div`
     text-overflow: ellipsis;
     min-width: 430px;
     color: #000;
-    font-family: SUIT;
     font-size: 20px;
     font-style: normal;
     font-weight: 300;
