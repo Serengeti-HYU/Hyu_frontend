@@ -186,6 +186,7 @@ const Circle1 = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 1.5rem;
+  background-color: #fff; /* Ensure circle remains white */
 `;
 
 const Button = styled.button`
@@ -257,14 +258,17 @@ const DayContainerWrapper = styled.div`
 
 const DayContainer = styled.div`
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-start; /* Align items to the start (top-left) */
+  align-items: flex-start; /* Align items to the start (top-left) */
+  padding: 0.5rem;
   width: 5rem;
   height: 6.25rem;
   margin: 0 0.3125rem;
   border-radius: 1.052rem;
   border: 0.0625rem solid #35648c;
   margin-bottom: 0.625rem;
+  background-color: ${(props) => (props.selected ? '#35648c' : 'transparent')};
+  color: ${(props) => (props.selected ? '#fff' : '#000')}; /* Change text color when selected */
   
   @media (max-width: 768px) {
     width: 4rem;
@@ -275,12 +279,13 @@ const DayContainer = styled.div`
 const DayItem = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start; /* Align items to the start (top-left) */
+  justify-content: flex-start; /* Align items to the start (top-left) */
   font-size: 0.875rem;
   cursor: pointer;
   width: 100%;
   height: 100%;
+  border-radius: 1.052rem;
 `;
 
 const Record1 = () => {
@@ -294,17 +299,36 @@ const Record1 = () => {
     19: "😊",
     20: "😐",
   });
+  const [selectedDay, setSelectedDay] = useState(selectedDate.getDate());
 
   const handleDateChange = (year, month, day) => {
-    setSelectedDate(new Date(year, month - 1, day));
-  };
+    const newDate = new Date(year, month - 1, day);
+    const startOfWeek = new Date(selectedDate);
+    startOfWeek.setDate(selectedDate.getDate() - selectedDate.getDay() + 1); // 현재 주의 월요일
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 6); // 현재 주의 일요일
+
+    // 선택한 날짜가 현재 주 내에 있는지 확인
+    if (newDate >= startOfWeek && newDate <= endOfWeek) {
+        setSelectedDate(newDate);
+        setSelectedDay(day);
+    }
+};
 
   const handlePreviousWeek = () => {
-    setSelectedDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth(), prevDate.getDate() - 7));
+    setSelectedDate((prevDate) => {
+      const newDate = new Date(prevDate.getFullYear(), prevDate.getMonth(), prevDate.getDate() - 7);
+      setSelectedDay(newDate.getDate());
+      return newDate;
+    });
   };
 
   const handleNextWeek = () => {
-    setSelectedDate((prevDate) => new Date(prevDate.getFullYear(), prevDate.getMonth(), prevDate.getDate() + 7));
+    setSelectedDate((prevDate) => {
+      const newDate = new Date(prevDate.getFullYear(), prevDate.getMonth(), prevDate.getDate() + 7);
+      setSelectedDay(newDate.getDate());
+      return newDate;
+    });
   };
 
   const getWeekDays = (date) => {
@@ -321,7 +345,6 @@ const Record1 = () => {
   };
 
   const weekDays = getWeekDays(selectedDate);
-  const selectedDay = selectedDate.getDate();
 
   return (
     <Container>
@@ -357,10 +380,14 @@ const Record1 = () => {
           </Navigation>
           <DayContainerWrapper>
             {weekDays.map((day) => (
-              <DayContainer key={day.getDate()}>
-                <DayItem onClick={() => handleDateChange(day.getFullYear(), day.getMonth() + 1, day.getDate())}>
-                  <Circle1>{emotions[day.getDate()] || "😐"}</Circle1>
+              <DayContainer
+                key={day.getDate()}
+                selected={day.getDate() === selectedDay}
+                onClick={() => handleDateChange(day.getFullYear(), day.getMonth() + 1, day.getDate())}
+              >
+                <DayItem selected={day.getDate() === selectedDay}>
                   <div>{`${String(day.getMonth() + 1).padStart(2, "0")}.${String(day.getDate()).padStart(2, "0")}`}</div>
+                  <Circle1>{emotions[day.getDate()] || "😐"}</Circle1>
                 </DayItem>
               </DayContainer>
             ))}
