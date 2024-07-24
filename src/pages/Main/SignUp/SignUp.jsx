@@ -157,76 +157,43 @@ const SignUp = () => {
   const navigate = useNavigate();
   const inputRef1 = useRef(null);
   const inputRef2 = useRef(null);
-  const [domain, setDomain] = useState("type");
-  const [domainInput, setDomainInput] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [name, setName] = useState("");
-  const [birthYear, setBirthYear] = useState("");
-  const [birthMonth, setBirthMonth] = useState("");
-  const [birthDay, setBirthDay] = useState("");
-  const [id, setId] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone1, setPhone1] = useState("");
-  const [phone2, setPhone2] = useState("");
-  const [phone3, setPhone3] = useState("");
-
-  const handleInputChange = (e, nextRef) => {
-    if (e.target.value.length >= e.target.maxLength) {
-      nextRef.current.focus();
-    }
-  };
-
-  const handleDomainChange = (event) => {
-    const value = event.target.value;
-    setDomain(value);
-    if (value === "type") {
-      setDomainInput("");
-    }
-  };
+  const [domain, setDomain] = useState("");
+  const [domainInput, setDomainInput] = useState("");
 
   const validatePassword = (password) => {
     const minLength = 8;
     const maxLength = 12;
     const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,12}$/;
+    if (password.length < minLength || password.length > maxLength) {
+      return false;
+    }
     return regex.test(password);
-  };
-
-  const handlePhone2Change = (e) => {
-    setPhone2(e.target.value);
-    handleInputChange(e, inputRef2);
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (password !== confirmPassword) {
-      alert("비밀번호가 일치하지 않습니다.");
-      return;
-    }
     if (!validatePassword(password)) {
-      alert("비밀번호는 8자 이상 12자 이하의 영문과 숫자 조합이어야 합니다.");
+      console.log("비밀번호 규칙 틀림");
+      return;
+    } else if (password !== confirmPassword) {
+      console.log("비밀번호 다름");
       return;
     }
-    navigate("/");
+    navigate("/sign-up-complete");
   };
 
-  const isFormValid = () => {
-    return (
-      name &&
-      birthYear &&
-      birthMonth &&
-      birthDay &&
-      id &&
-      password &&
-      confirmPassword &&
-      phone1 &&
-      phone2 &&
-      phone3 &&
-      email &&
-      domainInput &&
-      password === confirmPassword &&
-      validatePassword(password)
-    );
+  const handleDomainChange = (e) => {
+    setDomain(e.target.value);
+    if (e.target.value !== "type") {
+      setDomainInput("");
+    }
+  };
+  const handlePhone2Change = (e) => {
+    if (e.target.value.length >= e.target.maxLength) {
+      inputRef2.current.focus();
+    }
   };
 
   return (
@@ -261,22 +228,11 @@ const SignUp = () => {
           <form method="post" onSubmit={handleSubmit}>
             <div className="input">
               <p className="label">• 이름</p>
-              <input
-                id="name"
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
+              <input id="name" type="text" required />
             </div>
             <div className="input">
               <p className="label">• 생년월일</p>
-              <select
-                id="birth-year"
-                value={birthYear}
-                onChange={(e) => setBirthYear(e.target.value)}
-                required
-              >
+              <select id="birth-year" required>
                 <option value="">년</option>
                 {Array.from({ length: 100 }, (_, i) => (
                   <option key={i} value={2024 - i}>
@@ -284,12 +240,7 @@ const SignUp = () => {
                   </option>
                 ))}
               </select>
-              <select
-                id="birth-month"
-                value={birthMonth}
-                onChange={(e) => setBirthMonth(e.target.value)}
-                required
-              >
+              <select id="birth-month" required>
                 <option value="">월</option>
                 {Array.from({ length: 12 }, (_, i) => (
                   <option key={i + 1} value={i + 1}>
@@ -297,12 +248,7 @@ const SignUp = () => {
                   </option>
                 ))}
               </select>
-              <select
-                id="birth-day"
-                value={birthDay}
-                onChange={(e) => setBirthDay(e.target.value)}
-                required
-              >
+              <select id="birth-day" required>
                 <option value="">일</option>
                 {Array.from({ length: 31 }, (_, i) => (
                   <option key={i + 1} value={i + 1}>
@@ -313,13 +259,7 @@ const SignUp = () => {
             </div>
             <div className="input">
               <p className="label">• 아이디</p>
-              <input
-                id="id"
-                type="text"
-                value={id}
-                onChange={(e) => setId(e.target.value)}
-                required
-              />
+              <input id="id" type="text" required />
             </div>
             <div className="input">
               <p className="label">• 비밀번호</p>
@@ -359,10 +299,7 @@ const SignUp = () => {
             </div>
             <div className="input">
               <p className="label">• 전화번호</p>
-              <select
-                className="phone"
-                onChange={(e) => setPhone1(e.target.value)}
-              >
+              <select className="phone">
                 <option value="">선택</option>
                 <option value="010">010</option>
                 <option value="011">011</option>
@@ -378,26 +315,19 @@ const SignUp = () => {
                 maxLength="4"
                 ref={inputRef1}
                 onChange={handlePhone2Change}
-              ></input>
+              />
               <p className="hypen">-</p>
               <input
                 className="phone"
                 type="tel"
                 maxLength="4"
                 ref={inputRef2}
-                onChange={(e) => setPhone3(e.target.value)}
-              ></input>
+              />
             </div>
 
             <div className="input">
               <p className="label">• 이메일 </p>
-              <input
-                className="email"
-                type="text"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
+              <input className="email" type="text" required />
               <p id="at">@</p>
               <input
                 className="email"
@@ -415,14 +345,8 @@ const SignUp = () => {
                 <option value="hanmail.net">hanmail.net</option>
               </select>
             </div>
-            <p
-              id="warn2"
-              style={{ visibility: isFormValid() ? "hidden" : "visible" }}
-            >
-              모든 정보를 입력해주세요
-            </p>
 
-            <button type="submit" id="goLogin" disabled={!isFormValid()}>
+            <button type="submit" id="goLogin">
               회원가입 완료
             </button>
           </form>

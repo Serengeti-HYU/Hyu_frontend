@@ -2,10 +2,11 @@ import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
 @font-face {
-  font-family: "pretendard";
+  font-family: 'Pretendard';
   font-weight: normal;
-  src: url("./fonts/PretendardVariable.ttf") format("truetype");
+  src: url('/assets/fonts/PretendardVariable.ttf') format('truetype');
 }
+
     *, *::before, *::after {
     box-sizing: border-box;
     font-family: "pretendard";
