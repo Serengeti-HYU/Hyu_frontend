@@ -33,6 +33,7 @@ const Header = styled.div`
 const Social = styled.div`
   display: flex;
   height: 3.75rem;
+  width: 24rem;
   padding: 1.125rem 5.375rem 1.0625rem 5.375rem;
   justify-content: center;
   align-items: center;
@@ -136,7 +137,7 @@ const Login = () => {
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault(); // Prevent the default form submission
+    event.preventDefault();
     navigate("/");
   };
 
