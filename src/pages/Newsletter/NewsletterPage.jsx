@@ -102,7 +102,7 @@ const LetterContainer = styled.div`
   width: 1200px;
   height: 675px;
   margin: auto;
-  margin-top: 5rem;
+  margin-top: 8rem;
 `;
 const Envelope = styled.img`
   position: absolute;
