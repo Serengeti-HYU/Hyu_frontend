@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -19,17 +20,16 @@ const Filter = styled.select`
   border: none;
   width: 7rem;
   color: #35648c;
-  font-size: 16px;
-  font-style: normal;
   font-weight: 300;
-  line-height: normal;
 `;
 
 const Cards = styled.div`
+  margin: auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   margin-top: 2rem;
+  justify-items: center;
 `;
 
 const Card = styled.div`
@@ -38,6 +38,7 @@ const Card = styled.div`
   box-shadow: 0px 3.516px 3.516px 0px rgba(0, 0, 0, 0.25);
   padding: 1rem;
   text-align: left;
+  width: 19.5rem;
 `;
 
 const CardImage = styled.div`
@@ -53,6 +54,10 @@ const CardTitle = styled.h3`
   font-size: 17.579px;
   font-weight: 500;
   margin-left: 1rem;
+  width: 70%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const CardDescription = styled.div`
@@ -60,7 +65,7 @@ const CardDescription = styled.div`
   color: #fff;
   font-size: 14.063px;
   font-weight: 400;
-  width: 300px;
+  width: 95%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -74,13 +79,22 @@ const CardCategory = styled.div`
   font-weight: 300;
   position: absolute;
   margin-top: -3.2rem;
-  margin-left: 16rem;
+  margin-left: 14.5rem;
   text-align: right;
 `;
 
 const cardData = [
-  { title: "안녕", description: "힐링인데", category: "힐링" },
-  { title: "가", description: "장소 소개하려고요", category: "휴식 장소" },
+  {
+    title: "안녕gkgkgkgkgkgkgkgkgk",
+    description: "힐링인데",
+    category: "힐링",
+  },
+  {
+    title: "가",
+    description:
+      "장소 소개하려고요가나다아라라라라라ㅏㄹ라라라라라라라라라라라라라라라랄라라라라라라라랄랄라라라라라라ㅏㅏㄹ라",
+    category: "휴식 장소",
+  },
   { title: "나", description: "카테고리 한국어로 뜨게 할래", category: "취미" },
   { title: "다", description: "ㅎㅇ", category: "휴식 장소" },
   { title: "다", description: "ㅃㅇ", category: "휴식 장소" },
@@ -88,6 +102,12 @@ const cardData = [
 ];
 
 const Storage = () => {
+  const navigate = useNavigate();
+
+  const gotoRestActivityDetail = () => {
+    navigate(`/rest-activity-detail`);
+  };
+
   const [selectedCategory, setSelectedCategory] = useState("전체보기");
 
   const handleCategoryChange = (e) => {
@@ -110,7 +130,7 @@ const Storage = () => {
       </FilterContainer>
       <Cards>
         {filteredCards.map((card, index) => (
-          <Card key={index}>
+          <Card key={index} onClick={gotoRestActivityDetail}>
             <CardImage />
             <CardTitle>{card.title}</CardTitle>
             <CardDescription>{card.description}</CardDescription>
