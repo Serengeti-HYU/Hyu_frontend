@@ -97,7 +97,9 @@ function NoLoginHeader() {
         <button onClick={() => navigateTo("/Record1")} id="Record1">
           감정 기록
         </button>
-        <div id="loginNav">log in</div>
+        <div id="loginNav" onClick={() => navigateTo("/login")}>
+          log in
+        </div>
       </div>
     </HeaderContainer>
   );
