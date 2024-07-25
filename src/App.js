@@ -9,6 +9,7 @@ import SignUp from "./pages/Main/SignUp/SignUp";
 import SignUpComplete from "./pages/Main/SignUp/SignUpComplete";
 import RestActivity from "./pages/Newsletter/RestActivity";
 import Main from "./pages/Main/main";
+import NoLoginMain from "./pages/Main/NoLoginMain";
 
 import RestActivityDetail from "./pages/Newsletter/RestActivityDetail";
 
@@ -29,6 +30,7 @@ function App() {
       <Routes>
         {/* Main routes */}
         <Route path="/" element={<Main />} />
+        <Route path="/noLoginmain" element={<NoLoginMain />} />
         <Route path="/find-id" element={<FindID />} />
         <Route path="/find-password" element={<FindPassword />} />
         <Route path="/login" element={<Login />} />
