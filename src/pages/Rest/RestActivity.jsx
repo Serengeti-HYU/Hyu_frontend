@@ -127,7 +127,7 @@ const CardTitle = styled.h3`
   color: #fff;
   font-size: 17.579px;
   font-weight: 500;
-  margin-left: 1rem;
+  margin-left: 0.5rem;
   width: 70%;
   white-space: nowrap;
   overflow: hidden;
@@ -144,7 +144,7 @@ const CardDescription = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   margin-top: -0.3rem;
-  margin-left: 1rem;
+  margin-left: 0.5rem;
 `;
 
 const CardCategory = styled.div`
@@ -153,8 +153,9 @@ const CardCategory = styled.div`
   font-weight: 300;
   position: absolute;
   margin-top: -3.2rem;
-  margin-left: 14.5rem;
+  margin-left: 13.8rem;
   text-align: right;
+  width: 3rem;
 `;
 
 // 카드데이터 샘플
