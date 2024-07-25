@@ -62,6 +62,13 @@ const Description = styled.p`
   }
 `;
 
+const SelectContainer = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  justify-content: center;
+`;
+
 const Select = styled.select`
   padding: 0.5rem;
   font-size: 16px;
@@ -233,9 +240,7 @@ const RestActivity = () => {
       const matchLocation =
         !selectedLocation || card.location === selectedLocation;
       const matchDistrict =
-        !selectedDistrict ||
-        (card.location === selectedLocation &&
-          card.district === selectedDistrict);
+        !selectedDistrict || card.district === selectedDistrict;
       const matchCategory =
         selectedCategory === "전체보기" || card.category === selectedCategory;
       return matchLocation && matchDistrict && matchCategory;
@@ -259,28 +264,30 @@ const RestActivity = () => {
           맞춤형 쉼은 성격 검사 결과를 통해 파악된 00님 맞춤 쉼 활동을 <br />
           AI가 카테고리 별, 00님과 가까운 장소로 정렬해서 보여드립니다.
         </Description>
-        <Select value={selectedLocation} onChange={handleLocationChange}>
-          <option value="">시/도</option>
-          {data.map((item, index) => (
-            <option key={index} value={item.name}>
-              {item.name}
-            </option>
-          ))}
-        </Select>
-        <Select value={selectedDistrict} onChange={handleDistrictChange}>
-          <option value="">시/구/군</option>
-          {districtOptions.map((district, index) => (
-            <option key={index} value={district}>
-              {district}
-            </option>
-          ))}
-        </Select>
-        <Select value={selectedCategory} onChange={handleCategoryChange}>
-          <option value="전체보기">전체보기</option>
-          <option value="취미">취미</option>
-          <option value="휴식 장소">휴식 장소</option>
-          <option value="힐링">힐링</option>
-        </Select>
+        <SelectContainer>
+          <Select value={selectedLocation} onChange={handleLocationChange}>
+            <option value="">시/도</option>
+            {data.map((item, index) => (
+              <option key={index} value={item.name}>
+                {item.name}
+              </option>
+            ))}
+          </Select>
+          <Select value={selectedDistrict} onChange={handleDistrictChange}>
+            <option value="">시/구/군</option>
+            {districtOptions.map((district, index) => (
+              <option key={index} value={district}>
+                {district}
+              </option>
+            ))}
+          </Select>
+          <Select value={selectedCategory} onChange={handleCategoryChange}>
+            <option value="전체보기">전체보기</option>
+            <option value="취미">취미</option>
+            <option value="휴식 장소">휴식 장소</option>
+            <option value="힐링">힐링</option>
+          </Select>
+        </SelectContainer>
         <Button type="button" onClick={handleFilterClick}>
           조회하기
         </Button>
