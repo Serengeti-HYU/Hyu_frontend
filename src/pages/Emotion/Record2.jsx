@@ -393,7 +393,7 @@ const Record2 = () => {
   };
 
   const handleCustomConfirm = () => {
-    navigate("../../Main/Premium/Premium");
+     navigate("/Premium")
   };
 
   return (

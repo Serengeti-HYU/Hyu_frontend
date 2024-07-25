@@ -10,6 +10,7 @@ import SignUpComplete from "./pages/Main/SignUp/SignUpComplete";
 import RestActivity from "./pages/Newsletter/RestActivity";
 import Main from "./pages/Main/main";
 import NoLoginMain from "./pages/Main/NoLoginMain";
+import Premium from "./pages/Main/Premium/Premium";
 
 import RestActivityDetail from "./pages/Newsletter/RestActivityDetail";
 
@@ -36,6 +37,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/sign-up-complete" element={<SignUpComplete />} />
+        <Route path="/premium" element={<Premium />} />
 
         {/* Newsletter routes */}
         <Route path="/rest-activity" element={<RestActivity />} />
