@@ -332,6 +332,7 @@ const ModalButton = styled.button`
   margin-top: 1rem;
   cursor: pointer;
   border-radius: 0.25rem;
+  margin: 0 0.5rem;
 
   &:hover {
     background-color: #0056b3;
@@ -389,6 +390,10 @@ const Record2 = () => {
 
   const closeSaveModal = () => {
     setIsSaveModalOpen(false);
+  };
+
+  const handleCustomConfirm = () => {
+    navigate("../../Main/Premium/Premium");
   };
 
   return (
@@ -463,8 +468,11 @@ const Record2 = () => {
       {isCustomModalOpen && (
         <ModalOverlay onClick={closeCustomModal}>
           <ModalContent onClick={(e) => e.stopPropagation()}>
-            <p>감정 커스텀 기능을 위한 <br/> Premium 서비스를 구독하시겠습니까?</p>
-            <ModalButton onClick={closeCustomModal}>확인</ModalButton>
+            <p>프리미엄 구독 결제를 하시겠습니까?</p>
+            <div>
+              <ModalButton onClick={handleCustomConfirm}>확인</ModalButton>
+              <ModalButton onClick={closeCustomModal}>취소</ModalButton>
+            </div>
           </ModalContent>
         </ModalOverlay>
       )}
