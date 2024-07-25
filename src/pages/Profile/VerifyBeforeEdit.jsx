@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-import Footer from "../../../components/footer";
-import NoLoginHeader from "../../../components/NoLoginHeader";
+import Footer from "../../components/footer";
+import LoginHeader from "../../components/LoginHeader";
 
 const Container = styled.div`
   display: flex;
@@ -12,17 +12,19 @@ const Container = styled.div`
 `;
 
 const Header = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 36px;
   margin-top: 10rem;
   p {
     margin: 0;
   }
-  #title {
+  #verify {
     font-size: ${(props) => props.theme.fontSize.xl};
     font-weight: 700;
+    margin-top: 1.63rem;
+  }
+  #message {
+    color: ${(props) => props.theme.color.blue};
+    font-size: ${(props) => props.theme.fontSize.middle};
+    margin-top: 0.94rem;
   }
 `;
 
@@ -103,15 +105,23 @@ const Sec = styled.div`
   }
 `;
 
-const FindPassword = () => {
+const VerifyBeforeEdit = () => {
   const navigate = useNavigate();
   const [domain, setDomain] = useState("");
   const [domainInput, setDomainInput] = useState("");
   const [success, setSuccess] = useState(null);
 
   const handleSubmit = (event) => {
+    event.preventDefault();
     // 성공하면 setSuccess true
     // 실패하면 setSuccess false
+
+    if (success) {
+      event.preventDefault();
+      navigate("/edit-profile");
+    } else {
+      return;
+    }
   };
 
   const handleDomainChange = (e) => {
@@ -123,7 +133,7 @@ const FindPassword = () => {
 
   return (
     <Container>
-      <NoLoginHeader />
+      <LoginHeader />
       <div>
         <Header>
           <img
@@ -131,17 +141,18 @@ const FindPassword = () => {
             width={"100px"}
             height={"100px"}
           />
-          <p id="title">비밀번호 찾기</p>
+          <p id="verify">개인 정보 수정</p>
+          <p id="message">개인 정보 수정을 위해서 본인 확인이 필요합니다.</p>
         </Header>
         <Sec>
           <form method="post" onSubmit={handleSubmit}>
             <div className="input">
               <p className="label">• 이름</p>
-              <input id="name" type="text" required />
+              <input id="name" required></input>
             </div>
             <div className="input">
-              <p className="label">• 아이디</p>
-              <input id="id" type="text" required />
+              <p className="label">• 비밀번호</p>
+              <input id="pw" type="password" required></input>
             </div>
             <div className="input">
               <p className="label">• 이메일 </p>
@@ -164,15 +175,11 @@ const FindPassword = () => {
               </select>
             </div>
             <button type="submit" id="go">
-              비밀번호 찾기
+              수정하기
             </button>
           </form>
           {success !== null && (
-            <p id="warn">
-              {success
-                ? "이메일로 전송 된 비밀번호를 확인해주세요."
-                : "회원 정보가 맞지 않습니다."}
-            </p>
+            <p id="warn">{success ? "" : "회원 정보가 맞지 않습니다."}</p>
           )}
         </Sec>
       </div>
@@ -181,4 +188,4 @@ const FindPassword = () => {
   );
 };
 
-export default FindPassword;
+export default VerifyBeforeEdit;

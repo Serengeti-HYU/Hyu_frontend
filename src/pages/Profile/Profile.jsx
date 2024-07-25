@@ -1,5 +1,7 @@
 // Profile.js
 import React from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const ProfileContainer = styled.div`
@@ -19,7 +21,7 @@ const ProfileWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 3rem;
+  gap: 6rem;
 `;
 const Wrapper = styled.div`
   width: 25rem;
@@ -38,9 +40,9 @@ const PremiumBadge = styled.div`
   box-shadow: 0px 0px 14.9px 0px rgba(53, 100, 140, 0.35);
   margin-bottom: 0rem;
   margin-top: 3rem;
+  cursor: pointer;
   #text {
     color: #fff;
-    font-family: SUIT;
     font-size: 20px;
     font-style: normal;
     font-weight: 700;
@@ -50,7 +52,6 @@ const PremiumBadge = styled.div`
 const InfoText = styled.div`
   margin: 0.5rem 0;
   color: #000;
-  font-family: SUIT;
   font-size: 20px;
   font-style: normal;
   font-weight: 500;
@@ -78,7 +79,6 @@ const Button = styled.button`
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25),
     0px 0px 14.9px 0px rgba(53, 100, 140, 0.35);
   color: #fff;
-  font-family: SUIT;
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
@@ -96,17 +96,28 @@ const Result = styled.span`
 `;
 
 const Profile = () => {
+  const navigate = useNavigate();
+  const gotoTest = () => {
+    navigate(`/personality-test`);
+  };
+  const gotoPremium = () => {
+    navigate(`/premium`);
+  };
+
+  const [isPremium, setIsPremium] = useState(true);
   return (
     <ProfileContainer>
       <ProfileWrapper>
         <ProfilePic></ProfilePic>
         <Wrapper>
-          <PremiumBadge>
+          <PremiumBadge onClick={gotoPremium}>
             <img
               src={`${process.env.PUBLIC_URL}/assets/icons/premium.svg`}
               alt="link icon"
             />
-            <span id="text">premium 사용자</span>
+            <span id="text">
+              {isPremium ? "premium 사용자" : "premium 구독하기"}
+            </span>
           </PremiumBadge>
           <InfoText>(이름)</InfoText>
           <InfoText>
@@ -118,7 +129,7 @@ const Profile = () => {
       </ProfileWrapper>
       <ResultWrapper>
         <Result>OO님은 성격 검사 결과 (유형이름)유형 입니다.</Result>
-        <Button>재검사</Button>
+        <Button onClick={gotoTest}>재검사</Button>
       </ResultWrapper>
     </ProfileContainer>
   );

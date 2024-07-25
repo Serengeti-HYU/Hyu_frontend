@@ -106,7 +106,7 @@ const SignUpComplete = () => {
             </p>
           </p>
           <Buttons>
-            <div className="button" onClick={() => navigateTo("/-test")}>
+            <div className="button" onClick={() => navigateTo("/")}>
               건너뛰기
             </div>
             <div

@@ -5,7 +5,7 @@ import styled from "styled-components";
 const Container = styled.div`
   margin: auto;
   width: 100%;
-  max-width: 900px;
+  max-width: 850px;
 `;
 
 const EmotionContainer = styled.div`
@@ -36,7 +36,7 @@ const DateText = styled.div`
   position: absolute;
   top: 10px;
   left: 10px;
-  color: ${(props) => (props.today ? "#fff" : "#35648c")};
+  color: ${(props) => (props.$isToday ? "#fff" : "#35648c")};
   font-size: 13.695px;
   font-weight: 700;
 `;
@@ -60,8 +60,8 @@ const EmotionMemo = styled.div`
   font-weight: 500;
   border-radius: 8px;
   border: 0.848px solid #35648c;
-  background: ${(props) => (props.today ? "#fff" : "transparent")};
-  color: ${(props) => (props.today ? "#000" : "#000")};
+  background: ${(props) => (props.$isToday ? "#fff" : "transparent")};
+  color: #000;
   #content {
     display: -webkit-box;
     word-break: break-word;
@@ -104,10 +104,10 @@ const EmotionRecords = () => {
           </EmotionMemo>
         </EmotionCard>
         <TodayEmotionCard>
-          <DateText today>01.20</DateText>
+          <DateText $isToday>01.20</DateText>
           <TodayMark>Today</TodayMark>
           <EmotionFace />
-          <EmotionMemo today>
+          <EmotionMemo $isToday>
             <div id="content">memo............</div>
           </EmotionMemo>
         </TodayEmotionCard>
