@@ -38,7 +38,7 @@ const TitleBar = styled.div`
   display: flex;
   justify-content: space-between;
   margin: auto;
-  width: 60%;
+  width: 65%;
   margin-bottom: 0.5rem;
   margin-top: 5rem;
 `;

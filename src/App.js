@@ -7,13 +7,13 @@ import FindPassword from "./pages/Main/Login/FindPassword";
 import Login from "./pages/Main/Login/Login";
 import SignUp from "./pages/Main/SignUp/SignUp";
 import SignUpComplete from "./pages/Main/SignUp/SignUpComplete";
-import RestActivity from "./pages/Newsletter/RestActivity";
+import RestActivity from "./pages/Rest/RestActivity";
 import Main from "./pages/Main/main";
 import NoLoginMain from "./pages/Main/NoLoginMain";
 import Premium from "./pages/Main/Premium/Premium";
 import NoPremium from "./pages/Main/Premium/NoPremium";
 
-import RestActivityDetail from "./pages/Newsletter/RestActivityDetail";
+import RestActivityDetail from "./pages/Rest/RestActivityDetail";
 
 // Profile imports
 import Mypage from "./pages/Profile/Mypage";
@@ -41,7 +41,6 @@ function App() {
         <Route path="/sign-up-complete" element={<SignUpComplete />} />
         <Route path="/premium" element={<Premium />} />
         <Route path="/nopremium" element={<NoPremium />} />
-
 
         {/* Newsletter routes */}
         <Route path="/rest-activity" element={<RestActivity />} />

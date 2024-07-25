@@ -3,9 +3,11 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
+  display: flex;
   margin: auto;
-  width: 100%;
+  width: 90%;
   max-width: 967px;
+  flex-direction: column;
 `;
 
 const FilterContainer = styled.div`
@@ -27,9 +29,9 @@ const Cards = styled.div`
   margin: auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
   margin-top: 2rem;
   justify-items: center;
+  gap: 1rem;
 `;
 
 const Card = styled.div`
@@ -38,7 +40,7 @@ const Card = styled.div`
   box-shadow: 0px 3.516px 3.516px 0px rgba(0, 0, 0, 0.25);
   padding: 1rem;
   text-align: left;
-  width: 19.5rem;
+  width: 17rem;
 `;
 
 const CardImage = styled.div`
@@ -53,8 +55,7 @@ const CardTitle = styled.h3`
   color: #fff;
   font-size: 17.579px;
   font-weight: 500;
-  margin-left: 1rem;
-  width: 70%;
+  width: 55%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -65,12 +66,11 @@ const CardDescription = styled.div`
   color: #fff;
   font-size: 14.063px;
   font-weight: 400;
-  width: 95%;
+  width: 90%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   margin-top: -0.3rem;
-  margin-left: 1rem;
 `;
 
 const CardCategory = styled.div`
@@ -78,9 +78,10 @@ const CardCategory = styled.div`
   font-size: 11.426px;
   font-weight: 300;
   position: absolute;
-  margin-top: -3.2rem;
-  margin-left: 14.5rem;
+  margin-top: -3rem;
+  margin-left: 11.6rem;
   text-align: right;
+  width: 3rem;
 `;
 
 const cardData = [
