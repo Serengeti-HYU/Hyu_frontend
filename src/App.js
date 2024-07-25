@@ -16,7 +16,8 @@ import RestActivityDetail from "./pages/Newsletter/RestActivityDetail";
 
 // Profile imports
 import Mypage from "./pages/Profile/Mypage";
-import UpdateProfile from "./pages/Profile/UpdateProfile";
+import ProfileEdit from "./pages/Profile/ProfileEdit";
+import VerifyBeforeEdit from "./pages/Profile/VerifyBeforeEdit";
 
 // Emotion imports
 import PersonalityTest from "./pages/Emotion/PersonalityTest";
@@ -46,7 +47,8 @@ function App() {
 
         {/* Profile routes */}
         <Route path="/mypage" element={<Mypage />} />
-        <Route path="/update-profile" element={<UpdateProfile />} />
+        <Route path="/profile-edit" element={<ProfileEdit />} />
+        <Route path="/verify-before-edit" element={<VerifyBeforeEdit />} />
 
         {/* Emotion routes */}
         <Route path="/personality-test" element={<PersonalityTest />} />
