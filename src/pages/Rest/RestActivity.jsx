@@ -5,6 +5,171 @@ import LoginHeader from "../../components/LoginHeader";
 import Footer from "../../components/footer";
 import data from "./locationdata.json"; // 시/도와 시군구 데이터
 
+// 카드데이터 샘플
+const cardData = [
+  {
+    title: "안녕",
+    description: "힐링인데",
+    category: "힐링",
+    location: "서울",
+    district: "강남구",
+  },
+  {
+    title: "가",
+    description: "장소 소개",
+    category: "휴식 장소",
+    location: "부산",
+    district: "해운대구",
+  },
+  {
+    title: "나",
+    description: "취미활동",
+    category: "취미",
+    location: "대구",
+    district: "수성구",
+  },
+  {
+    title: "다",
+    description: "힐링",
+    category: "힐링",
+    location: "서울",
+    district: "강북구",
+  },
+  {
+    title: "라",
+    description: "놀이",
+    category: "휴식 장소",
+    location: "부산",
+    district: "금정구",
+  },
+  {
+    title: "마",
+    description: "취미",
+    category: "취미",
+    location: "대구",
+    district: "북구",
+  },
+];
+
+const RestActivity = () => {
+  const navigate = useNavigate();
+
+  const gotoRestActivityDetail = () => {
+    navigate(`/rest-activity-detail`);
+  };
+  const gotoTest = () => {
+    navigate(`/personality-test`);
+  };
+  const gotoPremium = () => {
+    navigate(`/premium`);
+  };
+
+  const [selectedLocation, setSelectedLocation] = useState("");
+  const [selectedDistrict, setSelectedDistrict] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("전체보기");
+  const [filteredCards, setFilteredCards] = useState(cardData);
+  const [districtOptions, setDistrictOptions] = useState([]);
+
+  useEffect(() => {
+    const locationData = data.find(
+      (province) => province.name === selectedLocation
+    );
+    setDistrictOptions(locationData ? locationData.subArea : []);
+    setSelectedDistrict(""); // Reset district when location changes
+  }, [selectedLocation]);
+
+  const handleLocationChange = (e) => {
+    setSelectedLocation(e.target.value);
+  };
+
+  const handleDistrictChange = (e) => {
+    setSelectedDistrict(e.target.value);
+  };
+
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+  };
+
+  const handleFilterClick = () => {
+    const filtered = cardData.filter((card) => {
+      const matchLocation =
+        !selectedLocation || card.location === selectedLocation;
+      const matchDistrict =
+        !selectedDistrict || card.district === selectedDistrict;
+      const matchCategory =
+        selectedCategory === "전체보기" || card.category === selectedCategory;
+      return matchLocation && matchDistrict && matchCategory;
+    });
+    setFilteredCards(filtered);
+  };
+
+  return (
+    <Container>
+      <LoginHeader />
+      <AdZone>광고 배너</AdZone>
+      <Main>
+        <Title>00님의 휴식을 위한 맞춤형 쉼입니다.</Title>
+        <Logo
+          src={`${process.env.PUBLIC_URL}/assets/logo/FaceLogoBlue.png`}
+          width={"101px"}
+          id="logo"
+        />
+        <Subtitle onClick={gotoTest}>성격 검사 재진단 받기</Subtitle>
+        <Description>
+          맞춤형 쉼은 성격 검사 결과를 통해 파악된 00님 맞춤 쉼 활동을 <br />
+          AI가 카테고리 별, 00님과 가까운 장소로 정렬해서 보여드립니다.
+        </Description>
+        <SelectContainer>
+          <Select value={selectedLocation} onChange={handleLocationChange}>
+            <option value="">시/도</option>
+            {data.map((item, index) => (
+              <option key={index} value={item.name}>
+                {item.name}
+              </option>
+            ))}
+          </Select>
+          <Select value={selectedDistrict} onChange={handleDistrictChange}>
+            <option value="">시/구/군</option>
+            {districtOptions.map((district, index) => (
+              <option key={index} value={district}>
+                {district}
+              </option>
+            ))}
+          </Select>
+          <Select value={selectedCategory} onChange={handleCategoryChange}>
+            <option value="전체보기">전체보기</option>
+            <option value="취미">취미</option>
+            <option value="휴식 장소">휴식 장소</option>
+            <option value="힐링">힐링</option>
+          </Select>
+        </SelectContainer>
+        <Button type="button" onClick={handleFilterClick}>
+          조회하기
+        </Button>
+        <Cards>
+          {filteredCards.map((card, index) => (
+            <Card key={index} onClick={gotoRestActivityDetail}>
+              <CardImage />
+              <CardTitle>{card.title}</CardTitle>
+              <CardDescription>{card.description}</CardDescription>
+              <CardCategory>{card.category}</CardCategory>
+            </Card>
+          ))}
+        </Cards>
+        <Description id="two">
+          <span id="hyu">휴</span>에서 00님을 위해 준비한 맞춤형 쉼을 더
+          보고싶다면?
+        </Description>
+        <Button style={{ marginTop: "2rem" }} onClick={gotoPremium}>
+          더 많은 맞춤형 쉼 보러가기
+        </Button>
+      </Main>
+      <Footer />
+    </Container>
+  );
+};
+export default RestActivity;
+
 const Container = styled.div`
   width: 100%;
   margin: 0 auto;
@@ -49,6 +214,7 @@ const Subtitle = styled.h2`
   line-height: normal;
   text-decoration-line: underline;
   margin-top: 1rem;
+  cursor: pointer;
 `;
 
 const Description = styled.p`
@@ -157,162 +323,3 @@ const CardCategory = styled.div`
   text-align: right;
   width: 3rem;
 `;
-
-// 카드데이터 샘플
-const cardData = [
-  {
-    title: "안녕",
-    description: "힐링인데",
-    category: "힐링",
-    location: "서울",
-    district: "강남구",
-  },
-  {
-    title: "가",
-    description: "장소 소개",
-    category: "휴식 장소",
-    location: "부산",
-    district: "해운대구",
-  },
-  {
-    title: "나",
-    description: "취미활동",
-    category: "취미",
-    location: "대구",
-    district: "수성구",
-  },
-  {
-    title: "다",
-    description: "힐링",
-    category: "힐링",
-    location: "서울",
-    district: "강북구",
-  },
-  {
-    title: "라",
-    description: "놀이",
-    category: "휴식 장소",
-    location: "부산",
-    district: "금정구",
-  },
-  {
-    title: "마",
-    description: "취미",
-    category: "취미",
-    location: "대구",
-    district: "북구",
-  },
-];
-
-const RestActivity = () => {
-  const navigate = useNavigate();
-
-  const gotoRestActivityDetail = () => {
-    navigate(`/rest-activity-detail`);
-  };
-  const [selectedLocation, setSelectedLocation] = useState("");
-  const [selectedDistrict, setSelectedDistrict] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("전체보기");
-  const [filteredCards, setFilteredCards] = useState(cardData);
-  const [districtOptions, setDistrictOptions] = useState([]);
-
-  useEffect(() => {
-    const locationData = data.find(
-      (province) => province.name === selectedLocation
-    );
-    setDistrictOptions(locationData ? locationData.subArea : []);
-    setSelectedDistrict(""); // Reset district when location changes
-  }, [selectedLocation]);
-
-  const handleLocationChange = (e) => {
-    setSelectedLocation(e.target.value);
-  };
-
-  const handleDistrictChange = (e) => {
-    setSelectedDistrict(e.target.value);
-  };
-
-  const handleCategoryChange = (e) => {
-    setSelectedCategory(e.target.value);
-  };
-
-  const handleFilterClick = () => {
-    const filtered = cardData.filter((card) => {
-      const matchLocation =
-        !selectedLocation || card.location === selectedLocation;
-      const matchDistrict =
-        !selectedDistrict || card.district === selectedDistrict;
-      const matchCategory =
-        selectedCategory === "전체보기" || card.category === selectedCategory;
-      return matchLocation && matchDistrict && matchCategory;
-    });
-    setFilteredCards(filtered);
-  };
-
-  return (
-    <Container>
-      <LoginHeader />
-      <AdZone>광고 배너</AdZone>
-      <Main>
-        <Title>00님의 휴식을 위한 맞춤형 쉼입니다.</Title>
-        <Logo
-          src={`${process.env.PUBLIC_URL}/assets/logo/FaceLogoBlue.png`}
-          width={"101px"}
-          id="logo"
-        />
-        <Subtitle>성격 검사 재진단 받기</Subtitle>
-        <Description>
-          맞춤형 쉼은 성격 검사 결과를 통해 파악된 00님 맞춤 쉼 활동을 <br />
-          AI가 카테고리 별, 00님과 가까운 장소로 정렬해서 보여드립니다.
-        </Description>
-        <SelectContainer>
-          <Select value={selectedLocation} onChange={handleLocationChange}>
-            <option value="">시/도</option>
-            {data.map((item, index) => (
-              <option key={index} value={item.name}>
-                {item.name}
-              </option>
-            ))}
-          </Select>
-          <Select value={selectedDistrict} onChange={handleDistrictChange}>
-            <option value="">시/구/군</option>
-            {districtOptions.map((district, index) => (
-              <option key={index} value={district}>
-                {district}
-              </option>
-            ))}
-          </Select>
-          <Select value={selectedCategory} onChange={handleCategoryChange}>
-            <option value="전체보기">전체보기</option>
-            <option value="취미">취미</option>
-            <option value="휴식 장소">휴식 장소</option>
-            <option value="힐링">힐링</option>
-          </Select>
-        </SelectContainer>
-        <Button type="button" onClick={handleFilterClick}>
-          조회하기
-        </Button>
-        <Cards>
-          {filteredCards.map((card, index) => (
-            <Card key={index} onClick={gotoRestActivityDetail}>
-              <CardImage />
-              <CardTitle>{card.title}</CardTitle>
-              <CardDescription>{card.description}</CardDescription>
-              <CardCategory>{card.category}</CardCategory>
-            </Card>
-          ))}
-        </Cards>
-        <Description id="two">
-          <span id="hyu">휴</span>에서 00님을 위해 준비한 맞춤형 쉼을 더
-          보고싶다면?
-        </Description>
-        <Button style={{ marginTop: "2rem" }}>
-          더 많은 맞춤형 쉼 보러가기
-        </Button>
-      </Main>
-      <Footer />
-    </Container>
-  );
-};
-
-export default RestActivity;
