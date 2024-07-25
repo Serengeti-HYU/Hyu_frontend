@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Profile from "./Profile";
 import EmotionRecords from "./EmotionRecords";
@@ -12,9 +13,9 @@ const Container = styled.div`
 `;
 const Main = styled.main`
   padding: 2rem;
+  margin-bottom: 12rem;
 `;
-
-const SectionTitle = styled.h2`
+const SectionTitle = styled.div`
   margin-top: 2rem;
   margin-bottom: 1rem;
   color: #35648c;
@@ -25,11 +26,21 @@ const SectionTitle = styled.h2`
 `;
 const Line = styled.div`
   margin: auto;
-  background-image: url(${process.env.PUBLIC_URL}/assets/icons/line.svg);
-  width: 70rem;
-  height: 3px;
-  background-size: cover;
-  margin-bottom: 2rem;
+  width: 87%;
+  height: 0.1875rem;
+  background: linear-gradient(to right, #f2e8c9, #35648c 50%, #f2e8c9);
+  margin-bottom: 3rem;
+
+  @media (max-width: 768px) {
+  }
+`;
+const TitleBar = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin: auto;
+  width: 60%;
+  margin-bottom: 0.5rem;
+  margin-top: 5rem;
 `;
 const WhiteBtn = styled.button`
   border: none;
@@ -46,22 +57,40 @@ const WhiteBtn = styled.button`
   font-style: normal;
   font-weight: 700;
   line-height: normal;
+  height: 2rem;
+  margin-top: 2.2rem;
+  cursor: pointer;
 `;
 
 const MyPage = () => {
+  const navigate = useNavigate();
+
+  const gotoUpdateProfile = () => {
+    navigate(`/update-profile`);
+  };
+  const gotoRecordEmotion = () => {
+    navigate(`/record1`);
+  };
+
   return (
     <Container>
       <LoginHeader />
       <Main>
-        <SectionTitle>내 정보</SectionTitle>
-        <WhiteBtn>내 정보 수정</WhiteBtn>
+        <TitleBar>
+          <SectionTitle>내 정보</SectionTitle>
+          <WhiteBtn onClick={gotoUpdateProfile}>내 정보 수정</WhiteBtn>
+        </TitleBar>
         <Line />
         <Profile />
-        <SectionTitle>최근 감정 기록</SectionTitle>
-        <WhiteBtn>감정 기록 더보기</WhiteBtn>
+        <TitleBar>
+          <SectionTitle>최근 감정 기록</SectionTitle>
+          <WhiteBtn onClick={gotoRecordEmotion}>감정 기록 더보기</WhiteBtn>
+        </TitleBar>
         <Line />
         <EmotionRecords />
-        <SectionTitle>저장 한 쉼</SectionTitle>
+        <TitleBar>
+          <SectionTitle>저장 한 쉼</SectionTitle>
+        </TitleBar>
         <Line />
         <Storage />
       </Main>
