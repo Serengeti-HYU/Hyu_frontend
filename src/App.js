@@ -10,12 +10,15 @@ import SignUpComplete from "./pages/Main/SignUp/SignUpComplete";
 import RestActivity from "./pages/Newsletter/RestActivity";
 import Main from "./pages/Main/main";
 import NoLoginMain from "./pages/Main/NoLoginMain";
+import Premium from "./pages/Main/Premium/Premium";
+import NoPremium from "./pages/Main/Premium/NoPremium";
 
 import RestActivityDetail from "./pages/Newsletter/RestActivityDetail";
 
 // Profile imports
 import Mypage from "./pages/Profile/Mypage";
-import UpdateProfile from "./pages/Profile/UpdateProfile";
+import ProfileEdit from "./pages/Profile/ProfileEdit";
+import VerifyBeforeEdit from "./pages/Profile/VerifyBeforeEdit";
 
 // Emotion imports
 import PersonalityTest from "./pages/Emotion/PersonalityTest";
@@ -36,6 +39,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/sign-up-complete" element={<SignUpComplete />} />
+        <Route path="/premium" element={<Premium />} />
+        <Route path="/nopremium" element={<NoPremium />} />
+
 
         {/* Newsletter routes */}
         <Route path="/rest-activity" element={<RestActivity />} />
@@ -44,7 +50,8 @@ function App() {
 
         {/* Profile routes */}
         <Route path="/mypage" element={<Mypage />} />
-        <Route path="/update-profile" element={<UpdateProfile />} />
+        <Route path="/profile-edit" element={<ProfileEdit />} />
+        <Route path="/verify-before-edit" element={<VerifyBeforeEdit />} />
 
         {/* Emotion routes */}
         <Route path="/personality-test" element={<PersonalityTest />} />
