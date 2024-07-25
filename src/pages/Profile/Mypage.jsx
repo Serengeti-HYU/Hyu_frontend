@@ -18,7 +18,6 @@ const SectionTitle = styled.h2`
   margin-top: 2rem;
   margin-bottom: 1rem;
   color: #35648c;
-  font-family: SUIT;
   font-size: 32px;
   font-style: normal;
   font-weight: 700;
@@ -43,7 +42,6 @@ const WhiteBtn = styled.button`
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25),
     0px 0px 14.9px 0px rgba(53, 100, 140, 0.35);
   color: #35648c;
-  font-family: SUIT;
   font-size: 16px;
   font-style: normal;
   font-weight: 700;

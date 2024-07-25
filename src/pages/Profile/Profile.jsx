@@ -40,7 +40,6 @@ const PremiumBadge = styled.div`
   margin-top: 3rem;
   #text {
     color: #fff;
-    font-family: SUIT;
     font-size: 20px;
     font-style: normal;
     font-weight: 700;
@@ -50,7 +49,6 @@ const PremiumBadge = styled.div`
 const InfoText = styled.div`
   margin: 0.5rem 0;
   color: #000;
-  font-family: SUIT;
   font-size: 20px;
   font-style: normal;
   font-weight: 500;
@@ -78,7 +76,6 @@ const Button = styled.button`
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25),
     0px 0px 14.9px 0px rgba(53, 100, 140, 0.35);
   color: #fff;
-  font-family: SUIT;
   font-size: 20px;
   font-style: normal;
   font-weight: 700;
