@@ -130,9 +130,14 @@ const ProfileEdit = () => {
   const inputRef2 = useRef(null);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [domain, setDomain] = useState("");
+  const [domain, setDomain] = useState("naver.com");
   const [domainInput, setDomainInput] = useState("");
   const [success, setSuccess] = useState(null);
+  const [phonePrefix, setPhonePrefix] = useState("010");
+  const [year, setYear] = useState("2024");
+  const [month, setMonth] = useState("1");
+  const [date, setDate] = useState("1");
+
   const validatePassword = (password) => {
     const minLength = 8;
     const maxLength = 12;
@@ -161,10 +166,15 @@ const ProfileEdit = () => {
       setDomainInput("");
     }
   };
+
   const handlePhone2Change = (e) => {
     if (e.target.value.length >= e.target.maxLength) {
       inputRef2.current.focus();
     }
+  };
+
+  const handleFocus = (e) => {
+    e.target.removeAttribute("readonly");
   };
 
   return (
@@ -176,6 +186,7 @@ const ProfileEdit = () => {
             src={`${process.env.PUBLIC_URL}/assets/logo/FaceLogoBlue.png`}
             width={"100px"}
             height={"100px"}
+            alt="Logo"
           />
           <p id="verify">개인 정보 수정</p>
         </Header>
@@ -183,11 +194,23 @@ const ProfileEdit = () => {
           <form method="post" onSubmit={handleSubmit}>
             <div className="input">
               <p className="label">• 이름</p>
-              <input id="name" type="text" required />
+              <input
+                id="name"
+                type="text"
+                required
+                defaultValue="홍길동" // 기존 사용자 이름
+                readOnly
+                onFocus={handleFocus}
+              />
             </div>
             <div className="input">
               <p className="label">• 생년월일</p>
-              <select id="birth-year" required>
+              <select
+                id="birth-year"
+                required
+                value={year}
+                onChange={(e) => setYear(e.target.value)}
+              >
                 <option value="">년</option>
                 {Array.from({ length: 100 }, (_, i) => (
                   <option key={i} value={2024 - i}>
@@ -195,7 +218,12 @@ const ProfileEdit = () => {
                   </option>
                 ))}
               </select>
-              <select id="birth-month" required>
+              <select
+                id="birth-month"
+                required
+                value={month}
+                onChange={(e) => setMonth(e.target.value)}
+              >
                 <option value="">월</option>
                 {Array.from({ length: 12 }, (_, i) => (
                   <option key={i + 1} value={i + 1}>
@@ -203,7 +231,12 @@ const ProfileEdit = () => {
                   </option>
                 ))}
               </select>
-              <select id="birth-day" required>
+              <select
+                id="birth-day"
+                required
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+              >
                 <option value="">일</option>
                 {Array.from({ length: 31 }, (_, i) => (
                   <option key={i + 1} value={i + 1}>
@@ -214,7 +247,14 @@ const ProfileEdit = () => {
             </div>
             <div className="input">
               <p className="label">• 아이디</p>
-              <input id="id" type="text" required />
+              <input
+                id="id"
+                type="text"
+                required
+                defaultValue="user123" // 기존 사용자 아이디
+                readOnly
+                onFocus={handleFocus}
+              />
             </div>
             <div className="input">
               <p className="label">• 비밀번호</p>
@@ -224,6 +264,8 @@ const ProfileEdit = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
+                readOnly
+                onFocus={handleFocus}
               />
               <p id="pwGuide">
                 8자~12자 이내 영문과 숫자 조합으로 입력해주세요.
@@ -237,6 +279,8 @@ const ProfileEdit = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
+                readOnly
+                onFocus={handleFocus}
               />
               <p
                 id="warn"
@@ -254,7 +298,11 @@ const ProfileEdit = () => {
             </div>
             <div className="input">
               <p className="label">• 전화번호</p>
-              <select className="phone">
+              <select
+                className="phone"
+                value={phonePrefix}
+                onChange={(e) => setPhonePrefix(e.target.value)}
+              >
                 <option value="">선택</option>
                 <option value="010">010</option>
                 <option value="011">011</option>
@@ -270,6 +318,9 @@ const ProfileEdit = () => {
                 maxLength="4"
                 ref={inputRef1}
                 onChange={handlePhone2Change}
+                defaultValue={1234}
+                readOnly
+                onFocus={handleFocus}
               />
               <p className="hypen">-</p>
               <input
@@ -277,12 +328,21 @@ const ProfileEdit = () => {
                 type="tel"
                 maxLength="4"
                 ref={inputRef2}
+                readOnly
+                onFocus={handleFocus}
+                defaultValue={5678}
               />
             </div>
-
             <div className="input">
               <p className="label">• 이메일 </p>
-              <input className="email" type="text" required />
+              <input
+                className="email"
+                type="text"
+                required
+                readOnly
+                onFocus={handleFocus}
+                defaultValue="user" // 기존 사용자 이메일
+              />
               <p id="at">@</p>
               <input
                 className="email"
@@ -291,6 +351,8 @@ const ProfileEdit = () => {
                 onChange={(e) => setDomainInput(e.target.value)}
                 disabled={domain !== "type"}
                 required
+                readOnly
+                onFocus={handleFocus}
               />
               <select onChange={handleDomainChange} value={domain}>
                 <option value="type">직접 입력</option>
@@ -300,7 +362,6 @@ const ProfileEdit = () => {
                 <option value="hanmail.net">hanmail.net</option>
               </select>
             </div>
-
             <button type="submit" id="goLogin">
               저장하기
             </button>
