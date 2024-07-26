@@ -1,8 +1,92 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import LoginHeader from "../../components/LoginHeader";
 import Footer from "../../components/footer";
 import CopyComplete from "./CopyComplete";
+
+const RestActivityDetail = () => {
+  const navigate = useNavigate();
+
+  const gotoBack = () => {
+    navigate(-1);
+  };
+  const [scrabbed, setScrabbed] = useState(false);
+  const [showCopyComplete, setShowCopyComplete] = useState(false);
+  const linkText =
+    "https://www.figma.com/design/50vfzSJ9uv3DBIDO5x9BKb/%ED%9C%B4?node-id=52-212&m=dev";
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(linkText).then(() => {
+      setShowCopyComplete(true);
+      setTimeout(() => setShowCopyComplete(false), 5000);
+    });
+  };
+
+  const toggleScrab = () => {
+    setScrabbed(!scrabbed);
+  };
+
+  return (
+    <Container>
+      <LoginHeader />
+      <Main>
+        <Logo
+          src={`${process.env.PUBLIC_URL}/assets/logo/LogoGra.png`}
+          width={"60px"}
+          id="logo"
+        />
+        <Title>00님의 휴식을 위한 맞춤형 쉼입니다.</Title>
+        <ActivityHeader>
+          <span id="wrapper" onClick={gotoBack}>
+            <img
+              id="backbtn"
+              src={`${process.env.PUBLIC_URL}/assets/newsletter/left.svg`}
+            />
+            <ActivityTitle>쉼 활동 이름</ActivityTitle>
+          </span>
+          <Category>(분류 카테고리)</Category>
+        </ActivityHeader>
+        <Line />
+        <Content>
+          <Image />
+          <DescriptionWrapper>
+            <Description>쉼 활동 소개 글</Description>
+            <LinksWrapper>
+              <LinkBox>
+                <LinkIcon
+                  src={`${process.env.PUBLIC_URL}/assets/icons/link-one.svg`}
+                  alt="link icon"
+                />
+                <span id="link">{linkText}</span>
+              </LinkBox>
+              <BtnWrapper>
+                <Btn
+                  src={
+                    scrabbed
+                      ? `${process.env.PUBLIC_URL}/assets/buttons/scrabok.svg`
+                      : `${process.env.PUBLIC_URL}/assets/buttons/scrab.svg`
+                  }
+                  alt="scrab"
+                  onClick={toggleScrab}
+                />
+                <Btn
+                  src={`${process.env.PUBLIC_URL}/assets/buttons/linkcopy.svg`}
+                  alt="copy"
+                  onClick={handleCopy}
+                />
+              </BtnWrapper>
+            </LinksWrapper>
+          </DescriptionWrapper>
+        </Content>
+        {showCopyComplete && <CopyComplete />}
+      </Main>
+      <Footer />
+    </Container>
+  );
+};
+
+export default RestActivityDetail;
 
 const Container = styled.div`
   width: 100%;
@@ -47,6 +131,9 @@ const ActivityHeader = styled.div`
   #wrapper img {
     position: relative;
     top: 11px;
+  }
+  #backbtn {
+    cursor: pointer;
   }
 `;
 
@@ -134,78 +221,3 @@ const BtnWrapper = styled.div`
   margin-bottom: 20rem;
   margin-left: 18rem;
 `;
-
-const RestActivityDetail = () => {
-  const [scrabbed, setScrabbed] = useState(false);
-  const [showCopyComplete, setShowCopyComplete] = useState(false);
-  const linkText =
-    "https://www.figma.com/design/50vfzSJ9uv3DBIDO5x9BKb/%ED%9C%B4?node-id=52-212&m=dev";
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(linkText).then(() => {
-      setShowCopyComplete(true);
-      setTimeout(() => setShowCopyComplete(false), 5000);
-    });
-  };
-
-  const toggleScrab = () => {
-    setScrabbed(!scrabbed);
-  };
-
-  return (
-    <Container>
-      <LoginHeader />
-      <Main>
-        <Logo
-          src={`${process.env.PUBLIC_URL}/assets/logo/LogoGra.png`}
-          width={"60px"}
-          id="logo"
-        />
-        <Title>00님의 휴식을 위한 맞춤형 쉼입니다.</Title>
-        <ActivityHeader>
-          <span id="wrapper">
-            <img src={`${process.env.PUBLIC_URL}/assets/newsletter/left.svg`} />
-            <ActivityTitle>쉼 활동 이름</ActivityTitle>
-          </span>
-          <Category>(분류 카테고리)</Category>
-        </ActivityHeader>
-        <Line />
-        <Content>
-          <Image />
-          <DescriptionWrapper>
-            <Description>쉼 활동 소개 글</Description>
-            <LinksWrapper>
-              <LinkBox>
-                <LinkIcon
-                  src={`${process.env.PUBLIC_URL}/assets/icons/link-one.svg`}
-                  alt="link icon"
-                />
-                <span id="link">{linkText}</span>
-              </LinkBox>
-              <BtnWrapper>
-                <Btn
-                  src={
-                    scrabbed
-                      ? `${process.env.PUBLIC_URL}/assets/buttons/scrabok.svg`
-                      : `${process.env.PUBLIC_URL}/assets/buttons/scrab.svg`
-                  }
-                  alt="scrab"
-                  onClick={toggleScrab}
-                />
-                <Btn
-                  src={`${process.env.PUBLIC_URL}/assets/buttons/linkcopy.svg`}
-                  alt="copy"
-                  onClick={handleCopy}
-                />
-              </BtnWrapper>
-            </LinksWrapper>
-          </DescriptionWrapper>
-        </Content>
-        {showCopyComplete && <CopyComplete />}
-      </Main>
-      <Footer />
-    </Container>
-  );
-};
-
-export default RestActivityDetail;
