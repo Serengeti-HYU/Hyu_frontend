@@ -3,102 +3,7 @@ import styled from "styled-components";
 import LoginHeader from "../../components/LoginHeader";
 import Footer from "../../components/footer";
 
-const Container = styled.div`
-  width: 100%;
-  margin: 0 auto;
-  text-align: center;
-`;
-
-const Main = styled.div`
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  max-width: 26rem;
-  background: pink;
-`;
-
-const Title = styled.div`
-  margin-top: 5rem;
-  font-size: 24px;
-`;
-
-const SubTitle = styled.div`
-  margin: 0;
-  font-size: 14px;
-  margin-bottom: 5rem;
-`;
-
-const Form = styled.form`
-  margin: 20px 0;
-`;
-
-const Question = styled.div`
-  margin-bottom: 20px;
-  text-align: center;
-`;
-
-const QuestionText = styled.div`
-  font-size: 16px;
-  margin: 0 0 10px 0;
-`;
-
-const RadioGroup = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin: 10px 0;
-`;
-
-const RadioContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const RadioInput = styled.input`
-  display: none;
-  &:checked + label {
-    background: linear-gradient(180deg, #f2e8c9 0%, #35648c 100%);
-    filter: drop-shadow(0px 0px 7.6px #35648c);
-    color: white;
-  }
-`;
-
-const RadioLabel = styled.label`
-  border: 1px solid #4a6fa5;
-  border-radius: 50%;
-  width: ${(props) => props.size}px;
-  height: ${(props) => props.size}px;
-  line-height: ${(props) => props.size}px;
-  text-align: center;
-  cursor: pointer;
-  color: #4a6fa5;
-  margin-bottom: 5px;
-`;
-
-const OptionLabel = styled.span`
-  font-size: 12px;
-  color: #4a6fa5;
-`;
-
-const Button = styled.button`
-  margin: auto;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  width: 350px;
-  padding: 18px 117px 17px 118px;
-  justify-content: center;
-  align-items: center;
-  border-radius: 15px;
-  background: #35648c;
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  color: #fff;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-`;
-
+// 데이터
 const questions = [
   "휴일이 생기면 바로 약속을 잡는다.",
   "휴일에는 근무일에 비해 연락 확인 빈도가 줄어든다.",
@@ -113,10 +18,9 @@ const questions = [
 ];
 
 const options = ["매우 그렇다", "그렇다", "그렇지 않다", "매우 그렇지 않다"];
+const optionSizes = [5, 3.6, 3.6, 5];
 
-const optionSizes = [33, 25, 25, 33];
-
-// 답변 별 유형
+// 항목 별 유형 데이터
 const results = [
   [2, 4, 3, 1],
   [1, 3, 4, 2],
@@ -131,7 +35,6 @@ const results = [
 ];
 
 const PersonalityTest = () => {
-  // 선택 배열 상태
   const [responses, setResponses] = useState(
     Array(questions.length).fill(null)
   );
@@ -145,8 +48,7 @@ const PersonalityTest = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // 각 문항의 응답 유형을 기반으로 빈도수 계산
-    const frequency = [0, 0, 0, 0]; // 1, 2, 3, 4의 선택 횟수를 셈
+    const frequency = [0, 0, 0, 0]; // 1, 2, 3, 4
 
     responses.forEach((response, index) => {
       if (response !== null) {
@@ -155,7 +57,6 @@ const PersonalityTest = () => {
       }
     });
 
-    // 가장 많이 선택된 옵션 찾기
     const maxFrequency = Math.max(...frequency);
     const mostFrequentOptions = frequency
       .map((count, index) => (count === maxFrequency ? index + 1 : null))
@@ -170,6 +71,10 @@ const PersonalityTest = () => {
     <Container>
       <LoginHeader />
       <Main>
+        <Logo
+          src={`${process.env.PUBLIC_URL}/assets/logo/LogoGra.png`}
+          width="60px"
+        />
         <Title>성격 검사 진단</Title>
         <SubTitle>
           00님의 맞춤형 쉼터를 위해 성격 검사로 휴 유형을 진단해드릴게요.
@@ -208,3 +113,122 @@ const PersonalityTest = () => {
 };
 
 export default PersonalityTest;
+
+const Container = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+`;
+
+const Main = styled.div`
+  margin: auto;
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 35rem;
+`;
+
+const Logo = styled.img`
+  margin: auto;
+`;
+
+const Title = styled.h1`
+  margin-top: 2rem;
+  color: #35648c;
+  font-size: 40px;
+  font-weight: 700;
+`;
+
+const SubTitle = styled.h2`
+  margin: 3rem 0;
+  color: #35648c;
+  font-size: 20px;
+  font-weight: 400;
+`;
+
+const Form = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 5rem 0;
+  max-width: 29rem;
+`;
+
+const Question = styled.div`
+  margin-bottom: 3rem;
+  text-align: center;
+`;
+
+const QuestionText = styled.div`
+  margin: 0 0 2rem 0;
+  color: #35648c;
+  font-size: 22px;
+  font-weight: 700;
+`;
+
+const RadioGroup = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+`;
+
+const RadioContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 4rem;
+  min-width: 5rem;
+  height: 7rem;
+  justify-content: flex-end;
+`;
+
+const RadioInput = styled.input`
+  display: none;
+  &:checked + label {
+    background: linear-gradient(180deg, #f2e8c9 0%, #35648c 100%);
+    filter: drop-shadow(0px 0px 7.6px #35648c);
+    color: white;
+  }
+`;
+
+const RadioLabel = styled.label`
+  border: 1px solid #4a6fa5;
+  border-radius: 50%;
+  width: ${(props) => props.size}rem;
+  height: ${(props) => props.size}rem;
+  line-height: ${(props) => props.size}rem;
+  text-align: center;
+  cursor: pointer;
+  color: #4a6fa5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+`;
+
+const OptionLabel = styled.span`
+  color: #35648c;
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0;
+`;
+
+const Button = styled.button`
+  margin: auto;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  width: 21.875rem;
+  padding: 1.125rem 7.3125rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.9375rem;
+  background: #35648c;
+  box-shadow: 0px 0.25rem 0.25rem rgba(0, 0, 0, 0.25);
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 500;
+`;
