@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import LoginHeader from "../../components/LoginHeader";
 import Footer from "../../components/footer";
+import CopyComplete from "./CopyComplete";
 
 const Container = styled.div`
   width: 100%;
@@ -12,10 +13,13 @@ const Container = styled.div`
   align-items: center;
 `;
 const Main = styled.main`
+  display: flex;
+  flex-direction: column;
   width: 100%;
   max-width: 1200px;
   margin-top: 3rem;
   text-align: left;
+  margin-bottom: 5rem;
 `;
 const Logo = styled.img`
   position: absolute;
@@ -45,7 +49,14 @@ const ActivityHeader = styled.div`
     top: 11px;
   }
 `;
-const Line = styled.hr``;
+
+const Line = styled.hr`
+  width: 100%;
+  height: 0.2rem; /* 5px to rem */
+  border: none;
+  background-color: rgba(53, 100, 140, 0.35);
+`;
+
 const ActivityTitle = styled.span`
   color: #000;
   font-size: 32px;
@@ -53,41 +64,39 @@ const ActivityTitle = styled.span`
   font-weight: 700;
   line-height: 2;
 `;
-
 const Category = styled.span`
   color: #7a7a7a;
   font-size: 1rem;
 `;
-
 const Content = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  margin-top: 2rem;
+  width: 85%;
+  margin-top: 3rem;
+  height: 35rem;
 `;
-
-const ImageWrapper = styled.div`
-  width: 50%;
-`;
-
 const Image = styled.div`
-  width: 100%;
-  height: 300px;
+  width: 30.625rem;
+  height: 23rem;
   background: lightgray;
   border-radius: 10px;
 `;
 
-const Description = styled.div`
+const DescriptionWrapper = styled.div`
   width: 45%;
+`;
+const Description = styled.div`
+  width: 100%;
+  height: 15rem;
   font-size: 1rem;
   color: #000;
+  margin-top: 1rem;
 `;
 
 const LinksWrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  margin-top: 2rem;
 `;
 
 const LinkBox = styled.div`
@@ -95,8 +104,8 @@ const LinkBox = styled.div`
   display: flex;
   width: 32.5rem;
   height: 60px;
-  padding: 18px 379px 17px 32px;
-  align-items: flex-start;
+  padding: 18px 32px;
+  align-items: center;
   gap: 5px;
   flex-shrink: 0;
   border-radius: 50px;
@@ -114,16 +123,35 @@ const LinkBox = styled.div`
     line-height: normal;
   }
 `;
-
 const LinkIcon = styled.img`
   margin-right: 0.5rem;
 `;
-const Btn = styled.img``;
+const Btn = styled.img`
+  cursor: pointer;
+`;
 const BtnWrapper = styled.div`
+  display: flex;
   margin-bottom: 20rem;
+  margin-left: 18rem;
 `;
 
 const RestActivityDetail = () => {
+  const [scrabbed, setScrabbed] = useState(false);
+  const [showCopyComplete, setShowCopyComplete] = useState(false);
+  const linkText =
+    "https://www.figma.com/design/50vfzSJ9uv3DBIDO5x9BKb/%ED%9C%B4?node-id=52-212&m=dev";
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(linkText).then(() => {
+      setShowCopyComplete(true);
+      setTimeout(() => setShowCopyComplete(false), 5000);
+    });
+  };
+
+  const toggleScrab = () => {
+    setScrabbed(!scrabbed);
+  };
+
   return (
     <Container>
       <LoginHeader />
@@ -143,35 +171,37 @@ const RestActivityDetail = () => {
         </ActivityHeader>
         <Line />
         <Content>
-          <ImageWrapper>
-            <Image />
-          </ImageWrapper>
-          <Description>
-            쉼 활동 소개 글
+          <Image />
+          <DescriptionWrapper>
+            <Description>쉼 활동 소개 글</Description>
             <LinksWrapper>
               <LinkBox>
                 <LinkIcon
                   src={`${process.env.PUBLIC_URL}/assets/icons/link-one.svg`}
                   alt="link icon"
                 />
-                <span id="link">
-                  관련 링크
-                  https://www.figma.com/design/50vfzSJ9uv3DBIDO5x9BKb/%ED%9C%B4?node-id=52-212&m=dev
-                </span>
+                <span id="link">{linkText}</span>
               </LinkBox>
               <BtnWrapper>
                 <Btn
-                  src={`${process.env.PUBLIC_URL}/assets/buttons/scrab.svg`}
+                  src={
+                    scrabbed
+                      ? `${process.env.PUBLIC_URL}/assets/buttons/scrabok.svg`
+                      : `${process.env.PUBLIC_URL}/assets/buttons/scrab.svg`
+                  }
                   alt="scrab"
+                  onClick={toggleScrab}
                 />
                 <Btn
                   src={`${process.env.PUBLIC_URL}/assets/buttons/linkcopy.svg`}
                   alt="copy"
+                  onClick={handleCopy}
                 />
               </BtnWrapper>
             </LinksWrapper>
-          </Description>
+          </DescriptionWrapper>
         </Content>
+        {showCopyComplete && <CopyComplete />}
       </Main>
       <Footer />
     </Container>
