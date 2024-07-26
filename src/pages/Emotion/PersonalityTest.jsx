@@ -16,17 +16,18 @@ const Main = styled.div`
   max-width: 26rem;
   background: pink;
 `;
+
 const Title = styled.div`
   margin-top: 5rem;
   font-size: 24px;
 `;
+
 const SubTitle = styled.div`
   margin: 0;
   font-size: 14px;
   margin-bottom: 5rem;
 `;
 
-// form 으로 수정
 const Form = styled.form`
   margin: 20px 0;
 `;
@@ -115,7 +116,22 @@ const options = ["매우 그렇다", "그렇다", "그렇지 않다", "매우 �
 
 const optionSizes = [33, 25, 25, 33];
 
+// 답변 별 유형
+const results = [
+  [2, 4, 3, 1],
+  [1, 3, 4, 2],
+  [2, 4, 3, 1],
+  [3, 4, 1, 2],
+  [1, 3, 4, 2],
+  [4, 2, 3, 1],
+  [3, 1, 4, 2],
+  [3, 4, 2, 1],
+  [4, 2, 3, 1],
+  [2, 4, 3, 1],
+];
+
 const PersonalityTest = () => {
+  // 선택 배열 상태
   const [responses, setResponses] = useState(
     Array(questions.length).fill(null)
   );
@@ -128,7 +144,26 @@ const PersonalityTest = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("Responses:", responses);
+
+    // 각 문항의 응답 유형을 기반으로 빈도수 계산
+    const frequency = [0, 0, 0, 0]; // 1, 2, 3, 4의 선택 횟수를 셈
+
+    responses.forEach((response, index) => {
+      if (response !== null) {
+        const answerType = results[index][response];
+        frequency[answerType - 1] += 1;
+      }
+    });
+
+    // 가장 많이 선택된 옵션 찾기
+    const maxFrequency = Math.max(...frequency);
+    const mostFrequentOptions = frequency
+      .map((count, index) => (count === maxFrequency ? index + 1 : null))
+      .filter((index) => index !== null);
+
+    console.log("가장 많이 선택된 유형:", mostFrequentOptions);
+    console.log("선택 결과 배열: ", responses);
+    console.log("유형 결과 배열: ", frequency);
   };
 
   return (
