@@ -23,21 +23,19 @@ const Content = styled.div`
 const InnerContent = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 2rem;
-  margin-top: 5rem;
+  margin: 5rem 0 2rem;
 `;
 
 const Logo = styled.img`
-  width: 150px;
-  margin-right: 5rem;
-  margin-left: 7rem; /* 로고를 오른쪽으로 이동시키기 위해 margin-left 사용 */
+  width: 9.375rem; /* 150px */
+  margin: 0 5rem 0 7rem;
 `;
 
 const Line = styled.div`
   width: 150%;
-  height: 0.1875rem;
+  height: 0.1875rem; /* 3px */
   background: linear-gradient(to right, #f2e8c9, #35648c 50%, #f2e8c9);
-  margin: 1.25rem 0;
+  margin: 1.25rem 0; /* 20px */
 `;
 
 const TextContainer = styled.div`
@@ -50,22 +48,18 @@ const TextContainer = styled.div`
 const Title = styled.h1`
   font-size: 3rem;
   color: #35648c;
-  margin-bottom: 1rem;
-  margin-left: 1rem;
+  margin: 0 0 1rem 1rem;
 `;
 
 const PremiumInfo = styled.div`
   color: #35648c;
-  margin-bottom: 2rem;
-  margin-left: 2rem;
+  margin: 0 0 2rem 2rem;
 `;
 
 const FeaturesList = styled.ul`
   list-style-type: none;
   padding: 0;
-  margin: 2rem 0;
-  margin-left: 2rem;
-  margin-top: -0.5rem;
+  margin: 2rem 0 0.5rem 2rem;
 `;
 
 const Feature = styled.li`
@@ -77,7 +71,7 @@ const Feature = styled.li`
 const FeatureTitle = styled.div`
   font-weight: bold;
   margin-bottom: 0.25rem;
-  color: #35648C;
+  color: #35648c;
   position: relative;
   padding-left: 1rem;
 
@@ -85,7 +79,7 @@ const FeatureTitle = styled.div`
     content: '•';
     position: absolute;
     left: 0;
-    color: #35648C;
+    color: #35648c;
     font-size: 1.5rem;
     line-height: 1;
   }
@@ -93,8 +87,8 @@ const FeatureTitle = styled.div`
 
 const FeatureDescription = styled.div`
   font-size: 1rem;
-  color: #000000; /* 텍스트 색상 변경 */
-  margin-left: 2rem; /* 두 칸 정도 들여쓰기 */
+  color: #000;
+  margin-left: 2rem;
 `;
 
 const AdditionalText = styled.div`
@@ -135,7 +129,7 @@ const Premium = () => {
           <TextContainer>
             <Title>휴 premium</Title>
             <PremiumInfo>0,000 원 / 1년</PremiumInfo>
-            <Line /> {/* 여기서 가로선을 추가합니다 */}
+            <Line />
             <FeaturesList>
               <Feature>
                 <FeatureTitle>감정 기록</FeatureTitle>
