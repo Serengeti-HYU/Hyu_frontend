@@ -74,11 +74,14 @@ function LoginHeader() {
         id="logo"
       />
       <div id="container">
-        <button onClick={() => navigateTo("/NewletterPage")} id="NewletterPage">
+        <button
+          onClick={() => navigateTo("/newsletter-page")}
+          id="NewletterPage"
+        >
           휴~레터
         </button>
         <button
-          onClick={() => navigateTo("/PersonalityTest")}
+          onClick={() => navigateTo("/rest-activity")}
           id="PersonalityTest"
         >
           맞춤형 쉼
