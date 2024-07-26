@@ -141,7 +141,7 @@ const Title = styled.h1`
 `;
 
 const SubTitle = styled.h2`
-  margin: 3rem 0;
+  margin: 0rem 0;
   color: #35648c;
   font-size: 20px;
   font-weight: 400;
@@ -152,7 +152,7 @@ const Form = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 5rem 0;
+  margin: 6rem 0;
   max-width: 29rem;
 `;
 
