@@ -23,21 +23,19 @@ const Content = styled.div`
 const InnerContent = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: 2rem;
-  margin-top: 5rem;
+  margin: 5rem 0 2rem;
 `;
 
 const Logo = styled.img`
-  width: 150px;
-  margin-right: 5rem;
-  margin-left: 7rem; /* 로고를 오른쪽으로 이동시키기 위해 margin-left 사용 */
+  width: 9.375rem; /* 150px */
+  margin: 0 5rem 0 7rem;
 `;
 
 const Line = styled.div`
   width: 150%;
-  height: 0.1875rem;
+  height: 0.1875rem; /* 3px */
   background: linear-gradient(to right, #f2e8c9, #35648c 50%, #f2e8c9);
-  margin: 1.25rem 0;
+  margin: 1.25rem 0; /* 20px */
 `;
 
 const TextContainer = styled.div`
@@ -50,22 +48,18 @@ const TextContainer = styled.div`
 const Title = styled.h1`
   font-size: 3rem;
   color: #35648c;
-  margin-bottom: 1rem;
-  margin-left: 1rem;
+  margin: 0 0 1rem 1rem;
 `;
 
 const PremiumInfo = styled.div`
   color: #35648c;
-  margin-bottom: 2rem;
-  margin-left: 2rem;
+  margin: 0 0 2rem 2rem;
 `;
 
 const FeaturesList = styled.ul`
   list-style-type: none;
   padding: 0;
-  margin: 2rem 0;
-  margin-left: 2rem;
-  margin-top: -0.5rem;
+  margin: 2rem 0 0.5rem 2rem;
 `;
 
 const Feature = styled.li`
@@ -77,7 +71,7 @@ const Feature = styled.li`
 const FeatureTitle = styled.div`
   font-weight: bold;
   margin-bottom: 0.25rem;
-  color: #35648C;
+  color: #35648c;
   position: relative;
   padding-left: 1rem;
 
@@ -85,7 +79,7 @@ const FeatureTitle = styled.div`
     content: '•';
     position: absolute;
     left: 0;
-    color: #35648C;
+    color: #35648c;
     font-size: 1.5rem;
     line-height: 1;
   }
@@ -93,40 +87,37 @@ const FeatureTitle = styled.div`
 
 const FeatureDescription = styled.div`
   font-size: 1rem;
-  color: #35648c;
+  color: #000;
+  margin-left: 2rem;
 `;
 
-const PremiumButton = styled.button`
-  background: linear-gradient(180deg, #F2E8C9 0%, #35648C 100%);
-  color: #ffffff;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 25px;
-  font-size: 1.25rem;
-  cursor: pointer;
-  box-shadow: 0px 0px 14.9px 0px rgba(53, 100, 140, 0.35);
+const AdditionalText = styled.div`
+  font-size: 1rem;
+  color: #000;
+  text-align: center;
+  margin-top: 2rem;
+  font-weight: bold;
+`;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const RefundLink = styled.a`
+  font-size: 1rem;
+  color: #35648c;
+  text-align: center;
+  display: block;
+  margin-top: 0.5rem;
+  text-decoration: underline;
+  cursor: pointer;
 
   &:hover {
-    background: linear-gradient(180deg, #e6d5a8 0%, #2f5579 100%);
+    color: #2f5579;
   }
-`;
-
-const CrownEmoji = styled.span`
-  margin-right: 0.5rem; /* 이모지와 텍스트 사이의 간격 조절 */
-  width: 1.25rem;
-  height: 1.125rem;
-  flex-shrink: 0;
 `;
 
 const Premium = () => {
   const navigate = useNavigate();
 
-  const handlePremiumClick = () => {
-    navigate("/premium/payment");
+  const handleRefundClick = () => {
+    navigate("/premium/refund");
   };
 
   return (
@@ -138,7 +129,7 @@ const Premium = () => {
           <TextContainer>
             <Title>휴 premium</Title>
             <PremiumInfo>0,000 원 / 1년</PremiumInfo>
-            <Line /> {/* 여기서 가로선을 추가합니다 */}
+            <Line />
             <FeaturesList>
               <Feature>
                 <FeatureTitle>감정 기록</FeatureTitle>
@@ -154,12 +145,8 @@ const Premium = () => {
             </FeaturesList>
           </TextContainer>
         </InnerContent>
-        <PremiumButton onClick={handlePremiumClick}>
-          <CrownEmoji>
-            <img src={`${process.env.PUBLIC_URL}/assets/icons/crown.png`} alt="Crown" width="20rem" />
-          </CrownEmoji>
-          premium 결제
-        </PremiumButton>
+        <AdditionalText>00님은 2024.00.00부터 premium요금제 구독 중입니다.</AdditionalText>
+        <RefundLink onClick={handleRefundClick}>premium 구독 환불</RefundLink>
       </Content>
       <Footer />
     </Container>
