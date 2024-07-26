@@ -2,7 +2,7 @@ import React from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import Footer from "../../components/footer";
-import NoLoginHeader from "../../components/NoLoginHeader";
+import LoginHeader from "../../components/LoginHeader";
 
 const Container = styled.div`
   display: flex;
@@ -136,7 +136,7 @@ const NoLoginMain = () => {
 
   return (
     <Container>
-      <NoLoginHeader />
+      <LoginHeader />
       <HeaderPlaceholder />
       <MainContent>
         <img

@@ -15,7 +15,7 @@ const TextContent = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* 왼쪽 정렬 */
+  align-items: flex-start;
   padding: 2.5rem;
   width: 100%;
   max-width: 47.5rem;
@@ -24,7 +24,7 @@ const TextContent = styled.div`
   @media (max-width: 768px) {
     padding: 1.25rem;
     max-width: 100%;
-    align-items: center; /* 중앙 정렬 */
+    align-items: center;
   }
 `;
 
@@ -64,6 +64,7 @@ const DateSelector = styled.div`
   align-items: center;
   font-size: 1.125rem;
   color: #35648c;
+  margin-bottom: 1.25rem;
   
   @media (max-width: 768px) {
     font-size: 1rem;
@@ -71,7 +72,7 @@ const DateSelector = styled.div`
 `;
 
 const DateInput = styled.select`
-  width: 4rem; /* Increase width to prevent text from being hidden */
+  width: 4rem;
   margin: 0 0.3125rem;
   text-align: center;
   border: none;
@@ -81,7 +82,31 @@ const DateInput = styled.select`
   -moz-appearance: none;
   -webkit-appearance: none;
   appearance: none;
+  position: relative;
   
+  &::-ms-expand {
+    display: none;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 0.375rem solid transparent;
+    border-top-color: #35648c;
+  }
+
+  &:hover {
+    border-color: #35648c;
+  }
+
+  option {
+    background-color: #ffffff;
+    color: #35648c;
+  }
+
   @media (max-width: 768px) {
     width: 3.5rem;
     font-size: 1rem;
@@ -94,7 +119,6 @@ const Line = styled.div`
   height: 0.1875rem;
   background: linear-gradient(to right, #f2e8c9, #35648c 50%, #f2e8c9);
   margin: 1.25rem 0;
-  margin-top: -2.375rem;
   
   @media (max-width: 768px) {
     margin-top: -2.5rem;
@@ -131,7 +155,7 @@ const MemoContainer = styled.div`
 
 const MemoInput = styled.textarea`
   width: 100%;
-  height: 10rem; /* Increase height */
+  height: 10rem;
   padding: 1.525rem;
   font-size: 1rem;
   border-radius: 1.25rem;
@@ -188,7 +212,7 @@ const Circle1 = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 1.5rem;
-  background-color: #fff; /* Ensure circle remains white */
+  background-color: #fff;
 `;
 
 const Button = styled.button`
@@ -198,7 +222,7 @@ const Button = styled.button`
   border: none;
   border-radius: 0.25rem;
   cursor: pointer;
-  align-self: flex-end; /* 오른쪽 정렬 */
+  align-self: flex-end;
 
   &:hover {
     background-color: #0056b3;
@@ -215,7 +239,7 @@ const Button = styled.button`
 
 const BottomContainer = styled.div`
   align-items: center;
-  margin-top: 1.25rem;
+  margin-top: 2rem;
 `;
 
 const Navigation = styled.div`
@@ -236,7 +260,7 @@ const NavButton = styled.button`
   height: 1.5rem;
   background-size: contain;
   background-repeat: no-repeat;
-  margin: 0 0.3125rem; /* Adjust margin to be closer to the date display */
+  margin: 0 0.3125rem;
 `;
 
 const LeftNavButton = styled(NavButton)`
@@ -260,8 +284,8 @@ const DayContainerWrapper = styled.div`
 
 const DayContainer = styled.div`
   display: flex;
-  justify-content: flex-start; /* Align items to the start (top-left) */
-  align-items: flex-start; /* Align items to the start (top-left) */
+  justify-content: flex-start;
+  align-items: flex-start;
   padding: 0.5rem;
   width: 5rem;
   height: 6.25rem;
@@ -270,7 +294,7 @@ const DayContainer = styled.div`
   border: 0.0625rem solid #35648c;
   margin-bottom: 0.625rem;
   background-color: ${(props) => (props.selected ? '#35648c' : 'transparent')};
-  color: ${(props) => (props.selected ? '#fff' : '#000')}; /* Change text color when selected */
+  color: ${(props) => (props.selected ? '#fff' : '#000')};
   
   @media (max-width: 768px) {
     width: 4rem;
@@ -281,13 +305,31 @@ const DayContainer = styled.div`
 const DayItem = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Align items to the start (top-left) */
-  justify-content: flex-start; /* Align items to the start (top-left) */
+  align-items: flex-start;
+  justify-content: flex-start;
   font-size: 0.875rem;
   cursor: pointer;
   width: 100%;
   height: 100%;
   border-radius: 1.052rem;
+`;
+
+const Weekdays = styled.div`
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  color: #35648C;
+  font-family: SUIT;
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 900;
+  line-height: normal;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+
+  div {
+    margin: 0 0.3125rem;
+  }
 `;
 
 const Record1 = () => {
@@ -343,19 +385,18 @@ const Record1 = () => {
     setSelectedDay(newDate.getDate());
   };
 
-// Generate year, month, day options
-const generateOptions = (start, end) => {
-  const options = [];
-  for (let i = start; i <= end; i++) {
-    options.push(<option key={i} value={i}>{i}</option>);
-  }
-  return options;
-};
+  const generateOptions = (start, end) => {
+    const options = [];
+    for (let i = start; i <= end; i++) {
+      options.push(<option key={i} value={i}>{i}</option>);
+    }
+    return options;
+  };
 
   const getWeekDays = (date) => {
     const weekDays = [];
     const startOfWeek = new Date(date);
-    startOfWeek.setDate(date.getDate() - date.getDay() + 1); // Start from Monday
+    startOfWeek.setDate(date.getDate() - date.getDay() + 1);
 
     for (let i = 0; i < 7; i++) {
       const day = new Date(startOfWeek);
@@ -372,7 +413,9 @@ const generateOptions = (start, end) => {
       <LoginHeader />
       <TextContent>
         <Header>00님의 감정 기록</Header>
-        <DateSelector>
+      </TextContent>
+      <Content>
+      <DateSelector>
           <DateInput 
             value={selectedDate.getFullYear()} 
             onChange={(e) => handleManualDateChange('year', e.target.value)}
@@ -381,11 +424,11 @@ const generateOptions = (start, end) => {
           </DateInput>
           .
           <DateInput 
-  value={selectedDate.getMonth() + 1} 
-  onChange={(e) => handleManualDateChange('month', e.target.value)}
->
-  {generateOptions(1, 12)}
-</DateInput>
+            value={selectedDate.getMonth() + 1} 
+            onChange={(e) => handleManualDateChange('month', e.target.value)}
+          >
+            {generateOptions(1, 12)}
+          </DateInput>
           .
           <DateInput 
             value={String(selectedDate.getDate()).padStart(2, "0")} 
@@ -394,9 +437,9 @@ const generateOptions = (start, end) => {
             {generateOptions(1, 31)}
           </DateInput>
         </DateSelector>
-      </TextContent>
-      <Content>
-        <Line />
+      <Line />
+
+        
         <TopContainer>
           <CircleContainer>
             <Circle>{emotions[selectedDay] || "😐"}</Circle>
@@ -406,8 +449,7 @@ const generateOptions = (start, end) => {
           </MemoContainer>
         </TopContainer>
         <Button onClick={() => navigate("/Record2")}>기록하기</Button>
-        <BottomContainer>
-          <Navigation>
+        <Navigation>
             <LeftNavButton onClick={handlePreviousWeek} />
             <DateSelector>
               <DateInput 
@@ -418,11 +460,11 @@ const generateOptions = (start, end) => {
               </DateInput>
               .
               <DateInput 
-  value={selectedDate.getMonth() + 1} 
-  onChange={(e) => handleManualDateChange('month', Number(e.target.value))}
->
-  {generateOptions(1, 12)}
-</DateInput>
+                value={selectedDate.getMonth() + 1} 
+                onChange={(e) => handleManualDateChange('month', Number(e.target.value))}
+              >
+                {generateOptions(1, 12)}
+              </DateInput>
               .
               <DateInput 
                 value={String(selectedDate.getDate()).padStart(2, "0")} 
@@ -433,6 +475,18 @@ const generateOptions = (start, end) => {
             </DateSelector>
             <RightNavButton onClick={handleNextWeek} />
           </Navigation>
+        <Weekdays>
+          <div>MON</div>
+          <div>TUE</div>
+          <div>WED</div>
+          <div>THU</div>
+          <div>FRI</div>
+          <div>SAT</div>
+          <div>SUN</div>
+        </Weekdays>
+        <Line />
+        <BottomContainer>
+          
           <DayContainerWrapper>
             {weekDays.map((day, index) => (
               <DayContainer

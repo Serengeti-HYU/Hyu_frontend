@@ -72,6 +72,7 @@ function LoginHeader() {
         width={"50px"}
         height={"50px"}
         id="logo"
+        onClick={() => navigateTo("/")}
       />
       <div id="container">
         <button
