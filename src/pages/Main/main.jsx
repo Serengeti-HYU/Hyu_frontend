@@ -206,6 +206,7 @@ const Container = styled.div`
       width: 20rem;
 
       button {
+        border: none;
         height: 4.42856rem;
         border-radius: 0.83038rem;
         background: #fff;
