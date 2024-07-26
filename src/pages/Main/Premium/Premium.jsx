@@ -93,40 +93,37 @@ const FeatureTitle = styled.div`
 
 const FeatureDescription = styled.div`
   font-size: 1rem;
-  color: #35648c;
+  color: #000000; /* 텍스트 색상 변경 */
+  margin-left: 2rem; /* 두 칸 정도 들여쓰기 */
 `;
 
-const PremiumButton = styled.button`
-  background: linear-gradient(180deg, #F2E8C9 0%, #35648C 100%);
-  color: #ffffff;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 25px;
-  font-size: 1.25rem;
-  cursor: pointer;
-  box-shadow: 0px 0px 14.9px 0px rgba(53, 100, 140, 0.35);
+const AdditionalText = styled.div`
+  font-size: 1rem;
+  color: #000;
+  text-align: center;
+  margin-top: 2rem;
+  font-weight: bold;
+`;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+const RefundLink = styled.a`
+  font-size: 1rem;
+  color: #35648c;
+  text-align: center;
+  display: block;
+  margin-top: 0.5rem;
+  text-decoration: underline;
+  cursor: pointer;
 
   &:hover {
-    background: linear-gradient(180deg, #e6d5a8 0%, #2f5579 100%);
+    color: #2f5579;
   }
-`;
-
-const CrownEmoji = styled.span`
-  margin-right: 0.5rem; /* 이모지와 텍스트 사이의 간격 조절 */
-  width: 1.25rem;
-  height: 1.125rem;
-  flex-shrink: 0;
 `;
 
 const Premium = () => {
   const navigate = useNavigate();
 
-  const handlePremiumClick = () => {
-    navigate("/premium/payment");
+  const handleRefundClick = () => {
+    navigate("/premium/refund");
   };
 
   return (
@@ -154,12 +151,8 @@ const Premium = () => {
             </FeaturesList>
           </TextContainer>
         </InnerContent>
-        <PremiumButton onClick={handlePremiumClick}>
-          <CrownEmoji>
-            <img src={`${process.env.PUBLIC_URL}/assets/icons/crown.png`} alt="Crown" width="20rem" />
-          </CrownEmoji>
-          premium 결제
-        </PremiumButton>
+        <AdditionalText>00님은 2024.00.00부터 premium요금제 구독 중입니다.</AdditionalText>
+        <RefundLink onClick={handleRefundClick}>premium 구독 환불</RefundLink>
       </Content>
       <Footer />
     </Container>
