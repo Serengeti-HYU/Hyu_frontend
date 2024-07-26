@@ -16,7 +16,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #f5f5f5;
+  background-color: #ffffff;
   padding: 2rem;
 `;
 

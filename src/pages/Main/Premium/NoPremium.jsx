@@ -15,7 +15,7 @@ const Content = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #f5f5f5;
+  background-color: #ffffff;
   padding: 2rem;
 `;
 
@@ -336,43 +336,43 @@ const NoPremium = () => {
             {!paymentComplete ? (
               <>
                 <CheckboxLabel>
-                  <div>
-                    <Checkbox type="checkbox" checked={checkboxes.terms} onChange={() => handleCheckboxChange("terms")} required />
-                    <span style={{ fontSize: "1rem", color: "#000" }}>이용 약관 동의(필수)</span>
-                  </div>
+                  <label>
+                    <Checkbox id="terms" type="checkbox" checked={checkboxes.terms} onChange={() => handleCheckboxChange("terms")} required />
+                    <span style={{ fontSize: "1rem", color: "#000" }} htmlFor="terms">이용 약관 동의(필수)</span>
+                  </label>
                   <a href="#" style={{ fontSize: "0.875rem", color: "#35648C", textDecoration: "underline" }}>약관보기</a>
                 </CheckboxLabel>
                 <CheckboxLabel>
-                  <div>
-                    <Checkbox type="checkbox" checked={checkboxes.privacy} onChange={() => handleCheckboxChange("privacy")} />
-                    <span style={{ fontSize: "1rem", color: "#000" }}>개인정보 수집 / 이용 동의(선택)</span>
-                  </div>
+                  <label>
+                    <Checkbox id="privacy" type="checkbox" checked={checkboxes.privacy} onChange={() => handleCheckboxChange("privacy")} />
+                    <span style={{ fontSize: "1rem", color: "#000" }} htmlFor="privacy">개인정보 수집 / 이용 동의(선택)</span>
+                  </label>
                   <a href="#" style={{ fontSize: "0.875rem", color: "#35648C", textDecoration: "underline" }}>약관보기</a>
                 </CheckboxLabel>
                 <ModalTitle style={{ fontSize: "1.2rem", textAlign: 'left', marginLeft: '3rem', color: "#000" }}>결제 동의</ModalTitle>
                 <GroupedCheckboxes>
                   <CheckboxLabel>
-                    <div>
-                      <Checkbox type="checkbox" checked={checkboxes.age} onChange={() => handleCheckboxChange("age")} required />
-                      <span style={{ fontSize: "1rem", color: "#000" }}>만 14세 이상입니다.</span>
-                    </div>
-                    <div style={{ marginRight: "3rem" }}>
-                      <Checkbox type="checkbox" checked={checkboxes.payment} onChange={() => handleCheckboxChange("payment")} required />
-                      <span style={{ fontSize: "1rem", color: "#000" }}>결제 정보를 확인하였으며 결제에 동의합니다.</span>
-                    </div>
+                    <label>
+                      <Checkbox id="age" type="checkbox" checked={checkboxes.age} onChange={() => handleCheckboxChange("age")} required />
+                      <span style={{ fontSize: "1rem", color: "#000" }} htmlFor="age">만 14세 이상입니다.</span>
+                    </label>
+                    <label style={{ marginRight: "3rem" }}>
+                      <Checkbox id="payment" type="checkbox" checked={checkboxes.payment} onChange={() => handleCheckboxChange("payment")} required />
+                      <span style={{ fontSize: "1rem", color: "#000" }} htmlFor="payment">결제 정보를 확인하였으며 결제에 동의합니다.</span>
+                    </label>
                   </CheckboxLabel>
                   <CheckboxLabel>
-                    <div>
-                      <Checkbox type="checkbox" checked={checkboxes.refund} onChange={() => handleCheckboxChange("refund")} required />
-                      <span style={{ fontSize: "1rem", color: "#000" }}>환불 규정 동의</span>
-                      <a href="#" style={{ fontSize: "0.875rem", color: "#35648C", textDecoration: "underline", marginLeft: "0.5rem" }}>약관보기</a>
-                    </div>
+                    <label>
+                      <Checkbox id="refund" type="checkbox" checked={checkboxes.refund} onChange={() => handleCheckboxChange("refund")} required />
+                      <span style={{ fontSize: "1rem", color: "#000" }} htmlFor="refund">환불 규정 동의</span>
+                      <a href="#" style={{ fontSize: "0.875rem", color: "#35648C", textDecoration: "underline", marginLeft: "1.5rem" }}>약관보기</a>
+                    </label>
                   </CheckboxLabel>
                 </GroupedCheckboxes>
                 <CheckboxLabel>
                   <div>
-                    <Checkbox type="checkbox" checked={checkboxes.all} onChange={handleAllCheckboxChange} required />
-                    <BoldText style={{ fontSize: "1rem", color: "#000" }}>전체 동의</BoldText>
+                    <Checkbox id="all" type="checkbox" checked={checkboxes.all} onChange={handleAllCheckboxChange} required />
+                    <BoldText style={{ fontSize: "1rem", color: "#000" }} htmlFor="all">전체 동의</BoldText>
                   </div>
                 </CheckboxLabel>
                 <div style={{ textAlign: "center", width: "100%", fontSize: "0.875rem", color: "#35648C", marginBottom: "1rem" }}>
@@ -380,7 +380,7 @@ const NoPremium = () => {
                 </div>
                 {warningMessage && <WarningMessage>{warningMessage}</WarningMessage>}
                 <KakaoPayButton onClick={handleKakaoPay}>
-                  <img src={`${process.env.PUBLIC_URL}/assets/icons/kako_img.png`} alt="kakao_logo" width="20rem" />
+                  <img src={`${process.env.PUBLIC_URL}/assets/icons/kakao_img.png`} alt="kakao_logo" width="1.25rem" />
                   kakao pay
                 </KakaoPayButton>
               </>
