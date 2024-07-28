@@ -95,7 +95,7 @@ function LoginHeader() {
           width={"50px"}
           height={"50px"}
           id="loginNav"
-          onClick={() => navigateTo("/")}
+          onClick={() => navigateTo("/Mypage")}
         />
       </div>
     </HeaderContainer>

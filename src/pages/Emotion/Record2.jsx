@@ -373,7 +373,7 @@ const Record2 = () => {
   };
 
   const handleLockClick = () => {
-    alert("프리미엄 서비스를 사용하시겠습니까?");
+    setIsCustomModalOpen(true);
   };
 
   const handleCustomClick = () => {
@@ -393,7 +393,7 @@ const Record2 = () => {
   };
 
   const handleCustomConfirm = () => {
-     navigate("/Premium")
+    navigate("/NoPremium");
   };
 
   return (
