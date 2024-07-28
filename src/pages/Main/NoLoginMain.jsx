@@ -2,7 +2,7 @@ import React from "react";
 import styled, { ThemeProvider } from "styled-components";
 import { useNavigate } from "react-router-dom";
 import Footer from "../../components/footer";
-import NoLoginHeader from "../../components/NoLoginHeader";
+import LoginHeader from "../../components/LoginHeader";
 
 const Container = styled.div`
   display: flex;
@@ -59,25 +59,26 @@ const Button = styled.button`
 `;
 
 const Cards = styled.div`
+  margin: auto;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  gap: 1rem;
   margin-top: 2rem;
-  width: 100%;
-  max-width: 1200px;
+  justify-items: center;
 `;
 
 const Card = styled.div`
   border-radius: 21.973px;
   background: linear-gradient(180deg, #f2e8c9 0%, #35648c 100%);
   box-shadow: 0px 3.516px 3.516px 0px rgba(0, 0, 0, 0.25);
-  padding: 1.5rem;
+  padding: 1rem;
   text-align: left;
+  width: 19.5rem;
 `;
 
 const CardImage = styled.div`
   width: 100%;
-  height: 200px;
+  height: 150px;
   background: lightgray;
   border-radius: 10px;
   margin-bottom: 1rem;
@@ -85,25 +86,37 @@ const CardImage = styled.div`
 
 const CardTitle = styled.h3`
   color: #fff;
-  font-size: 18px;
+  font-size: 17.579px;
   font-weight: 500;
-  margin-bottom: 0.5rem;
+  margin-left: 0.5rem;
+  width: 70%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
-const CardDescription = styled.span`
+const CardDescription = styled.div`
+  position: relative;
   color: #fff;
-  font-size: 14px;
+  font-size: 14.063px;
   font-weight: 400;
+  width: 95%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: -0.3rem;
+  margin-left: 0.5rem;
 `;
 
-const CardCategory = styled.span`
+const CardCategory = styled.div`
   color: #fff;
-  font-size: 12px;
+  font-size: 11.426px;
   font-weight: 300;
   position: absolute;
-  margin-top: -2.2rem;
-  margin-left: 8rem;
+  margin-top: -3.2rem;
+  margin-left: 13.8rem;
   text-align: right;
+  width: 3rem;
 `;
 
 const ViewMoreContainer = styled.div`
@@ -123,12 +136,48 @@ const ViewMoreButton = styled.button`
 `;
 
 const cardData = [
-  { title: "쉼 활동 이름", description: "소개글", category: "분류 카테고리" },
-  { title: "쉼 활동 이름", description: "소개글", category: "카테고리" },
-  { title: "쉼 활동 이름", description: "소개글", category: "카테고리" },
-  { title: "쉼 활동 이름", description: "소개글", category: "카테고리" },
-  { title: "쉼 활동 이름", description: "소개글", category: "카테고리" },
-  { title: "쉼 활동 이름", description: "소개글", category: "카테고리" },
+  {
+    title: "안녕",
+    description: "힐링인데",
+    category: "힐링",
+    location: "서울",
+    district: "강남구",
+  },
+  {
+    title: "가",
+    description: "장소 소개",
+    category: "휴식 장소",
+    location: "부산",
+    district: "해운대구",
+  },
+  {
+    title: "나",
+    description: "취미활동",
+    category: "취미",
+    location: "대구",
+    district: "수성구",
+  },
+  {
+    title: "다",
+    description: "힐링",
+    category: "힐링",
+    location: "서울",
+    district: "강북구",
+  },
+  {
+    title: "라",
+    description: "놀이",
+    category: "휴식 장소",
+    location: "부산",
+    district: "금정구",
+  },
+  {
+    title: "마",
+    description: "취미",
+    category: "취미",
+    location: "대구",
+    district: "북구",
+  },
 ];
 
 const NoLoginMain = () => {
@@ -136,7 +185,7 @@ const NoLoginMain = () => {
 
   return (
     <Container>
-      <NoLoginHeader />
+      <LoginHeader />
       <HeaderPlaceholder />
       <MainContent>
         <img
@@ -152,7 +201,7 @@ const NoLoginMain = () => {
         </Title>
         <ButtonContainer>
           <Button onClick={() => navigate("/login")}>로그인 하러 가기</Button>
-          <Button primary onClick={() => navigate("/register")}>
+          <Button primary onClick={() => navigate("/sign-up")}>
             회원가입 하러 가기
           </Button>
         </ButtonContainer>
