@@ -177,13 +177,17 @@ const KakaoPayButton = styled.button`
   align-items: center;
   justify-content: center;
   margin: 1.5rem auto 0;
+  position: relative;
 
   &:hover {
     background: #ffd700;
   }
 
   img {
-    margin-right: 0.5rem;
+    margin-right: 1rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    object-fit: contain;
   }
 `;
 
