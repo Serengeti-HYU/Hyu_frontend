@@ -248,7 +248,7 @@ const Main = () => {
               whileInView={{
                 opacity: 1,
                 y: 0,
-                transition: { delay: 0.5 },
+                transition: { delay: 0.3 },
               }}
             >
               <img
@@ -262,7 +262,7 @@ const Main = () => {
               <motion.p
                 id="title"
                 initial="hidden"
-                animate="visible"
+                whileInView="visible"
                 variants={variants}
                 transition={{ duration: 0.5, delay: 0.5 }}
               >
@@ -271,7 +271,7 @@ const Main = () => {
               <motion.p
                 id="title2"
                 initial="hidden"
-                animate="visible"
+                whileInView="visible"
                 variants={variants}
                 transition={{ duration: 0.5, delay: 1 }}
               >
@@ -280,7 +280,7 @@ const Main = () => {
               <motion.p
                 id="message"
                 initial="hidden"
-                animate="visible"
+                whileInView="visible"
                 variants={variants}
                 transition={{ duration: 0.5, delay: 1.5 }}
               >
@@ -296,14 +296,14 @@ const Main = () => {
               height={"101px"}
               id="logoFace"
               initial="hidden"
-              animate="visible"
+              whileInView="visible"
               variants={variants}
               transition={{ duration: 1, delay: 2 }}
             />
             <motion.p
               id="message2"
               initial="hidden"
-              animate="visible"
+              whileInView="visible"
               variants={variants}
               transition={{ duration: 1, delay: 2.5 }}
             >
@@ -334,12 +334,26 @@ const Main = () => {
             />
           </div>
           <div id="sec">
-            <p id="title">맞춤형 쉼</p>
-            <p id="message">
+            <motion.p
+              id="title"
+              initial="hidden"
+              whileInView="visible"
+              variants={variants}
+              transition={{ duration: 0.5, delay: 4 }}
+            >
+              맞춤형 쉼
+            </motion.p>
+            <motion.p
+              id="message"
+              initial="hidden"
+              whileInView="visible"
+              variants={variants}
+              transition={{ duration: 0.5, delay: 4.5 }}
+            >
               맞춤형 쉼은{" "}
               <span id="bold">성격 검사 결과를 통해 파악된 맞춤 쉼 활동을</span>
               <br /> AI가 카테고리 별, 가까운 장소로 정리해서 보여줍니다.
-            </p>
+            </motion.p>
           </div>
 
           <div id="message2">

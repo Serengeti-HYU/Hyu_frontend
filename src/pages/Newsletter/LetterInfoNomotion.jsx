@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { motion } from "framer-motion";
 
 const Container = styled.div`
   width: 90%;
@@ -57,74 +56,31 @@ const LetterPic = styled.div`
 `;
 
 const LetterInfo = () => {
-  const variants = {
-    hidden: { opacity: 0 },
-    visible: { opacity: 1 },
-  };
-
-  const img1 = {
-    hidden: { x: -100, opacity: 0 },
-    visible: { x: 0, opacity: 1 },
-  };
-  const img2 = {
-    hidden: { x: -100, y: 100, opacity: 0 },
-    visible: { x: 0, y: 0, opacity: 1 },
-  };
-  const img3 = {
-    hidden: { y: 100, opacity: 0 },
-    visible: { y: 0, opacity: 1 },
-  };
   return (
     <Container>
-      <motion.div
-        id="title"
-        initial="hidden"
-        whileInView="visible"
-        variants={variants}
-        transition={{ duration: 0.5, delay: 3 }}
-      >
-        휴~ 레터
-      </motion.div>
-      <motion.div
-        id="message"
-        initial="hidden"
-        whileInView="visible"
-        variants={variants}
-        transition={{ duration: 0.5, delay: 3.5 }}
-      >
+      <div id="title">휴~ 레터</div>
+      <div id="message">
         매주 쉬는 날 뭐하지? 하는 고민을 덜어주기 위해서 <br />한 주에 한 번{" "}
         <span id="hyu">휴~레터</span>가 쉼 활동을 추천해 줍니다.
-      </motion.div>
+      </div>
       <LetterPic>
-        <motion.img
+        <img
           src={`${process.env.PUBLIC_URL}/assets/newsletter/letter1.png`}
           width="119.917px"
           height="88.904px"
           id="letter1"
-          initial="hidden"
-          whileInView="visible"
-          variants={img1}
-          transition={{ type: "spring", duration: 1.5, delay: 3.5 }}
         />
-        <motion.img
+        <img
           src={`${process.env.PUBLIC_URL}/assets/newsletter/letter2.png`}
           width="237.553px"
           height="211px"
           id="letter2"
-          initial="hidden"
-          whileInView="visible"
-          variants={img2}
-          transition={{ type: "spring", duration: 1.5, delay: 3.5 }}
         />
-        <motion.img
+        <img
           src={`${process.env.PUBLIC_URL}/assets/newsletter/letter3.png`}
           width="416.289px"
           height="444.92px"
           id="letter3"
-          initial="hidden"
-          whileInView="visible"
-          variants={img3}
-          transition={{ type: "spring", duration: 1.5, delay: 3.5 }}
         />
       </LetterPic>
     </Container>

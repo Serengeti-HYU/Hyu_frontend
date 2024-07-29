@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import styled from "styled-components";
-import LetterInfo from "./LetterInfo";
+import LetterInfoNomotion from "./LetterInfoNomotion";
 import EmailInput from "./EmailInput";
 import LetterComplete from "./LetterComplete";
 import Letter from "./Letter";
@@ -135,7 +135,7 @@ const NewsletterPage = () => {
     <Container>
       <LoginHeader />
       <div>
-        <LetterInfo />
+        <LetterInfoNomotion />
         <LetterInfo2>
           <RoundText id="one">휴일에 할 쉼, 힐링 활동</RoundText>
           <RoundText id="two">
