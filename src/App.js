@@ -27,6 +27,7 @@ import Record1 from "./pages/Emotion/Record1";
 import Record2 from "./pages/Emotion/Record2";
 import Customizing from "./pages/Emotion/Customizing";
 import NewsletterPage from "./pages/Newsletter/NewsletterPage";
+import EmotionContext, { EmotionProvider } from "./pages/Emotion/EmotionContext";
 
 function App() {
   return (
@@ -59,6 +60,7 @@ function App() {
         <Route path="/record1" element={<Record1 />} />
         <Route path="/record2" element={<Record2 />} />
         <Route path="/customizing" element={<Customizing />} />
+        <Route path="/emotioncontext" element={<EmotionProvider />} />
       </Routes>
     </BrowserRouter>
   );

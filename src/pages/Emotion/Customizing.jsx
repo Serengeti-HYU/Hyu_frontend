@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import Footer from "../../components/footer";
 import LoginHeader from "../../components/LoginHeader";
+import { EmotionContext } from "./EmotionContext";
 
 const Container = styled.div`
   display: flex;
@@ -55,8 +56,8 @@ const Mouth = styled.img`
   bottom: 20%;  
   width: ${props => 
     props.isSmall ? '2rem' : 
-    props.isLarge ? '4rem' : 
-    props.isSmaller ? '1.5rem' : 
+    props.isLarge ? '3rem' : 
+    props.isSmaller ? '3rem' : 
     '3rem'}; 
   height: auto;
 `;
@@ -81,7 +82,7 @@ const CustomizationSection = styled.div`
   height: 15rem;
   border: 0.125rem solid #35648c;
   border-radius: 1rem;
-  overflow-y: auto;
+  overflow-y: auto;  /* Fix overflow */
   padding: 1rem;
   box-sizing: border-box;
 
@@ -146,6 +147,7 @@ const SaveButton = styled.button`
 `;
 
 const Customizing = () => {
+  const { setCustomEmotion } = useContext(EmotionContext);
   const [selectedEye, setSelectedEye] = useState(null);
   const [selectedMouth, setSelectedMouth] = useState(null);
   const [selectedEtc, setSelectedEtc] = useState(null);
@@ -189,6 +191,11 @@ const Customizing = () => {
     }
   };
 
+  const handleSave = () => {
+    setCustomEmotion({ selectedEye, selectedMouth, selectedEtc });
+    navigate("/record2");
+  };
+
   return (
     <Container>
       <LoginHeader />
@@ -211,7 +218,6 @@ const Customizing = () => {
         </FaceContainer>
         <CustomizationContainer>
           <CustomizationSection>
-            <SectionTitle>눈</SectionTitle>
             <OptionsContainer>
               {eyes.map((eye, index) => (
                 <Option key={index} onClick={() => setSelectedEye(eye)}>
@@ -221,7 +227,6 @@ const Customizing = () => {
             </OptionsContainer>
           </CustomizationSection>
           <CustomizationSection>
-            <SectionTitle>입</SectionTitle>
             <OptionsContainer>
               {mouths.map((mouth, index) => (
                 <Option key={index} onClick={() => setSelectedMouth(mouth)}>
@@ -238,7 +243,6 @@ const Customizing = () => {
             </OptionsContainer>
           </CustomizationSection>
           <CustomizationSection>
-            <SectionTitle>꾸미기</SectionTitle>
             <OptionsContainer>
               {etcs.map((etc, index) => (
                 <Option key={index} onClick={() => setSelectedEtc(etc)}>
@@ -250,7 +254,7 @@ const Customizing = () => {
         </CustomizationContainer>
         <div>
           <SaveButton onClick={() => navigate(-1)}>이전으로</SaveButton>
-          <SaveButton>저장하기</SaveButton>
+          <SaveButton onClick={handleSave}>저장하기</SaveButton>
         </div>
       </Content>
       <Footer />
