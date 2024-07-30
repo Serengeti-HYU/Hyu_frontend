@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import styled from "styled-components";
-import LetterInfo from "./LetterInfo";
+import LetterInfoNomotion from "./LetterInfoNomotion";
 import EmailInput from "./EmailInput";
 import LetterComplete from "./LetterComplete";
 import Letter from "./Letter";
@@ -10,10 +10,10 @@ import Footer from "../../components/footer";
 
 const Container = styled.div`
   display: flex;
-  width: 100%;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  min-height: 100vh;
   background: #fff;
 `;
 
@@ -134,49 +134,51 @@ const NewsletterPage = () => {
   return (
     <Container>
       <LoginHeader />
-      <LetterInfo />
-      <LetterInfo2>
-        <RoundText id="one">휴일에 할 쉼, 힐링 활동</RoundText>
-        <RoundText id="two">
-          쉬면서 보기 좋은 추천 Vlog, ASMR, 힐링 플레이리스트
-        </RoundText>
-        <RoundText id="three">한 주를 마무리해주는 문구</RoundText>
-      </LetterInfo2>
-      <SendSetting>
-        <Logo
-          src={`${process.env.PUBLIC_URL}/assets/logo/FaceLogoBlue.png`}
-          width={"70px"}
-          id="logo"
-        />
-        <SubTitle>휴~레터가 찾아갈게요</SubTitle>
-        <EmailInput />
-        <CollectPersonalInfo>
-          <PrivacyConsent>
-            <Checkbox type="checkbox" />
-            <span id="text">개인정보 수집 및 이용 동의(필수)</span>
-            <ViewTerms>약관보기</ViewTerms>
-          </PrivacyConsent>
-        </CollectPersonalInfo>
-        <LetterContainer>
-          <Envelope
-            src={`${process.env.PUBLIC_URL}/assets/newsletter/envelope.svg`}
-            width={"1170.881px"}
-            id="back"
+      <div>
+        <LetterInfoNomotion />
+        <LetterInfo2>
+          <RoundText id="one">휴일에 할 쉼, 힐링 활동</RoundText>
+          <RoundText id="two">
+            쉬면서 보기 좋은 추천 Vlog, ASMR, 힐링 플레이리스트
+          </RoundText>
+          <RoundText id="three">한 주를 마무리해주는 문구</RoundText>
+        </LetterInfo2>
+        <SendSetting>
+          <Logo
+            src={`${process.env.PUBLIC_URL}/assets/logo/FaceLogoBlue.png`}
+            width={"70px"}
+            id="logo"
           />
-          <LetterStyled>
-            {isLetterComplete ? (
-              <LetterComplete toggleLetter={toggleLetter} />
-            ) : (
-              <Letter toggleLetter={toggleLetter} />
-            )}
-          </LetterStyled>
-          <Front
-            src={`${process.env.PUBLIC_URL}/assets/newsletter/envelopefront.svg`}
-            width={"1170.881px"}
-            id="front"
-          />
-        </LetterContainer>
-      </SendSetting>
+          <SubTitle>휴~레터가 찾아갈게요</SubTitle>
+          <EmailInput />
+          <CollectPersonalInfo>
+            <PrivacyConsent>
+              <Checkbox type="checkbox" />
+              <span id="text">개인정보 수집 및 이용 동의(필수)</span>
+              <ViewTerms>약관보기</ViewTerms>
+            </PrivacyConsent>
+          </CollectPersonalInfo>
+          <LetterContainer>
+            <Envelope
+              src={`${process.env.PUBLIC_URL}/assets/newsletter/envelope.svg`}
+              width={"1170.881px"}
+              id="back"
+            />
+            <LetterStyled>
+              {isLetterComplete ? (
+                <LetterComplete toggleLetter={toggleLetter} />
+              ) : (
+                <Letter toggleLetter={toggleLetter} />
+              )}
+            </LetterStyled>
+            <Front
+              src={`${process.env.PUBLIC_URL}/assets/newsletter/envelopefront.svg`}
+              width={"1170.881px"}
+              id="front"
+            />
+          </LetterContainer>
+        </SendSetting>
+      </div>
       <Footer />
     </Container>
   );

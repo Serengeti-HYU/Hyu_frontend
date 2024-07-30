@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 import Footer from "../../components/footer";
 import LoginHeader from "../../components/LoginHeader";
@@ -231,37 +232,83 @@ const Main = () => {
     navigate(path);
   };
 
+  const variants = {
+    hidden: { opacity: 0 },
+    visible: { opacity: 1 },
+  };
+
   return (
     <Container>
       <LoginHeader />
       <div>
         <div id="firstSec">
           <div id="sec">
-            <img
-              src={`${process.env.PUBLIC_URL}/assets/logo/LogoGra.png`}
-              width={"279px"}
-              height={"314px"}
-              id="logoGra"
-            />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{
+                opacity: 1,
+                y: 0,
+                transition: { delay: 0.3 },
+              }}
+            >
+              <img
+                src={`${process.env.PUBLIC_URL}/assets/logo/LogoGra.png`}
+                width={"279px"}
+                height={"314px"}
+                id="logoGra"
+              />
+            </motion.div>
             <div id="insideSec">
-              <p id="title">쉴 휴</p>
-              <p id="title2">쉴 때...뭐하세요?</p>
-              <p id="message">
+              <motion.p
+                id="title"
+                initial="hidden"
+                whileInView="visible"
+                variants={variants}
+                transition={{ duration: 0.5, delay: 0.5 }}
+              >
+                쉴 휴
+              </motion.p>
+              <motion.p
+                id="title2"
+                initial="hidden"
+                whileInView="visible"
+                variants={variants}
+                transition={{ duration: 0.5, delay: 1 }}
+              >
+                쉴 때...뭐하세요?
+              </motion.p>
+              <motion.p
+                id="message"
+                initial="hidden"
+                whileInView="visible"
+                variants={variants}
+                transition={{ duration: 0.5, delay: 1.5 }}
+              >
                 갓생, 일, 자기계발로 바쁜 현대 사회를 사는 현대인들,
                 <br /> 쉴 때 무엇을 해야하는지 까먹은 사람들에게
-              </p>
+              </motion.p>
             </div>
           </div>
           <div id="sec2">
-            <img
+            <motion.img
               src={`${process.env.PUBLIC_URL}/assets/logo/FaceLogoBlue.png`}
               width={"101px"}
               height={"101px"}
               id="logoFace"
+              initial="hidden"
+              whileInView="visible"
+              variants={variants}
+              transition={{ duration: 1, delay: 2 }}
             />
-            <p id="message2">
+            <motion.p
+              id="message2"
+              initial="hidden"
+              whileInView="visible"
+              variants={variants}
+              transition={{ duration: 1, delay: 2.5 }}
+            >
               휴~ 한숨 돌릴 수 있는 진정한 쉼을 위한 쉼 활동을 추천해드립니다.
-            </p>
+            </motion.p>
           </div>
         </div>
         <LetterInfo />
@@ -287,12 +334,26 @@ const Main = () => {
             />
           </div>
           <div id="sec">
-            <p id="title">맞춤형 쉼</p>
-            <p id="message">
+            <motion.p
+              id="title"
+              initial="hidden"
+              whileInView="visible"
+              variants={variants}
+              transition={{ duration: 0.5, delay: 4 }}
+            >
+              맞춤형 쉼
+            </motion.p>
+            <motion.p
+              id="message"
+              initial="hidden"
+              whileInView="visible"
+              variants={variants}
+              transition={{ duration: 0.5, delay: 4.5 }}
+            >
               맞춤형 쉼은{" "}
               <span id="bold">성격 검사 결과를 통해 파악된 맞춤 쉼 활동을</span>
               <br /> AI가 카테고리 별, 가까운 장소로 정리해서 보여줍니다.
-            </p>
+            </motion.p>
           </div>
 
           <div id="message2">
