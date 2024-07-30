@@ -1,8 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useContext, useRef, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import Footer from "../../components/footer";
 import LoginHeader from "../../components/LoginHeader";
+import { EmotionContext } from "./EmotionContext";
 
 const Container = styled.div`
   display: flex;
@@ -153,12 +154,39 @@ const Circle = styled.div`
   justify-content: center;
   align-items: center;
   font-size: 1.5rem;
+  position: relative;
 
   @media (max-width: 768px) {
     width: 4rem;
     height: 4rem;
     font-size: 1.25rem;
   }
+`;
+
+const Face = styled.div`
+  width: 6rem;
+  height: 6rem;
+  position: relative;
+`;
+
+const Eye = styled.img`
+  position: absolute;
+  top: 30%;
+  width: 1.5rem;
+  height: auto;
+`;
+
+const Mouth = styled.img`
+  position: absolute;
+  bottom: 20%;
+  width: 2rem;
+  height: auto;
+`;
+
+const Etc = styled.img`
+  position: absolute;
+  width: 1rem;
+  height: auto;
 `;
 
 const EmotionBox = styled.div`
@@ -340,6 +368,7 @@ const ModalButton = styled.button`
 `;
 
 const Record2 = () => {
+  const { customEmotion } = useContext(EmotionContext);
   const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState(new Date(2024, 0, 19));
   const [selectedEmotion, setSelectedEmotion] = useState("😐");
@@ -427,7 +456,17 @@ const Record2 = () => {
         <Line />
         <TopContainer>
           <CircleContainer>
-            <Circle>{selectedEmotion}</Circle>
+            <Circle>
+              {customEmotion ? (
+                <Face>
+                  {customEmotion.selectedEye && <Eye src={customEmotion.selectedEye} alt="Eye" />}
+                  {customEmotion.selectedMouth && <Mouth src={customEmotion.selectedMouth} alt="Mouth" />}
+                  {customEmotion.selectedEtc && <Etc src={customEmotion.selectedEtc} alt="Etc" />}
+                </Face>
+              ) : (
+                selectedEmotion
+              )}
+            </Circle>
           </CircleContainer>
           <MemoContainer>
             <MemoInput
