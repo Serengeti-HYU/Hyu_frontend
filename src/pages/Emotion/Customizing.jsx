@@ -57,7 +57,7 @@ const Mouth = styled.img`
   width: ${props => 
     props.isSmall ? '2rem' : 
     props.isLarge ? '3rem' : 
-    props.isSmaller ? '3rem' : 
+    props.isSmaller ? '1.5rem' : 
     '3rem'}; 
   height: auto;
 `;
@@ -126,10 +126,20 @@ const Option = styled.div`
   position: relative;
 `;
 
-const OptionImage = styled.img`
+const OptionImage = styled.img.attrs(props => ({
+  type: props.type,
+  isSmall: props.isSmall,
+  isSmaller: props.isSmaller,
+  isLarge: props.isLarge,
+}))`
   position: absolute;
-  width: ${props => props.type === 'eye' ? '2.5rem' : 'auto'}; /* 눈 사이즈 키움 */
-  height: ${props => props.type === 'eye' ? 'auto' : '1rem'}; /* 입 사이즈 조정 */
+  width: ${props => 
+    props.type === 'eye' ? '5rem' : 
+    props.isSmall ? '2rem' : 
+    props.isSmaller ? '2rem' : 
+    props.isLarge ? '3rem' : 
+    '1rem'}; /* 눈 사이즈 키움, 입 사이즈 조정 */
+  height: auto;
   top: ${props => props.type === 'eye' ? '30%' : 'auto'};
   bottom: ${props => props.type === 'mouth' ? '20%' : 'auto'};
 `;
@@ -178,7 +188,7 @@ const Customizing = () => {
       case 1:  
         return { 
           top: '40%', 
-          left: '60%', 
+          left: '70%',
           transform: 'translate(-50%, 0)', 
           width: '0.7rem'
         };
@@ -190,6 +200,7 @@ const Customizing = () => {
         };
     }
   };
+  
 
   const handleSave = () => {
     setCustomEmotion({ selectedEye, selectedMouth, selectedEtc });
@@ -209,8 +220,6 @@ const Customizing = () => {
                 src={selectedMouth} 
                 alt="Mouth" 
                 isSmall={selectedMouth === "../../../assets/mouths/mouth4.png"} 
-                isLarge={selectedMouth === "../../../assets/mouths/mouth1.png"}
-                isSmaller={selectedMouth === "../../../assets/mouths/mouth3.png"}
               />
             )}
             {selectedEtc && <Etc src={selectedEtc} alt="Etc" style={getEtcStyle(etcs.indexOf(selectedEtc))} />}
@@ -235,7 +244,6 @@ const Customizing = () => {
                     alt={`Mouth ${index + 1}`} 
                     type="mouth" 
                     isSmall={mouth === "../../../assets/mouths/mouth4.png"} 
-                    isLarge={mouth === "../../../assets/mouths/mouth1.png"}
                     isSmaller={mouth === "../../../assets/mouths/mouth3.png"}
                   />
                 </Option>

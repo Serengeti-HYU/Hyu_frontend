@@ -27,42 +27,43 @@ import Record1 from "./pages/Emotion/Record1";
 import Record2 from "./pages/Emotion/Record2";
 import Customizing from "./pages/Emotion/Customizing";
 import NewsletterPage from "./pages/Newsletter/NewsletterPage";
-import EmotionContext, { EmotionProvider } from "./pages/Emotion/EmotionContext";
+import { EmotionProvider } from "./pages/Emotion/EmotionContext";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Main routes */}
-        <Route path="/" element={<Main />} />
-        <Route path="/noLoginmain" element={<NoLoginMain />} />
-        <Route path="/find-id" element={<FindID />} />
-        <Route path="/find-password" element={<FindPassword />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/sign-up" element={<SignUp />} />
-        <Route path="/sign-up-complete" element={<SignUpComplete />} />
-        <Route path="/premium" element={<Premium />} />
-        <Route path="/nopremium" element={<NoPremium />} />
+    <EmotionProvider>
+      <BrowserRouter>
+        <Routes>
+          {/* Main routes */}
+          <Route path="/" element={<Main />} />
+          <Route path="/noLoginmain" element={<NoLoginMain />} />
+          <Route path="/find-id" element={<FindID />} />
+          <Route path="/find-password" element={<FindPassword />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/sign-up-complete" element={<SignUpComplete />} />
+          <Route path="/premium" element={<Premium />} />
+          <Route path="/nopremium" element={<NoPremium />} />
 
-        {/* Newsletter routes */}
-        <Route path="/rest-activity" element={<RestActivity />} />
-        <Route path="/rest-activity-detail" element={<RestActivityDetail />} />
-        <Route path="/newsletter-page" element={<NewsletterPage />} />
+          {/* Newsletter routes */}
+          <Route path="/rest-activity" element={<RestActivity />} />
+          <Route path="/rest-activity-detail" element={<RestActivityDetail />} />
+          <Route path="/newsletter-page" element={<NewsletterPage />} />
 
-        {/* Profile routes */}
-        <Route path="/mypage" element={<Mypage />} />
-        <Route path="/profile-edit" element={<ProfileEdit />} />
-        <Route path="/verify-before-edit" element={<VerifyBeforeEdit />} />
+          {/* Profile routes */}
+          <Route path="/mypage" element={<Mypage />} />
+          <Route path="/profile-edit" element={<ProfileEdit />} />
+          <Route path="/verify-before-edit" element={<VerifyBeforeEdit />} />
 
-        {/* Emotion routes */}
-        <Route path="/personality-test" element={<PersonalityTest />} />
-        <Route path="/test-result" element={<TestResult />} />
-        <Route path="/record1" element={<Record1 />} />
-        <Route path="/record2" element={<Record2 />} />
-        <Route path="/customizing" element={<Customizing />} />
-        <Route path="/emotioncontext" element={<EmotionProvider />} />
-      </Routes>
-    </BrowserRouter>
+          {/* Emotion routes */}
+          <Route path="/personality-test" element={<PersonalityTest />} />
+          <Route path="/test-result" element={<TestResult />} />
+          <Route path="/record1" element={<Record1 />} />
+          <Route path="/record2" element={<Record2 />} />
+          <Route path="/customizing" element={<Customizing />} />
+        </Routes>
+      </BrowserRouter>
+    </EmotionProvider>
   );
 }
 
