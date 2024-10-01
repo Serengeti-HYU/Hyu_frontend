@@ -5,14 +5,13 @@ import axios from "axios";
 
 const cardData = [
   {
-    title: "안녕gkgkgkgkgkgkgkgkgk",
+    title: "안녕gkgkgkgkgk",
     description: "힐링인데",
     category: "힐링",
   },
   {
     title: "가",
-    description:
-      "장소 소개하려고요가나다아라라라라라ㅏㄹ라라라라라라라라라라라라라라라랄라라라라라라라랄랄라라라라라라ㅏㅏㄹ라",
+    description: "장소 소개하려고요",
     category: "휴식 장소",
   },
   { title: "나", description: "카테고리 한국어로 뜨게 할래", category: "취미" },
@@ -28,12 +27,35 @@ const Storage = () => {
     navigate(`/rest-activity-detail`);
   };
 
-  const [selectedCategory, setSelectedCategory] = useState("전체보기");
+  const [scrabList, setScrabList] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const username = "hong";
+  const token = localStorage.getItem("tempToken");
 
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(`/${username}/hue-activity`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
+        setScrabList(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
+
+  const [selectedCategory, setSelectedCategory] = useState("전체보기");
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
   };
-
   const filteredCards = cardData.filter((card) =>
     selectedCategory === "전체보기" ? true : card.category === selectedCategory
   );
@@ -61,7 +83,6 @@ const Storage = () => {
     </Container>
   );
 };
-
 export default Storage;
 
 const Container = styled.div`
