@@ -1,6 +1,68 @@
 // EmotionRecords.js
 import React from "react";
+import { useState, useEffect } from "react";
 import styled from "styled-components";
+import axios from "axios";
+
+const EmotionRecords = () => {
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  const formattedDate = `${year}-${month}-${day}`;
+
+  const [recentRecords, setRecentRecords] = useState([]);
+  // 임시
+  const username = "hong";
+  const token = localStorage.getItem("tempToken");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`/${username}/hue-records`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
+        setRecentRecords(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  return (
+    <Container>
+      <EmotionContainer>
+        {[...recentRecords].reverse().map((record, index) => {
+          const recordDate = record.recordDate;
+          return recordDate === formattedDate ? (
+            <TodayEmotionCard key={index}>
+              <DateText $isToday>{recordDate}</DateText>
+              <TodayMark>Today</TodayMark>
+              <EmotionFace src={record.emotionImg} />
+              <EmotionMemo $isToday>
+                <div id="content">{record.memo || "todaymemo..."}</div>
+              </EmotionMemo>
+            </TodayEmotionCard>
+          ) : (
+            <EmotionCard key={index}>
+              <DateText>{recordDate}</DateText>
+              <EmotionFace src={record.emotionImg} />
+              <EmotionMemo>
+                <div id="content">{record.memo || "memo..."}</div>
+              </EmotionMemo>
+            </EmotionCard>
+          );
+        })}
+      </EmotionContainer>
+    </Container>
+  );
+};
+export default EmotionRecords;
 
 const Container = styled.div`
   margin: auto;
@@ -9,12 +71,14 @@ const Container = styled.div`
 `;
 
 const EmotionContainer = styled.div`
+  width: 90%;
+  margin: auto;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
 `;
 
 const EmotionCard = styled.div`
-  width: 16.5rem;
+  width: 30.5%;
   height: 14.7rem;
   border-radius: 14.265px;
   border: 0.848px solid #35648c;
@@ -71,8 +135,7 @@ const EmotionMemo = styled.div`
     text-overflow: ellipsis;
   }
 `;
-
-const EmotionFace = styled.div`
+const EmotionFace = styled.img`
   width: 84.776px;
   height: 84.776px;
   background-color: #fff;
@@ -81,39 +144,3 @@ const EmotionFace = styled.div`
   margin-bottom: 0.5rem;
   margin-top: 1rem;
 `;
-
-const EmotionRecords = () => {
-  return (
-    <Container>
-      <EmotionContainer>
-        <EmotionCard>
-          <DateText>01.18</DateText>
-          <EmotionFace />
-          <EmotionMemo>
-            <div id="content">memo............</div>
-          </EmotionMemo>
-        </EmotionCard>
-        <EmotionCard>
-          <DateText>01.19</DateText>
-          <EmotionFace />
-          <EmotionMemo>
-            <div id="content">
-              memo............ffaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahjshjsahdufhduhfjkhdsjhfjfhhsjghsdjgdhjfgdhsgfyewfgdshjfgyghjsdfgdhjdgsgfyfgs
-              dhghjgh
-            </div>
-          </EmotionMemo>
-        </EmotionCard>
-        <TodayEmotionCard>
-          <DateText $isToday>01.20</DateText>
-          <TodayMark>Today</TodayMark>
-          <EmotionFace />
-          <EmotionMemo $isToday>
-            <div id="content">memo............</div>
-          </EmotionMemo>
-        </TodayEmotionCard>
-      </EmotionContainer>
-    </Container>
-  );
-};
-
-export default EmotionRecords;

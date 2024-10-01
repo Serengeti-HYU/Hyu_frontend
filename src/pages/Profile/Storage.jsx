@@ -1,6 +1,68 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
+
+const cardData = [
+  {
+    title: "안녕gkgkgkgkgkgkgkgkgk",
+    description: "힐링인데",
+    category: "힐링",
+  },
+  {
+    title: "가",
+    description:
+      "장소 소개하려고요가나다아라라라라라ㅏㄹ라라라라라라라라라라라라라라라랄라라라라라라라랄랄라라라라라라ㅏㅏㄹ라",
+    category: "휴식 장소",
+  },
+  { title: "나", description: "카테고리 한국어로 뜨게 할래", category: "취미" },
+  { title: "다", description: "ㅎㅇ", category: "휴식 장소" },
+  { title: "다", description: "ㅃㅇ", category: "휴식 장소" },
+  { title: "다", description: "내용", category: "휴식 장소" },
+];
+
+const Storage = () => {
+  const navigate = useNavigate();
+
+  const gotoRestActivityDetail = () => {
+    navigate(`/rest-activity-detail`);
+  };
+
+  const [selectedCategory, setSelectedCategory] = useState("전체보기");
+
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+  };
+
+  const filteredCards = cardData.filter((card) =>
+    selectedCategory === "전체보기" ? true : card.category === selectedCategory
+  );
+
+  return (
+    <Container>
+      <FilterContainer>
+        <Filter onChange={handleCategoryChange} value={selectedCategory}>
+          <option value="전체보기">전체보기</option>
+          <option value="취미">취미</option>
+          <option value="휴식 장소">휴식 장소</option>
+          <option value="힐링">힐링</option>
+        </Filter>
+      </FilterContainer>
+      <Cards>
+        {filteredCards.map((card, index) => (
+          <Card key={index} onClick={gotoRestActivityDetail}>
+            <CardImage />
+            <CardTitle>{card.title}</CardTitle>
+            <CardDescription>{card.description}</CardDescription>
+            <CardCategory>{card.category}</CardCategory>
+          </Card>
+        ))}
+      </Cards>
+    </Container>
+  );
+};
+
+export default Storage;
 
 const Container = styled.div`
   display: flex;
@@ -83,64 +145,3 @@ const CardCategory = styled.div`
   text-align: right;
   width: 3rem;
 `;
-
-const cardData = [
-  {
-    title: "안녕gkgkgkgkgkgkgkgkgk",
-    description: "힐링인데",
-    category: "힐링",
-  },
-  {
-    title: "가",
-    description:
-      "장소 소개하려고요가나다아라라라라라ㅏㄹ라라라라라라라라라라라라라라라랄라라라라라라라랄랄라라라라라라ㅏㅏㄹ라",
-    category: "휴식 장소",
-  },
-  { title: "나", description: "카테고리 한국어로 뜨게 할래", category: "취미" },
-  { title: "다", description: "ㅎㅇ", category: "휴식 장소" },
-  { title: "다", description: "ㅃㅇ", category: "휴식 장소" },
-  { title: "다", description: "내용", category: "휴식 장소" },
-];
-
-const Storage = () => {
-  const navigate = useNavigate();
-
-  const gotoRestActivityDetail = () => {
-    navigate(`/rest-activity-detail`);
-  };
-
-  const [selectedCategory, setSelectedCategory] = useState("전체보기");
-
-  const handleCategoryChange = (e) => {
-    setSelectedCategory(e.target.value);
-  };
-
-  const filteredCards = cardData.filter((card) =>
-    selectedCategory === "전체보기" ? true : card.category === selectedCategory
-  );
-
-  return (
-    <Container>
-      <FilterContainer>
-        <Filter onChange={handleCategoryChange} value={selectedCategory}>
-          <option value="전체보기">전체보기</option>
-          <option value="취미">취미</option>
-          <option value="휴식 장소">휴식 장소</option>
-          <option value="힐링">힐링</option>
-        </Filter>
-      </FilterContainer>
-      <Cards>
-        {filteredCards.map((card, index) => (
-          <Card key={index} onClick={gotoRestActivityDetail}>
-            <CardImage />
-            <CardTitle>{card.title}</CardTitle>
-            <CardDescription>{card.description}</CardDescription>
-            <CardCategory>{card.category}</CardCategory>
-          </Card>
-        ))}
-      </Cards>
-    </Container>
-  );
-};
-
-export default Storage;

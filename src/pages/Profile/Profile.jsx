@@ -15,16 +15,16 @@ const Profile = () => {
 
   const [isPremium, setIsPremium] = useState(true);
 
-  const [userInfo, setUserInfo] = useState([]); // 배열에 받아서 저장
+  const [userInfo, setUserInfo] = useState([]);
   const [loading, setLoading] = useState(false);
 
   // 임시
   const username = "hong";
   localStorage.setItem(
-    "token",
-    "eyJhbGciOiJIUzI1NiJ9.eyJwaG9uZSI6IjEyMzQ1Njc4OTEiLCJlbWFpbCI6ImhvbmdAbG9jYWwuY29tIiwic3ViIjoiaG9uZyIsImlhdCI6MTcyNzYxOTEyNiwiZXhwIjoxNzI3NjM3MTI2fQ.pM11LsOlJQCPB-AiVvS-jj6ldKnS_7CO7UkXGuFhtpc"
+    "tempToken",
+    "eyJhbGciOiJIUzI1NiJ9.eyJwaG9uZSI6IjEyMzQ1Njc4OTEiLCJlbWFpbCI6ImhvbmdAbG9jYWwuY29tIiwic3ViIjoiaG9uZyIsImlhdCI6MTcyNzc5MTc5MCwiZXhwIjoxNzI3ODA5NzkwfQ.qeEngs_jjG39QDjmj8LoY0wo-kZkQrXoZnSV-Qj14og"
   );
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("tempToken");
 
   useEffect(() => {
     const fetchData = async () => {
