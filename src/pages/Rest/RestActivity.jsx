@@ -3,53 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import LoginHeader from "../../components/LoginHeader";
 import Footer from "../../components/footer";
-import data from "./locationdata.json"; // 시/도와 시군구 데이터
-
-// 카드데이터 샘플
-const cardData = [
-  {
-    title: "안녕",
-    description: "힐링인데",
-    category: "힐링",
-    location: "서울",
-    district: "강남구",
-  },
-  {
-    title: "가",
-    description: "장소 소개",
-    category: "휴식 장소",
-    location: "부산",
-    district: "해운대구",
-  },
-  {
-    title: "나",
-    description: "취미활동",
-    category: "취미",
-    location: "대구",
-    district: "수성구",
-  },
-  {
-    title: "다",
-    description: "힐링",
-    category: "힐링",
-    location: "서울",
-    district: "강북구",
-  },
-  {
-    title: "라",
-    description: "놀이",
-    category: "휴식 장소",
-    location: "부산",
-    district: "금정구",
-  },
-  {
-    title: "마",
-    description: "취미",
-    category: "취미",
-    location: "대구",
-    district: "북구",
-  },
-];
+import axios from "axios";
 
 const RestActivity = () => {
   const navigate = useNavigate();
@@ -64,41 +18,44 @@ const RestActivity = () => {
     navigate(`/premium`);
   };
 
-  const [selectedLocation, setSelectedLocation] = useState("");
-  const [selectedDistrict, setSelectedDistrict] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("전체보기");
-  const [filteredCards, setFilteredCards] = useState(cardData);
-  const [districtOptions, setDistrictOptions] = useState([]);
+  const [recommList, setRecommList] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // 임시
+  const token = localStorage.getItem("tempToken");
 
   useEffect(() => {
-    const locationData = data.find(
-      (province) => province.name === selectedLocation
-    );
-    setDistrictOptions(locationData ? locationData.subArea : []);
-    setSelectedDistrict(""); // Reset district when location changes
-  }, [selectedLocation]);
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(`/hue-activity/recommend`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
+        setRecommList(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
 
-  const handleLocationChange = (e) => {
-    setSelectedLocation(e.target.value);
-  };
-
-  const handleDistrictChange = (e) => {
-    setSelectedDistrict(e.target.value);
-  };
+  const [selectedCategory, setSelectedCategory] = useState("전체보기");
+  const [filteredCards, setFilteredCards] = useState(recommList);
 
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
   };
 
   const handleFilterClick = () => {
-    const filtered = cardData.filter((card) => {
-      const matchLocation =
-        !selectedLocation || card.location === selectedLocation;
-      const matchDistrict =
-        !selectedDistrict || card.district === selectedDistrict;
-      const matchCategory =
-        selectedCategory === "전체보기" || card.category === selectedCategory;
-      return matchLocation && matchDistrict && matchCategory;
+    const filtered = recommList.filter((card) => {
+      return (
+        selectedCategory === "전체보기" || card.category === selectedCategory
+      );
     });
     setFilteredCards(filtered);
   };
@@ -120,27 +77,11 @@ const RestActivity = () => {
           AI가 카테고리 별, 00님과 가까운 장소로 정렬해서 보여드립니다.
         </Description>
         <SelectContainer>
-          <Select value={selectedLocation} onChange={handleLocationChange}>
-            <option value="">시/도</option>
-            {data.map((item, index) => (
-              <option key={index} value={item.name}>
-                {item.name}
-              </option>
-            ))}
-          </Select>
-          <Select value={selectedDistrict} onChange={handleDistrictChange}>
-            <option value="">시/구/군</option>
-            {districtOptions.map((district, index) => (
-              <option key={index} value={district}>
-                {district}
-              </option>
-            ))}
-          </Select>
           <Select value={selectedCategory} onChange={handleCategoryChange}>
             <option value="전체보기">전체보기</option>
-            <option value="취미">취미</option>
-            <option value="휴식 장소">휴식 장소</option>
-            <option value="힐링">힐링</option>
+            <option value="교육/체험">교육/체험</option>
+            <option value="축제-문화/예술">축제-문화/예술</option>
+            <option value="축제-기타">축제-기타</option>
           </Select>
         </SelectContainer>
         <Button type="button" onClick={handleFilterClick}>
@@ -150,8 +91,8 @@ const RestActivity = () => {
           {filteredCards.map((card, index) => (
             <Card key={index} onClick={gotoRestActivityDetail}>
               <CardImage />
-              <CardTitle>{card.title}</CardTitle>
-              <CardDescription>{card.description}</CardDescription>
+              <CardTitle>{card.restName}</CardTitle>
+              <CardDescription>{card.place}</CardDescription>
               <CardCategory>{card.category}</CardCategory>
             </Card>
           ))}
@@ -239,7 +180,7 @@ const Select = styled.select`
   padding: 0.5rem;
   font-size: 16px;
   border: none;
-  width: 7rem;
+  width: 10rem;
   color: #35648c;
   font-weight: 300;
 `;

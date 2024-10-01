@@ -15,16 +15,16 @@ const Profile = () => {
 
   const [isPremium, setIsPremium] = useState(true);
 
-  const [userInfo, setUserInfo] = useState([]); // 배열에 받아서 저장
+  const [userInfo, setUserInfo] = useState([]);
   const [loading, setLoading] = useState(false);
 
   // 임시
   const username = "hong";
   localStorage.setItem(
-    "token",
-    "eyJhbGciOiJIUzI1NiJ9.eyJwaG9uZSI6IjEyMzQ1Njc4OTEiLCJlbWFpbCI6ImhvbmdAbG9jYWwuY29tIiwic3ViIjoiaG9uZyIsImlhdCI6MTcyNzYxOTEyNiwiZXhwIjoxNzI3NjM3MTI2fQ.pM11LsOlJQCPB-AiVvS-jj6ldKnS_7CO7UkXGuFhtpc"
+    "tempToken",
+    "eyJhbGciOiJIUzI1NiJ9.eyJwaG9uZSI6IjEyMzQ1Njc4OTEiLCJlbWFpbCI6ImhvbmdAbG9jYWwuY29tIiwic3ViIjoiaG9uZyIsImlhdCI6MTcyNzc5MTc5MCwiZXhwIjoxNzI3ODA5NzkwfQ.qeEngs_jjG39QDjmj8LoY0wo-kZkQrXoZnSV-Qj14og"
   );
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("tempToken");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,7 +37,7 @@ const Profile = () => {
           withCredentials: true,
         });
         setUserInfo(response.data);
-        console.log(userInfo);
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -60,16 +60,19 @@ const Profile = () => {
               {isPremium ? "premium 사용자" : "premium 구독하기"}
             </span>
           </PremiumBadge>
-          <InfoText>(이름)</InfoText>
+          <InfoText>(이름) {userInfo.name}</InfoText>
           <InfoText>
-            <span id="year">(생년)2002</span> <span id="month">(월)9 </span>
-            <span id="day">(일)23</span>
-            <span id="age">(나이)22</span>
+            <span id="year">(생년){userInfo.birthyear} </span>
+            <span id="month">(월){userInfo.birthmonth} </span>
+            <span id="day">(일){userInfo.birthday} </span>
+            <span id="age">(나이){userInfo.age}</span>
           </InfoText>
         </Wrapper>
       </ProfileWrapper>
       <ResultWrapper>
-        <Result>OO님은 성격 검사 결과 (유형이름)유형 입니다.</Result>
+        <Result>
+          {userInfo.name}님은 성격 검사 결과 ({userInfo.characterType}) 입니다.
+        </Result>
         <Button onClick={gotoTest}>재검사</Button>
       </ResultWrapper>
     </ProfileContainer>
@@ -132,7 +135,7 @@ const InfoText = styled.div`
   line-height: normal;
   margin-top: 3rem;
   #age {
-    margin-left: 4rem;
+    margin-left: 3rem;
   }
 `;
 const ResultWrapper = styled.div`

@@ -7,6 +7,45 @@ import Storage from "./Storage";
 import LoginHeader from "../../components/LoginHeader";
 import Footer from "../../components/footer";
 
+const MyPage = () => {
+  const navigate = useNavigate();
+
+  const gotoUpdateProfile = () => {
+    navigate(`/update-profile`);
+  };
+  const gotoRecordEmotion = () => {
+    navigate(`/record1`);
+  };
+
+  return (
+    <Container>
+      <LoginHeader />
+      <Main>
+        <TitleBar>
+          <SectionTitle>내 정보</SectionTitle>
+          <WhiteBtn onClick={gotoUpdateProfile}>내 정보 수정</WhiteBtn>
+        </TitleBar>
+        <Line />
+        <Profile />
+        <TitleBar>
+          <SectionTitle>최근 감정 기록</SectionTitle>
+          <WhiteBtn onClick={gotoRecordEmotion}>감정 기록 더보기</WhiteBtn>
+        </TitleBar>
+        <Line />
+        <EmotionRecords />
+        <TitleBar>
+          <SectionTitle>저장 한 쉼</SectionTitle>
+        </TitleBar>
+        <Line />
+        <Storage />
+      </Main>
+      <Footer />
+    </Container>
+  );
+};
+
+export default MyPage;
+
 const Container = styled.div`
   background-color: #fff;
   color: #333;
@@ -61,42 +100,3 @@ const WhiteBtn = styled.button`
   margin-top: 2.2rem;
   cursor: pointer;
 `;
-
-const MyPage = () => {
-  const navigate = useNavigate();
-
-  const gotoUpdateProfile = () => {
-    navigate(`/update-profile`);
-  };
-  const gotoRecordEmotion = () => {
-    navigate(`/record1`);
-  };
-
-  return (
-    <Container>
-      <LoginHeader />
-      <Main>
-        <TitleBar>
-          <SectionTitle>내 정보</SectionTitle>
-          <WhiteBtn onClick={gotoUpdateProfile}>내 정보 수정</WhiteBtn>
-        </TitleBar>
-        <Line />
-        <Profile />
-        <TitleBar>
-          <SectionTitle>최근 감정 기록</SectionTitle>
-          <WhiteBtn onClick={gotoRecordEmotion}>감정 기록 더보기</WhiteBtn>
-        </TitleBar>
-        <Line />
-        <EmotionRecords />
-        <TitleBar>
-          <SectionTitle>저장 한 쉼</SectionTitle>
-        </TitleBar>
-        <Line />
-        <Storage />
-      </Main>
-      <Footer />
-    </Container>
-  );
-};
-
-export default MyPage;
