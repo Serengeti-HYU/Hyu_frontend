@@ -91,7 +91,7 @@ const RestActivity = () => {
               key={index}
               onClick={() => navigate(`/rest-activity-detail/${card.restId}`)}
             >
-              <CardImage />
+              <CardImage src={card.image} />
               <CardTitle>{card.restName}</CardTitle>
               <CardDescription>{card.place}</CardDescription>
               <CardCategory>{card.category}</CardCategory>
@@ -223,12 +223,13 @@ const Card = styled.div`
   width: 19.5rem;
 `;
 
-const CardImage = styled.div`
+const CardImage = styled.img`
   width: 100%;
   height: 150px;
   background: lightgray;
   border-radius: 10px;
   margin-bottom: 1rem;
+  object-fit: cover;
 `;
 
 const CardTitle = styled.h3`
