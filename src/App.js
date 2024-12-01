@@ -47,7 +47,10 @@ function App() {
 
           {/* Newsletter routes */}
           <Route path="/rest-activity" element={<RestActivity />} />
-          <Route path="/rest-activity-detail" element={<RestActivityDetail />} />
+          <Route
+            path="/rest-activity-detail/:restId"
+            element={<RestActivityDetail />}
+          />
           <Route path="/newsletter-page" element={<NewsletterPage />} />
 
           {/* Profile routes */}

@@ -29,7 +29,7 @@ const Storage = () => {
 
   const [scrabList, setScrabList] = useState([]);
   const [loading, setLoading] = useState(false);
-  const username = "hong";
+  const username = localStorage.getItem("username");
   const token = localStorage.getItem("tempToken");
 
   useEffect(() => {

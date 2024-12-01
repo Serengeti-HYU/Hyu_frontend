@@ -19,12 +19,13 @@ const Profile = () => {
   const [loading, setLoading] = useState(false);
 
   // 임시
-  const username = "hong";
   localStorage.setItem(
     "tempToken",
-    "eyJhbGciOiJIUzI1NiJ9.eyJwaG9uZSI6IjEyMzQ1Njc4OTEiLCJlbWFpbCI6ImhvbmdAbG9jYWwuY29tIiwic3ViIjoiaG9uZyIsImlhdCI6MTcyNzc5MTc5MCwiZXhwIjoxNzI3ODA5NzkwfQ.qeEngs_jjG39QDjmj8LoY0wo-kZkQrXoZnSV-Qj14og"
+    "eyJhbGciOiJIUzI1NiJ9.eyJwaG9uZSI6IjEyMzQ1Njc4OTAiLCJlbWFpbCI6InRlc3RAbmF2ZXIuY29tIiwic3ViIjoic29qZW9uZyIsImlhdCI6MTczMzA1MjI5OSwiZXhwIjoxNzMzMDcwMjk5fQ.NZYeqFDd29ITD8Wuq1-47Av1sThjodRV7SoDxLkNTJs"
   );
+  localStorage.setItem("username", "sojeong");
   const token = localStorage.getItem("tempToken");
+  const username = localStorage.getItem("username");
 
   useEffect(() => {
     const fetchData = async () => {

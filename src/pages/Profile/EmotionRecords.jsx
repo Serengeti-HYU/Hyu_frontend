@@ -13,7 +13,8 @@ const EmotionRecords = () => {
 
   const [recentRecords, setRecentRecords] = useState([]);
   // 임시
-  const username = "hong";
+  const username = localStorage.getItem("username");
+  console.log(username);
   const token = localStorage.getItem("tempToken");
 
   useEffect(() => {
