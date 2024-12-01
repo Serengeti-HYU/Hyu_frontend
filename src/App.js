@@ -26,7 +26,13 @@ import TestResult from "./pages/Emotion/TestResult";
 import Record1 from "./pages/Emotion/Record1";
 import Record2 from "./pages/Emotion/Record2";
 import Customizing from "./pages/Emotion/Customizing";
+
+// Newsletter imports
 import NewsletterPage from "./pages/Newsletter/NewsletterPage";
+import NewsletterWritePage from "./pages/Newsletter/Admin/NewsletterWritePage";
+import NewsLetterListPage from "./pages/Newsletter/Admin/NewsLetterListPage";
+import NewsLetterDetailPage from "./pages/Newsletter/Admin/NewsLetterDetailPage";
+
 import { EmotionProvider } from "./pages/Emotion/EmotionContext";
 
 function App() {
@@ -52,6 +58,15 @@ function App() {
             element={<RestActivityDetail />}
           />
           <Route path="/newsletter-page" element={<NewsletterPage />} />
+          <Route
+            path="/admin-newswrite-page"
+            element={<NewsletterWritePage />}
+          />
+          <Route path="/admin-newslist-page" element={<NewsLetterListPage />} />
+          <Route
+            path="/admin-newsdetail-page/:newsId"
+            element={<NewsLetterDetailPage />}
+          />
 
           {/* Profile routes */}
           <Route path="/mypage" element={<Mypage />} />
