@@ -21,7 +21,7 @@ const Profile = () => {
   // 임시
   localStorage.setItem(
     "tempToken",
-    "eyJhbGciOiJIUzI1NiJ9.eyJwaG9uZSI6IjEyMzQ1Njc4OTAiLCJlbWFpbCI6InRlc3RAbmF2ZXIuY29tIiwic3ViIjoic29qZW9uZyIsImlhdCI6MTczMzA1MjI5OSwiZXhwIjoxNzMzMDcwMjk5fQ.NZYeqFDd29ITD8Wuq1-47Av1sThjodRV7SoDxLkNTJs"
+    "eyJhbGciOiJIUzI1NiJ9.eyJwaG9uZSI6IjEyMzQ1Njc4OTAiLCJlbWFpbCI6InRlc3RAbmF2ZXIuY29tIiwic3ViIjoic29qZW9uZyIsImlhdCI6MTczMzA2MzkzMSwiZXhwIjoxNzMzMDgxOTMxfQ.o9cuoL9orSfrDQ4xiGNHUdfaTq59kwZo0DnDdrmFwzk"
   );
   localStorage.setItem("username", "sojeong");
   const token = localStorage.getItem("tempToken");

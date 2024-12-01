@@ -8,16 +8,55 @@ import CopyComplete from "./CopyComplete";
 import axios from "axios";
 
 const RestActivityDetail = () => {
-  const navigate = useNavigate();
-
-  const gotoBack = () => {
-    navigate(-1);
-  };
+  const { restId } = useParams();
+  const [post, setPost] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [scrabbed, setScrabbed] = useState(false);
   const [showCopyComplete, setShowCopyComplete] = useState(false);
 
-  const toggleScrab = () => {
-    setScrabbed(!scrabbed);
+  // 임시
+  const token = localStorage.getItem("tempToken");
+  const username = localStorage.getItem("username");
+
+  const navigate = useNavigate();
+  const gotoBack = () => {
+    navigate(-1);
+  };
+
+  const toggleScrab = async () => {
+    try {
+      const response = await axios.post(
+        `/hue-activity/${restId}/bookmark`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Bookmark response:", response.data);
+      setScrabbed(!scrabbed);
+    } catch (error) {
+      if (error.response && error.response.status === 500) {
+        // 스크랩 유뮤 api- 재확인 필요
+        try {
+          const unbookmarkResponse = await axios.delete(
+            `/hue-activity/${restId}/bookmark`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          console.log("Unbookmark response:", unbookmarkResponse.data);
+          setScrabbed(!scrabbed);
+        } catch (unbookmarkError) {
+          console.error(unbookmarkError);
+        }
+      } else {
+        console.error(error);
+      }
+    }
   };
 
   const toggleCopy = () => {
@@ -33,14 +72,6 @@ const RestActivityDetail = () => {
       console.warn("No link available to copy.");
     }
   };
-
-  const { restId } = useParams();
-  const [post, setPost] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  // 임시
-  const token = localStorage.getItem("tempToken");
-  const username = localStorage.getItem("username");
 
   useEffect(() => {
     const fetchData = async () => {
