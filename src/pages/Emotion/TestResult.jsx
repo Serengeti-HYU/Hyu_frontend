@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import LoginHeader from "../../components/LoginHeader";
 import Footer from "../../components/footer";
@@ -78,11 +79,32 @@ const ImgWrapper = styled.div``;
 
 const TestResult = () => {
   const navigate = useNavigate();
-  const [type, setType] = useState(1); //1, 2, 3, 4
 
-  const navigateTo = (path) => {
-    navigate(path);
-  };
+  const [result, setResult] = useState([]);
+  const [loading, setLoading] = useState(false);
+  // 임시
+  const token = localStorage.getItem("tempToken");
+  const username = localStorage.getItem("username");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(`/hue-test/result`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
+        setResult(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
 
   return (
     <Container>
@@ -92,28 +114,30 @@ const TestResult = () => {
           src={`${process.env.PUBLIC_URL}/assets/logo/LogoGra.png`}
           width="60px"
         />
-        <Title>00님의 성격 검사 결과</Title>
+        <Title>{username}님의 성격 검사 결과</Title>
 
         <Content>
           <ImgWrapper>
             <img
-              src={`${process.env.PUBLIC_URL}/assets/testResult/1.png`}
+              src={
+                result.resultType
+                  ? `${process.env.PUBLIC_URL}/assets/testResult/${result.resultType}.png`
+                  : `${process.env.PUBLIC_URL}/assets/testResult/RESULT_1.png`
+              }
               width="300px"
             />
           </ImgWrapper>
           <div id="title">
-            휴일은 <span id="bold">하우스키퍼</span>유형
+            <span id="bold">{result.typeName}</span>
           </div>
-          <div id="message">
-            휴일은 하우스키퍼 유형은 주로 휴일 날 시간을 집에서 보내고 집에서
-            휴식을 취해야
-            <br /> 진정한 휴식이라고 생각하는 유형입니다.
-            <br /> 휴일은 하우스키퍼 유형인 00님을 위해 집에서 주로 즐기는
-            맞춤형 쉼을 추천드릴게요!
-          </div>
+          <div id="message">{result.description}</div>
           <div id="nav">
-            <button id="retry">재진단</button>
-            <button id="goMypage">마이페이지로 이동</button>
+            <button id="retry" onClick={() => navigate("/personality-test")}>
+              재진단
+            </button>
+            <button id="goMypage" onClick={() => navigate("/mypage")}>
+              마이페이지로 이동
+            </button>
           </div>
         </Content>
       </Main>
