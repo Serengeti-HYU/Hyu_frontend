@@ -8,6 +8,68 @@ import Letter from "./Letter";
 import LoginHeader from "../../components/LoginHeader";
 import Footer from "../../components/footer";
 
+const NewsletterPage = () => {
+  const [isLetterComplete, setIsLetterComplete] = useState(false);
+
+  const toggleLetter = () => {
+    setIsLetterComplete((prev) => !prev);
+    console.log("상태" + isLetterComplete);
+  };
+  return (
+    <Container>
+      <LoginHeader />
+      <div>
+        <LetterInfoNomotion />
+        <LetterInfo2>
+          <RoundText id="one">휴일에 할 쉼, 힐링 활동</RoundText>
+          <RoundText id="two">
+            쉬면서 보기 좋은 추천 Vlog, ASMR, 힐링 플레이리스트
+          </RoundText>
+          <RoundText id="three">한 주를 마무리해주는 문구</RoundText>
+        </LetterInfo2>
+        <SendSetting>
+          <Logo
+            src={`${process.env.PUBLIC_URL}/assets/logo/FaceLogoBlue.png`}
+            width={"70px"}
+            id="logo"
+          />
+          <SubTitle>휴~레터가 찾아갈게요</SubTitle>
+          <EmailInput />
+          <CollectPersonalInfo>
+            <PrivacyConsent>
+              <Checkbox type="checkbox" />
+              <span id="text">개인정보 수집 및 이용 동의(필수)</span>
+              <ViewTerms>약관보기</ViewTerms>
+            </PrivacyConsent>
+          </CollectPersonalInfo>
+          <LetterContainer>
+            <Envelope
+              src={`${process.env.PUBLIC_URL}/assets/newsletter/envelope.svg`}
+              width={"1170.881px"}
+              id="back"
+            />
+            <LetterStyled>
+              {isLetterComplete ? (
+                <LetterComplete toggleLetter={toggleLetter} />
+              ) : (
+                <Letter toggleLetter={toggleLetter} />
+              )}
+            </LetterStyled>
+            <Front
+              src={`${process.env.PUBLIC_URL}/assets/newsletter/envelopefront.svg`}
+              width={"1170.881px"}
+              id="front"
+            />
+          </LetterContainer>
+        </SendSetting>
+      </div>
+      <Footer />
+    </Container>
+  );
+};
+
+export default NewsletterPage;
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -123,65 +185,3 @@ const CollectPersonalInfo = styled.div`
   display: flex;
   justify-content: space-evenly;
 `;
-
-const NewsletterPage = () => {
-  const [isLetterComplete, setIsLetterComplete] = useState(false);
-
-  const toggleLetter = () => {
-    setIsLetterComplete((prev) => !prev);
-    console.log("상태" + isLetterComplete);
-  };
-  return (
-    <Container>
-      <LoginHeader />
-      <div>
-        <LetterInfoNomotion />
-        <LetterInfo2>
-          <RoundText id="one">휴일에 할 쉼, 힐링 활동</RoundText>
-          <RoundText id="two">
-            쉬면서 보기 좋은 추천 Vlog, ASMR, 힐링 플레이리스트
-          </RoundText>
-          <RoundText id="three">한 주를 마무리해주는 문구</RoundText>
-        </LetterInfo2>
-        <SendSetting>
-          <Logo
-            src={`${process.env.PUBLIC_URL}/assets/logo/FaceLogoBlue.png`}
-            width={"70px"}
-            id="logo"
-          />
-          <SubTitle>휴~레터가 찾아갈게요</SubTitle>
-          <EmailInput />
-          <CollectPersonalInfo>
-            <PrivacyConsent>
-              <Checkbox type="checkbox" />
-              <span id="text">개인정보 수집 및 이용 동의(필수)</span>
-              <ViewTerms>약관보기</ViewTerms>
-            </PrivacyConsent>
-          </CollectPersonalInfo>
-          <LetterContainer>
-            <Envelope
-              src={`${process.env.PUBLIC_URL}/assets/newsletter/envelope.svg`}
-              width={"1170.881px"}
-              id="back"
-            />
-            <LetterStyled>
-              {isLetterComplete ? (
-                <LetterComplete toggleLetter={toggleLetter} />
-              ) : (
-                <Letter toggleLetter={toggleLetter} />
-              )}
-            </LetterStyled>
-            <Front
-              src={`${process.env.PUBLIC_URL}/assets/newsletter/envelopefront.svg`}
-              width={"1170.881px"}
-              id="front"
-            />
-          </LetterContainer>
-        </SendSetting>
-      </div>
-      <Footer />
-    </Container>
-  );
-};
-
-export default NewsletterPage;

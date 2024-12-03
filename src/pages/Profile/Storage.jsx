@@ -3,22 +3,22 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 
-const cardData = [
-  {
-    title: "안녕gkgkgkgkgk",
-    description: "힐링인데",
-    category: "힐링",
-  },
-  {
-    title: "가",
-    description: "장소 소개하려고요",
-    category: "휴식 장소",
-  },
-  { title: "나", description: "카테고리 한국어로 뜨게 할래", category: "취미" },
-  { title: "다", description: "ㅎㅇ", category: "휴식 장소" },
-  { title: "다", description: "ㅃㅇ", category: "휴식 장소" },
-  { title: "다", description: "내용", category: "휴식 장소" },
-];
+// const cardData = [
+//   {
+//     title: "안녕gkgkgkgkgk",
+//     description: "힐링인데",
+//     category: "힐링",
+//   },
+//   {
+//     title: "가",
+//     description: "장소 소개하려고요",
+//     category: "휴식 장소",
+//   },
+//   { title: "나", description: "카테고리 한국어로 뜨게 할래", category: "취미" },
+//   { title: "다", description: "ㅎㅇ", category: "휴식 장소" },
+//   { title: "다", description: "ㅃㅇ", category: "휴식 장소" },
+//   { title: "다", description: "내용", category: "휴식 장소" },
+// ];
 
 const Storage = () => {
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const Storage = () => {
 
   const [scrabList, setScrabList] = useState([]);
   const [loading, setLoading] = useState(false);
-  const username = "hong";
+  const username = localStorage.getItem("username");
   const token = localStorage.getItem("tempToken");
 
   useEffect(() => {
@@ -42,7 +42,8 @@ const Storage = () => {
           },
           withCredentials: true,
         });
-        setScrabList(response.data);
+        const restList = response.data.map((item) => item.rest);
+        setScrabList(restList);
         console.log(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -56,7 +57,7 @@ const Storage = () => {
   const handleCategoryChange = (e) => {
     setSelectedCategory(e.target.value);
   };
-  const filteredCards = cardData.filter((card) =>
+  const filteredCards = scrabList.filter((card) =>
     selectedCategory === "전체보기" ? true : card.category === selectedCategory
   );
 
@@ -72,9 +73,12 @@ const Storage = () => {
       </FilterContainer>
       <Cards>
         {filteredCards.map((card, index) => (
-          <Card key={index} onClick={gotoRestActivityDetail}>
-            <CardImage />
-            <CardTitle>{card.title}</CardTitle>
+          <Card
+            key={index}
+            onClick={() => navigate(`/rest-activity-detail/${card.restId}`)}
+          >
+            <CardImage src={card.image} />
+            <CardTitle>{card.restName}</CardTitle>
             <CardDescription>{card.description}</CardDescription>
             <CardCategory>{card.category}</CardCategory>
           </Card>
@@ -126,12 +130,13 @@ const Card = styled.div`
   width: 17rem;
 `;
 
-const CardImage = styled.div`
+const CardImage = styled.img`
   width: 100%;
   height: 150px;
   background: lightgray;
   border-radius: 10px;
   margin-bottom: 1rem;
+  object-fit: cover;
 `;
 
 const CardTitle = styled.h3`

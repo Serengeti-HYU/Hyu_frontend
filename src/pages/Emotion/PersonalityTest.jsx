@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import LoginHeader from "../../components/LoginHeader";
 import Footer from "../../components/footer";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-// 데이터
 const questions = [
   "휴일이 생기면 바로 약속을 잡는다.",
   "휴일에는 근무일에 비해 연락 확인 빈도가 줄어든다.",
@@ -16,28 +17,18 @@ const questions = [
   "휴일에는 평소 못 해본 경험을 찾는다.",
   "집에 혼자 있을 때 외로움을 잘 느낀다.",
 ];
-
 const options = ["매우 그렇다", "그렇다", "그렇지 않다", "매우 그렇지 않다"];
 const optionSizes = [5, 3.6, 3.6, 5];
-
-// 항목 별 유형 데이터
-const results = [
-  [2, 4, 3, 1],
-  [1, 3, 4, 2],
-  [2, 4, 3, 1],
-  [3, 4, 1, 2],
-  [1, 3, 4, 2],
-  [4, 2, 3, 1],
-  [3, 1, 4, 2],
-  [3, 4, 2, 1],
-  [4, 2, 3, 1],
-  [2, 4, 3, 1],
-];
+// 임시
+const token = localStorage.getItem("tempToken");
+const username = localStorage.getItem("username");
 
 const PersonalityTest = () => {
+  const navigate = useNavigate();
   const [responses, setResponses] = useState(
     Array(questions.length).fill(null)
   );
+  const mapping = ["STRONGLY_AGREE", "AGREE", "DISAGREE", "STRONGLY_DISAGREE"];
 
   const handleChange = (questionIndex, value) => {
     const newResponses = [...responses];
@@ -47,24 +38,33 @@ const PersonalityTest = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
-    const frequency = [0, 0, 0, 0]; // 1, 2, 3, 4
-
-    responses.forEach((response, index) => {
-      if (response !== null) {
-        const answerType = results[index][response];
-        frequency[answerType - 1] += 1;
+    if (responses.includes(null)) {
+      alert("모든 문항에 응답해 주세요.");
+      return;
+    }
+    const formattedResponses = questions.reduce((acc, question, index) => {
+      if (responses[index] !== null) {
+        acc[`QUESTION_${index + 1}`] = mapping[responses[index]];
       }
-    });
+      return acc;
+    }, {});
+    console.log({ responses: formattedResponses });
 
-    const maxFrequency = Math.max(...frequency);
-    const mostFrequentOptions = frequency
-      .map((count, index) => (count === maxFrequency ? index + 1 : null))
-      .filter((index) => index !== null);
-
-    console.log("가장 많이 선택된 유형:", mostFrequentOptions);
-    console.log("선택 결과 배열: ", responses);
-    console.log("유형 결과 배열: ", frequency);
+    axios
+      .post(
+        "/hue-test/result",
+        { responses: formattedResponses },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+      .then((response) => {
+        console.log(response);
+        navigate("/test-result");
+      })
+      .catch((error) => console.error(error));
   };
 
   return (
@@ -111,7 +111,6 @@ const PersonalityTest = () => {
     </Container>
   );
 };
-
 export default PersonalityTest;
 
 const Container = styled.div`

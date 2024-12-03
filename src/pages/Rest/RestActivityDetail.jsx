@@ -1,31 +1,97 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import LoginHeader from "../../components/LoginHeader";
 import Footer from "../../components/footer";
 import CopyComplete from "./CopyComplete";
+import axios from "axios";
 
 const RestActivityDetail = () => {
-  const navigate = useNavigate();
+  const { restId } = useParams();
+  const [post, setPost] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [scrabbed, setScrabbed] = useState(false);
+  const [showCopyComplete, setShowCopyComplete] = useState(false);
 
+  // 임시
+  const token = localStorage.getItem("tempToken");
+  const username = localStorage.getItem("username");
+
+  const navigate = useNavigate();
   const gotoBack = () => {
     navigate(-1);
   };
-  const [scrabbed, setScrabbed] = useState(false);
-  const [showCopyComplete, setShowCopyComplete] = useState(false);
-  const linkText =
-    "https://www.figma.com/design/50vfzSJ9uv3DBIDO5x9BKb/%ED%9C%B4?node-id=52-212&m=dev";
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(linkText).then(() => {
-      setShowCopyComplete(true);
-      setTimeout(() => setShowCopyComplete(false), 5000);
-    });
+  const toggleScrab = async () => {
+    try {
+      const response = await axios.post(
+        `/hue-activity/${restId}/bookmark`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Bookmark response:", response.data);
+      setScrabbed(!scrabbed);
+    } catch (error) {
+      if (error.response && error.response.status === 500) {
+        // 스크랩 유뮤 api- 재확인 필요
+        try {
+          const unbookmarkResponse = await axios.delete(
+            `/hue-activity/${restId}/bookmark`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          console.log("Unbookmark response:", unbookmarkResponse.data);
+          setScrabbed(!scrabbed);
+        } catch (unbookmarkError) {
+          console.error(unbookmarkError);
+        }
+      } else {
+        console.error(error);
+      }
+    }
   };
 
-  const toggleScrab = () => {
-    setScrabbed(!scrabbed);
+  const toggleCopy = () => {
+    if (post.link) {
+      navigator.clipboard
+        .writeText(post.link)
+        .then(() => {
+          setShowCopyComplete(true);
+          setTimeout(() => setShowCopyComplete(false), 3000);
+        })
+        .catch((err) => console.error("Error copying text:", err));
+    } else {
+      console.warn("No link available to copy.");
+    }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(`/hue-activity/${restId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
+        setPost(response.data);
+        console.log(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+      setLoading(false);
+    };
+    fetchData();
+  }, []);
 
   return (
     <Container>
@@ -36,29 +102,29 @@ const RestActivityDetail = () => {
           width={"60px"}
           id="logo"
         />
-        <Title>00님의 휴식을 위한 맞춤형 쉼입니다.</Title>
+        <Title>{username}님의 휴식을 위한 맞춤형 쉼입니다.</Title>
         <ActivityHeader>
           <span id="wrapper" onClick={gotoBack}>
             <img
               id="backbtn"
               src={`${process.env.PUBLIC_URL}/assets/newsletter/left.svg`}
             />
-            <ActivityTitle>쉼 활동 이름</ActivityTitle>
+            <ActivityTitle>{post.restName}</ActivityTitle>
           </span>
-          <Category>(분류 카테고리)</Category>
+          <Category>({post.category})</Category>
         </ActivityHeader>
         <Line />
         <Content>
-          <Image />
+          <Image src={post.image} />
           <DescriptionWrapper>
-            <Description>쉼 활동 소개 글</Description>
+            <Description>{post.description}</Description>
             <LinksWrapper>
               <LinkBox>
                 <LinkIcon
                   src={`${process.env.PUBLIC_URL}/assets/icons/link-one.svg`}
                   alt="link icon"
                 />
-                <span id="link">{linkText}</span>
+                <span id="link">{post.link}</span>
               </LinkBox>
               <BtnWrapper>
                 <Btn
@@ -73,7 +139,7 @@ const RestActivityDetail = () => {
                 <Btn
                   src={`${process.env.PUBLIC_URL}/assets/buttons/linkcopy.svg`}
                   alt="copy"
-                  onClick={handleCopy}
+                  onClick={toggleCopy}
                 />
               </BtnWrapper>
             </LinksWrapper>
@@ -162,7 +228,7 @@ const Content = styled.div`
   margin-top: 3rem;
   height: 35rem;
 `;
-const Image = styled.div`
+const Image = styled.img`
   width: 30.625rem;
   height: 23rem;
   background: lightgray;

@@ -8,9 +8,6 @@ import axios from "axios";
 const RestActivity = () => {
   const navigate = useNavigate();
 
-  const gotoRestActivityDetail = () => {
-    navigate(`/rest-activity-detail`);
-  };
   const gotoTest = () => {
     navigate(`/personality-test`);
   };
@@ -23,6 +20,7 @@ const RestActivity = () => {
 
   // 임시
   const token = localStorage.getItem("tempToken");
+  const username = localStorage.getItem("username");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -89,8 +87,11 @@ const RestActivity = () => {
         </Button>
         <Cards>
           {filteredCards.map((card, index) => (
-            <Card key={index} onClick={gotoRestActivityDetail}>
-              <CardImage />
+            <Card
+              key={index}
+              onClick={() => navigate(`/rest-activity-detail/${card.restId}`)}
+            >
+              <CardImage src={card.image} />
               <CardTitle>{card.restName}</CardTitle>
               <CardDescription>{card.place}</CardDescription>
               <CardCategory>{card.category}</CardCategory>
@@ -222,12 +223,13 @@ const Card = styled.div`
   width: 19.5rem;
 `;
 
-const CardImage = styled.div`
+const CardImage = styled.img`
   width: 100%;
   height: 150px;
   background: lightgray;
   border-radius: 10px;
   margin-bottom: 1rem;
+  object-fit: cover;
 `;
 
 const CardTitle = styled.h3`
