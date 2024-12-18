@@ -1,6 +1,40 @@
 import React from "react";
 import styled from "styled-components";
 
+const LetterInfo = () => {
+  return (
+    <Container>
+      <div id="title">휴~ 레터</div>
+      <div id="message">
+        매주 쉬는 날 뭐하지? 하는 고민을 덜어주기 위해서 <br />한 주에 한 번{" "}
+        <span id="hyu">휴~레터</span>가 쉼 활동을 추천해 줍니다.
+      </div>
+      <LetterPic>
+        <img
+          src={`${process.env.PUBLIC_URL}/assets/newsletter/letter1.png`}
+          width="119.917px"
+          height="88.904px"
+          id="letter1"
+        />
+        <img
+          src={`${process.env.PUBLIC_URL}/assets/newsletter/letter2.png`}
+          width="237.553px"
+          height="211px"
+          id="letter2"
+        />
+        <img
+          src={`${process.env.PUBLIC_URL}/assets/newsletter/letter3.png`}
+          width="416.289px"
+          height="444.92px"
+          id="letter3"
+        />
+      </LetterPic>
+    </Container>
+  );
+};
+
+export default LetterInfo;
+
 const Container = styled.div`
   width: 90%;
   height: 811px;
@@ -54,37 +88,3 @@ const LetterPic = styled.div`
     left: 37rem;
   }
 `;
-
-const LetterInfo = () => {
-  return (
-    <Container>
-      <div id="title">휴~ 레터</div>
-      <div id="message">
-        매주 쉬는 날 뭐하지? 하는 고민을 덜어주기 위해서 <br />한 주에 한 번{" "}
-        <span id="hyu">휴~레터</span>가 쉼 활동을 추천해 줍니다.
-      </div>
-      <LetterPic>
-        <img
-          src={`${process.env.PUBLIC_URL}/assets/newsletter/letter1.png`}
-          width="119.917px"
-          height="88.904px"
-          id="letter1"
-        />
-        <img
-          src={`${process.env.PUBLIC_URL}/assets/newsletter/letter2.png`}
-          width="237.553px"
-          height="211px"
-          id="letter2"
-        />
-        <img
-          src={`${process.env.PUBLIC_URL}/assets/newsletter/letter3.png`}
-          width="416.289px"
-          height="444.92px"
-          id="letter3"
-        />
-      </LetterPic>
-    </Container>
-  );
-};
-
-export default LetterInfo;

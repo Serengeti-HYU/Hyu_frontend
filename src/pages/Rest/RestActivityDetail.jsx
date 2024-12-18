@@ -15,7 +15,7 @@ const RestActivityDetail = () => {
   const [showCopyComplete, setShowCopyComplete] = useState(false);
 
   // 임시
-  const token = localStorage.getItem("tempToken");
+  const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
 
   const navigate = useNavigate();
@@ -35,7 +35,8 @@ const RestActivityDetail = () => {
         }
       );
       console.log("Bookmark response:", response.data);
-      setScrabbed(!scrabbed);
+      alert("쉼 활동이 저장되었습니다.");
+      setScrabbed(!scrabbed); // 스크랩 유무 받아올 수 없으면 아예 빼는 것도 ㄱㅊ을듯..
     } catch (error) {
       if (error.response && error.response.status === 500) {
         // 스크랩 유뮤 api- 재확인 필요
@@ -49,6 +50,7 @@ const RestActivityDetail = () => {
             }
           );
           console.log("Unbookmark response:", unbookmarkResponse.data);
+          alert("쉼활동 저장이 취소되었습니다.");
           setScrabbed(!scrabbed);
         } catch (unbookmarkError) {
           console.error(unbookmarkError);

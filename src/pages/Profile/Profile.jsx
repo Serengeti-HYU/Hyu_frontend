@@ -20,11 +20,11 @@ const Profile = () => {
 
   // 임시
   localStorage.setItem(
-    "tempToken",
-    "eyJhbGciOiJIUzI1NiJ9.eyJwaG9uZSI6IjEyMzQ1Njc4OTAiLCJlbWFpbCI6InRlc3RAbmF2ZXIuY29tIiwic3ViIjoic29qZW9uZyIsImlhdCI6MTczMzA2MzkzMSwiZXhwIjoxNzMzMDgxOTMxfQ.o9cuoL9orSfrDQ4xiGNHUdfaTq59kwZo0DnDdrmFwzk"
+    "token",
+    "eyJhbGciOiJIUzI1NiJ9.eyJwaG9uZSI6IjEyMzQ1Njc4OTAiLCJlbWFpbCI6InRlc3RAbmF2ZXIuY29tIiwic3ViIjoic29qZW9uZyIsImlhdCI6MTczNDUyMzQ4MywiZXhwIjoxNzM0NTQxNDgzfQ.JbC2yLnbXUISWx_Qid3fn61Xz2FkywEdwwplIcxi3Ss"
   );
   localStorage.setItem("username", "sojeong");
-  const token = localStorage.getItem("tempToken");
+  const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
 
   useEffect(() => {

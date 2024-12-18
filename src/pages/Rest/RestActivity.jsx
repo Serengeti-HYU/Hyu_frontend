@@ -19,7 +19,7 @@ const RestActivity = () => {
   const [loading, setLoading] = useState(false);
 
   // 임시
-  const token = localStorage.getItem("tempToken");
+  const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
 
   useEffect(() => {
@@ -80,6 +80,8 @@ const RestActivity = () => {
             <option value="교육/체험">교육/체험</option>
             <option value="축제-문화/예술">축제-문화/예술</option>
             <option value="축제-기타">축제-기타</option>
+            <option value="클래식">클래식</option>
+            <option value="독주/독창회">독주/독창회</option>
           </Select>
         </SelectContainer>
         <Button type="button" onClick={handleFilterClick}>

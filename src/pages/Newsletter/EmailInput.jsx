@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -69,15 +69,24 @@ const Option = styled.div`
   }
 `;
 
-const EmailInput = () => {
+const EmailInput = ({ onEmailChange }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [customInput, setCustomInput] = useState("");
   const [email1, setEmail1] = useState("");
+
+  // 이메일
+  const email = `${email1}@${customInput}`;
 
   const handleOptionClick = (option) => {
     setCustomInput(option === "직접 입력" ? "" : option);
     setDropdownOpen(false);
   };
+
+  useEffect(() => {
+    if (email1 && customInput) {
+      onEmailChange(email);
+    }
+  }, [email1, customInput, onEmailChange]);
 
   return (
     <Container>
