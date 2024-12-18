@@ -30,7 +30,7 @@ const Storage = () => {
   const [scrabList, setScrabList] = useState([]);
   const [loading, setLoading] = useState(false);
   const username = localStorage.getItem("username");
-  const token = localStorage.getItem("tempToken");
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchData = async () => {

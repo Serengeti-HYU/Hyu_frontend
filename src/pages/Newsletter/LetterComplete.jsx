@@ -50,10 +50,22 @@ const UpdateBtn = styled.button`
   border: none;
 `;
 
-const LetterComplete = ({ toggleLetter }) => {
+const dayMapping = {
+  MONDAY: "월",
+  TUESDAY: "화",
+  WEDNESDAY: "수",
+  THURSDAY: "목",
+  FRIDAY: "금",
+  SATURDAY: "토",
+  SUNDAY: "일",
+};
+
+const LetterComplete = ({ toggleLetter, email, selectedDay }) => {
   return (
     <Container>
-      <TextBox>(이메일)으로 매주 0요일 오전 9:00에</TextBox>
+      <TextBox>
+        {email}으로 매주 {dayMapping[selectedDay]}요일 오전 9:00에
+      </TextBox>
       <Logo
         src={`${process.env.PUBLIC_URL}/assets/logo/FaceLogoBlue.png`}
         width={"70px"}

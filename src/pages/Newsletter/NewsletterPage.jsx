@@ -7,14 +7,27 @@ import LetterComplete from "./LetterComplete";
 import Letter from "./Letter";
 import LoginHeader from "../../components/LoginHeader";
 import Footer from "../../components/footer";
+import axios from "axios";
 
 const NewsletterPage = () => {
   const [isLetterComplete, setIsLetterComplete] = useState(false);
+  const [isConsentChecked, setIsConsentChecked] = useState(false); // 개인정보 수집 동의 여부
+  const [selectedDay, setSelectedDay] = useState(null);
 
-  const toggleLetter = () => {
+  const [email, setEmail] = useState("");
+  console.log("전달받은 이메일" + email);
+
+  const toggleLetter = (email, selectedDay) => {
     setIsLetterComplete((prev) => !prev);
-    console.log("상태" + isLetterComplete);
+    console.log("Email: ", email);
+    console.log("Selected Day: ", selectedDay);
+    setSelectedDay(selectedDay);
   };
+
+  const handleConsentChange = (event) => {
+    setIsConsentChecked(event.target.checked);
+  };
+
   return (
     <Container>
       <LoginHeader />
@@ -34,10 +47,14 @@ const NewsletterPage = () => {
             id="logo"
           />
           <SubTitle>휴~레터가 찾아갈게요</SubTitle>
-          <EmailInput />
+          <EmailInput onEmailChange={setEmail} />
           <CollectPersonalInfo>
             <PrivacyConsent>
-              <Checkbox type="checkbox" />
+              <Checkbox
+                type="checkbox"
+                onChange={handleConsentChange}
+                checked={isConsentChecked}
+              />
               <span id="text">개인정보 수집 및 이용 동의(필수)</span>
               <ViewTerms>약관보기</ViewTerms>
             </PrivacyConsent>
@@ -50,9 +67,18 @@ const NewsletterPage = () => {
             />
             <LetterStyled>
               {isLetterComplete ? (
-                <LetterComplete toggleLetter={toggleLetter} />
+                <LetterComplete
+                  toggleLetter={toggleLetter}
+                  selectedDay={selectedDay}
+                  email={email}
+                />
               ) : (
-                <Letter toggleLetter={toggleLetter} />
+                <Letter
+                  toggleLetter={toggleLetter}
+                  email={email}
+                  selectedDay={selectedDay}
+                  isConsentChecked={isConsentChecked}
+                />
               )}
             </LetterStyled>
             <Front

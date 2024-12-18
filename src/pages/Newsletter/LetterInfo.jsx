@@ -2,60 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 
-const Container = styled.div`
-  width: 90%;
-  height: 811px;
-  #title {
-    color: #35648c;
-    font-size: 48px;
-    font-style: normal;
-    font-weight: 900;
-    line-height: normal;
-    margin-top: 9rem;
-    margin-right: 70%;
-  }
-  #message {
-    color: #000;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 300;
-    line-height: normal;
-    text-align: left;
-    margin-left: 3rem;
-    margin-top: 1rem;
-    #hyu {
-      color: #35648c;
-      font-weight: 600;
-    }
-  }
-`;
-const LetterPic = styled.div`
-  margin-top: -4rem;
-  position: relative;
-  img{
-  position: absolute;
-  }
-  #letter1 {
-    transform: rotate(-6.674deg);
-    filter: drop-shadow(0px 2.944px 2.944px rgba(0, 0, 0, 0.25));
-    top: 12rem;
-    left: 15rem;
-    
-  }
-  #letter2 {
-    transform: rotate(-10deg);
-    filter: drop-shadow(0px 2.944px 2.944px rgba(0, 0, 0, 0.25));
-    top: 14.5rem;
-    left: 24rem;
-}
-  }
-  #letter3 {
-    transform: rotate(-5deg);
-    top: -3rem;
-    left: 37rem;
-  }
-`;
-
 const LetterInfo = () => {
   const variants = {
     hidden: { opacity: 0 },
@@ -132,3 +78,57 @@ const LetterInfo = () => {
 };
 
 export default LetterInfo;
+
+const Container = styled.div`
+  width: 90%;
+  height: 811px;
+  #title {
+    color: #35648c;
+    font-size: 48px;
+    font-style: normal;
+    font-weight: 900;
+    line-height: normal;
+    margin-top: 9rem;
+    margin-right: 70%;
+  }
+  #message {
+    color: #000;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    text-align: left;
+    margin-left: 3rem;
+    margin-top: 1rem;
+    #hyu {
+      color: #35648c;
+      font-weight: 600;
+    }
+  }
+`;
+const LetterPic = styled.div`
+  margin-top: -4rem;
+  position: relative;
+  img{
+  position: absolute;
+  }
+  #letter1 {
+    transform: rotate(-6.674deg);
+    filter: drop-shadow(0px 2.944px 2.944px rgba(0, 0, 0, 0.25));
+    top: 12rem;
+    left: 15rem;
+    
+  }
+  #letter2 {
+    transform: rotate(-10deg);
+    filter: drop-shadow(0px 2.944px 2.944px rgba(0, 0, 0, 0.25));
+    top: 14.5rem;
+    left: 24rem;
+}
+  }
+  #letter3 {
+    transform: rotate(-5deg);
+    top: -3rem;
+    left: 37rem;
+  }
+`;

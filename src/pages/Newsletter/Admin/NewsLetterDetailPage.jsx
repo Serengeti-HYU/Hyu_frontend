@@ -181,8 +181,8 @@ const Content = styled.p`
 
 const LinkButton = styled.a`
   display: inline-block;
-  padding: 0.5rem 2rem;
-  background: #35648c;
+  padding: 0.2rem 1rem;
+  background: lightgray;
   color: white;
   font-size: 16px;
   text-decoration: none;

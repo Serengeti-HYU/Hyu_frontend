@@ -15,7 +15,7 @@ const RestActivityDetail = () => {
   const [showCopyComplete, setShowCopyComplete] = useState(false);
 
   // 임시
-  const token = localStorage.getItem("tempToken");
+  const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
 
   const navigate = useNavigate();
@@ -35,10 +35,11 @@ const RestActivityDetail = () => {
         }
       );
       console.log("Bookmark response:", response.data);
-      setScrabbed(!scrabbed);
+      alert("쉼 활동이 저장되었습니다.");
+      setScrabbed(!scrabbed); // 버튼 색깔 변경. 사전에 스크랩 유무 받아올 수 없으면 아예 빼는 것도 ㄱㅊ을듯
     } catch (error) {
+      // 500에러 뜨면(이미 스크랩 상태니까) 스크랩 취소 요청
       if (error.response && error.response.status === 500) {
-        // 스크랩 유뮤 api- 재확인 필요
         try {
           const unbookmarkResponse = await axios.delete(
             `/hue-activity/${restId}/bookmark`,
@@ -49,6 +50,7 @@ const RestActivityDetail = () => {
             }
           );
           console.log("Unbookmark response:", unbookmarkResponse.data);
+          alert("쉼활동 저장이 취소되었습니다.");
           setScrabbed(!scrabbed);
         } catch (unbookmarkError) {
           console.error(unbookmarkError);
@@ -56,6 +58,35 @@ const RestActivityDetail = () => {
       } else {
         console.error(error);
       }
+    }
+  };
+
+  const toggleShare = async () => {
+    try {
+      const response = await axios.get(`/hue-activity/${restId}/share`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const shareLink = response.data;
+      if (shareLink) {
+        // 클립보드에 공유 링크 복사
+        navigator.clipboard
+          .writeText(shareLink)
+          .then(() => {
+            alert(
+              shareLink +
+                "\n링크가 클립보드에 복사되었습니다.\n쉼활동을 공유해보세요!"
+            );
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      } else {
+        console.warn("링크 없음");
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -67,9 +98,9 @@ const RestActivityDetail = () => {
           setShowCopyComplete(true);
           setTimeout(() => setShowCopyComplete(false), 3000);
         })
-        .catch((err) => console.error("Error copying text:", err));
+        .catch((err) => console.error(err));
     } else {
-      console.warn("No link available to copy.");
+      console.warn("복사할 링크 없음");
     }
   };
 
@@ -123,6 +154,7 @@ const RestActivityDetail = () => {
                 <LinkIcon
                   src={`${process.env.PUBLIC_URL}/assets/icons/link-one.svg`}
                   alt="link icon"
+                  onClick={toggleCopy}
                 />
                 <span id="link">{post.link}</span>
               </LinkBox>
@@ -138,8 +170,8 @@ const RestActivityDetail = () => {
                 />
                 <Btn
                   src={`${process.env.PUBLIC_URL}/assets/buttons/linkcopy.svg`}
-                  alt="copy"
-                  onClick={toggleCopy}
+                  alt="share"
+                  onClick={toggleShare}
                 />
               </BtnWrapper>
             </LinksWrapper>
@@ -278,6 +310,7 @@ const LinkBox = styled.div`
 `;
 const LinkIcon = styled.img`
   margin-right: 0.5rem;
+  cursor: pointer;
 `;
 const Btn = styled.img`
   cursor: pointer;
