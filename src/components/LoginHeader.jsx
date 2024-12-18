@@ -76,6 +76,12 @@ function LoginHeader() {
       />
       <div id="container">
         <button
+          onClick={() => navigateTo("/admin-newslist-page")}
+          id="AdminPage"
+        >
+          관리자 페이지
+        </button>
+        <button
           onClick={() => navigateTo("/newsletter-page")}
           id="NewletterPage"
         >
