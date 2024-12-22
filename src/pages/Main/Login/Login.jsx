@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import Footer from "../../../components/footer";
 import NoLoginHeader from "../../../components/NoLoginHeader";
@@ -130,19 +131,39 @@ const Nav = styled.div`
 
 const Login = () => {
   const navigate = useNavigate();
-  const [showWarn, setShowWarn] = useState(true);
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
+  const [error, setError] = useState("");
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post(`/user/login`, formData);
+      console.log("로그인 성공:", response.data);
+
+      if (response.data) {
+        localStorage.setItem("access_token", response.data);
+        console.log("저장 성공");
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("로그인 실패:", error);
+      setError("아이디 또는 비밀번호를 확인하세요.");
+    }
+  };
 
   const navigateTo = (path) => {
     navigate(path);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    navigate("/");
-  };
-
-  const handleFocus = () => {
-    setShowWarn(false);
   };
 
   return (
@@ -174,15 +195,23 @@ const Login = () => {
           <form method="post" onSubmit={handleSubmit}>
             <div className="input">
               <p>• 아이디</p>
-              <input id="id"></input>
+              <input
+                id="username"
+                type="text"
+                value={formData.username}
+                onChange={handleChange}
+              />
             </div>
             <div className="input">
               <p>• 비밀번호</p>
-              <input id="pw" type="password"></input>
+              <input
+                id="password"
+                type="password"
+                value={formData.password}
+                onChange={handleChange}
+              />
             </div>
-            {showWarn && (
-              <Warn onClick={handleFocus}>아이디 / 비밀번호를 확인하세요</Warn>
-            )}
+            {error && <Warn>{error}</Warn>}
             <Nav>
               <p onClick={() => navigateTo("/find-id")}>아이디 찾기</p>
               <p onClick={() => navigateTo("/find-password")}>비밀번호 찾기</p>
