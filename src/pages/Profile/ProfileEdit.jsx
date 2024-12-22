@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import Footer from "../../components/footer";
 import LoginHeader from "../../components/LoginHeader";
@@ -126,251 +127,200 @@ const Sec = styled.div`
 
 const ProfileEdit = () => {
   const navigate = useNavigate();
-  const inputRef1 = useRef(null);
-  const inputRef2 = useRef(null);
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [domain, setDomain] = useState("naver.com");
+  const [domain, setDomain] = useState("");
   const [domainInput, setDomainInput] = useState("");
+  const [formData, setFormData] = useState({
+    name: "",
+    birthYear: "",
+    birthMonth: "",
+    birthDay: "",
+    id: "",
+    password: "",
+    confirmPassword: "",
+    phoneNumber: "",
+    email: "",
+  });
   const [success, setSuccess] = useState(null);
-  const [phonePrefix, setPhonePrefix] = useState("010");
-  const [year, setYear] = useState("2024");
-  const [month, setMonth] = useState("1");
-  const [date, setDate] = useState("1");
 
-  const validatePassword = (password) => {
-    const minLength = 8;
-    const maxLength = 12;
-    const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,12}$/;
-    if (password.length < minLength || password.length > maxLength) {
-      return false;
-    }
-    return regex.test(password);
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (!validatePassword(password)) {
-      console.log("비밀번호 규칙 틀림");
-      return;
-    } else if (password !== confirmPassword) {
-      console.log("비밀번호 다름");
-      return;
-    }
-    navigate("/sign-up-complete");
-  };
+  const token = localStorage.getItem("access_token");
 
   const handleDomainChange = (e) => {
     setDomain(e.target.value);
-    if (e.target.value !== "type") {
-      setDomainInput("");
-    }
+    if (e.target.value !== "type") setDomainInput("");
   };
 
-  const handlePhone2Change = (e) => {
-    if (e.target.value.length >= e.target.maxLength) {
-      inputRef2.current.focus();
-    }
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((formData) => ({
+      ...formData,
+      [id]: value,
+    }));
   };
 
-  const handleFocus = (e) => {
-    e.target.removeAttribute("readonly");
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (formData.password !== formData.confirmPassword) {
+      alert("비밀번호가 일치하지 않습니다.");
+      return;
+    }
+    const completeEmail =
+      domain === "type"
+        ? `${formData.email}@${domainInput}`
+        : `${formData.email}@${domain}`;
+    const birthDate = `${formData.birthYear}-${formData.birthMonth.padStart(
+      2,
+      "0"
+    )}-${formData.birthDay.padStart(2, "0")}`;
+
+    const requestData = {
+      name: formData.name,
+      birth: birthDate,
+      username: formData.username,
+      password: formData.password,
+      phoneNumber: formData.phoneNumber,
+      email: completeEmail,
+    };
+
+    try {
+      const response = await axios.post("/user/info-modify", requestData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.data.success) {
+        setSuccess(true);
+        navigate("/mypage");
+      } else {
+        setSuccess(false);
+      }
+    } catch (error) {
+      console.error(
+        "API Request Failed:",
+        error.response?.data || error.message
+      );
+      setSuccess(false);
+    }
   };
 
   return (
     <Container>
       <LoginHeader />
-      <div>
-        <Header>
-          <img
-            src={`${process.env.PUBLIC_URL}/assets/logo/FaceLogoBlue.png`}
-            width={"100px"}
-            height={"100px"}
-            alt="Logo"
-          />
-          <p id="verify">개인 정보 수정</p>
-        </Header>
-        <Sec>
-          <form method="post" onSubmit={handleSubmit}>
-            <div className="input">
-              <p className="label">• 이름</p>
-              <input
-                id="name"
-                type="text"
-                required
-                defaultValue="홍길동" // 기존 사용자 이름
-                readOnly
-                onFocus={handleFocus}
-              />
-            </div>
-            <div className="input">
-              <p className="label">• 생년월일</p>
-              <select
-                id="birth-year"
-                required
-                value={year}
-                onChange={(e) => setYear(e.target.value)}
-              >
-                <option value="">년</option>
-                {Array.from({ length: 100 }, (_, i) => (
-                  <option key={i} value={2024 - i}>
-                    {2024 - i}
-                  </option>
-                ))}
-              </select>
-              <select
-                id="birth-month"
-                required
-                value={month}
-                onChange={(e) => setMonth(e.target.value)}
-              >
-                <option value="">월</option>
-                {Array.from({ length: 12 }, (_, i) => (
-                  <option key={i + 1} value={i + 1}>
-                    {i + 1}
-                  </option>
-                ))}
-              </select>
-              <select
-                id="birth-day"
-                required
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-              >
-                <option value="">일</option>
-                {Array.from({ length: 31 }, (_, i) => (
-                  <option key={i + 1} value={i + 1}>
-                    {i + 1}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="input">
-              <p className="label">• 아이디</p>
-              <input
-                id="id"
-                type="text"
-                required
-                defaultValue="user123" // 기존 사용자 아이디
-                readOnly
-                onFocus={handleFocus}
-              />
-            </div>
-            <div className="input">
-              <p className="label">• 비밀번호</p>
-              <input
-                id="pw"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                readOnly
-                onFocus={handleFocus}
-              />
-              <p id="pwGuide">
-                8자~12자 이내 영문과 숫자 조합으로 입력해주세요.
-              </p>
-            </div>
-            <div className="input">
-              <p className="label">• 비밀번호 확인</p>
-              <input
-                id="pw-confirm"
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                readOnly
-                onFocus={handleFocus}
-              />
-              <p
-                id="warn"
-                style={{
-                  visibility:
-                    password !== confirmPassword || !validatePassword(password)
-                      ? "visible"
-                      : "hidden",
-                }}
-              >
-                {password !== confirmPassword
-                  ? "비밀번호가 일치하지 않습니다."
-                  : "비밀번호는 8자 이상 12자 이하의 영문과 숫자 조합이어야 합니다."}
-              </p>
-            </div>
-            <div className="input">
-              <p className="label">• 전화번호</p>
-              <select
-                className="phone"
-                value={phonePrefix}
-                onChange={(e) => setPhonePrefix(e.target.value)}
-              >
-                <option value="">선택</option>
-                <option value="010">010</option>
-                <option value="011">011</option>
-                <option value="016">016</option>
-                <option value="017">017</option>
-                <option value="018">018</option>
-                <option value="019">019</option>
-              </select>
-              <p className="hypen">-</p>
-              <input
-                className="phone"
-                type="tel"
-                maxLength="4"
-                ref={inputRef1}
-                onChange={handlePhone2Change}
-                defaultValue={1234}
-                readOnly
-                onFocus={handleFocus}
-              />
-              <p className="hypen">-</p>
-              <input
-                className="phone"
-                type="tel"
-                maxLength="4"
-                ref={inputRef2}
-                readOnly
-                onFocus={handleFocus}
-                defaultValue={5678}
-              />
-            </div>
-            <div className="input">
-              <p className="label">• 이메일 </p>
-              <input
-                className="email"
-                type="text"
-                required
-                readOnly
-                onFocus={handleFocus}
-                defaultValue="user" // 기존 사용자 이메일
-              />
-              <p id="at">@</p>
-              <input
-                className="email"
-                type="text"
-                value={domain === "type" ? domainInput : domain}
-                onChange={(e) => setDomainInput(e.target.value)}
-                disabled={domain !== "type"}
-                required
-                readOnly
-                onFocus={handleFocus}
-              />
-              <select onChange={handleDomainChange} value={domain}>
-                <option value="type">직접 입력</option>
-                <option value="naver.com">naver.com</option>
-                <option value="gmail.com">gmail.com</option>
-                <option value="daum.net">daum.net</option>
-                <option value="hanmail.net">hanmail.net</option>
-              </select>
-            </div>
-            <button type="submit" id="goLogin">
-              저장하기
-            </button>
-          </form>
-          {success !== null && (
-            <p id="warn">{success ? "" : "회원 정보가 맞지 않습니다."}</p>
-          )}
-        </Sec>
-      </div>
+      <Header>
+        <img
+          src={`${process.env.PUBLIC_URL}/assets/logo/FaceLogoBlue.png`}
+          width={"100px"}
+          height={"100px"}
+        />
+        <p id="verify">정보 수정</p>
+        <p id="message">정보를 수정하려면 아래 양식을 작성해주세요.</p>
+      </Header>
+      <Sec>
+        <form onSubmit={handleSubmit}>
+          <div className="input">
+            <p className="label">• 이름</p>
+            <input
+              id="name"
+              value={formData.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="input">
+            <p className="label">• 생년월일</p>
+            <input
+              id="birthYear"
+              type="text"
+              value={formData.birthYear}
+              onChange={handleChange}
+              required
+            />
+            <input
+              id="birthMonth"
+              type="text"
+              value={formData.birthMonth}
+              onChange={handleChange}
+              required
+            />
+            <input
+              id="birthDay"
+              type="text"
+              value={formData.birthDay}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="input">
+            <p className="label">• 아이디</p>
+            <input
+              id="username"
+              value={formData.username}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="input">
+            <p className="label">• 비밀번호</p>
+            <input
+              id="password"
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="input">
+            <p className="label">• 비밀번호 확인</p>
+            <input
+              id="confirmPassword"
+              type="password"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="input">
+            <p className="label">• 전화번호</p>
+            <input
+              id="phoneNumber"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="input">
+            <p className="label">• 이메일</p>
+            <input
+              id="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+            <p id="at">@</p>
+            <input
+              type="text"
+              value={domain === "type" ? domainInput : domain}
+              onChange={(e) => setDomainInput(e.target.value)}
+              disabled={domain !== "type"}
+              required
+            />
+            <select onChange={handleDomainChange} value={domain}>
+              <option value="type">직접 입력</option>
+              <option value="naver.com">naver.com</option>
+              <option value="gmail.com">gmail.com</option>
+              <option value="daum.net">daum.net</option>
+              <option value="hanmail.net">hanmail.net</option>
+            </select>
+          </div>
+          <button type="submit" id="goLogin">
+            수정하기
+          </button>
+        </form>
+        {success !== null && (
+          <p id="warn">{success ? "" : "수정에 실패했습니다."}</p>
+        )}
+      </Sec>
       <Footer />
     </Container>
   );

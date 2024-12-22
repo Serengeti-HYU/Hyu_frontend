@@ -160,7 +160,7 @@ const VerifyBeforeEdit = () => {
       // 성공
       if (response.data.success) {
         setSuccess(true);
-        navigate("/edit-profile"); // 성공하면면 프로필 수정 페이지로 이동
+        navigate("/profile-edit"); // 성공하면면 프로필 수정 페이지로 이동
       } else {
         setSuccess(false);
       }
@@ -236,7 +236,7 @@ const VerifyBeforeEdit = () => {
             </button>
           </form>
           {success !== null && (
-            <p id="warn">{success ? "" : "회원 정보가 맞지 않습니다."}</p>
+            <p id="warn">{success ? "" : "회원 정보가 일치하지 않습니다."}</p>
           )}
         </Sec>
       </div>
