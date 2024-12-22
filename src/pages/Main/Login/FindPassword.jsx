@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import Footer from "../../../components/footer";
 import NoLoginHeader from "../../../components/NoLoginHeader";
@@ -105,19 +106,47 @@ const Sec = styled.div`
 
 const FindPassword = () => {
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: "",
+    id: "",
+    email: "",
+  });
   const [domain, setDomain] = useState("");
   const [domainInput, setDomainInput] = useState("");
   const [success, setSuccess] = useState(null);
 
-  const handleSubmit = (event) => {
-    // 성공하면 setSuccess true
-    // 실패하면 setSuccess false
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
   };
 
   const handleDomainChange = (e) => {
     setDomain(e.target.value);
     if (e.target.value !== "type") {
       setDomainInput("");
+    }
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const completeEmail =
+      domain === "type"
+        ? `${formData.email}@${domainInput}` // 사용자 직접 입력한 도메인
+        : `${formData.email}@${domain}`; // 선택한 도메인
+
+    const requestData = { ...formData, email: completeEmail };
+
+    try {
+      const response = await axios.post(`/user/forgot-password`, requestData);
+      console.log("비밀번호 찾기 성공:", response.data);
+      setSuccess(true);
+    } catch (error) {
+      console.error("비밀번호 찾기 실패:", error);
+      setSuccess(false);
     }
   };
 
@@ -137,15 +166,35 @@ const FindPassword = () => {
           <form method="post" onSubmit={handleSubmit}>
             <div className="input">
               <p className="label">• 이름</p>
-              <input id="name" type="text" required />
+              <input
+                id="name"
+                type="text"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="input">
               <p className="label">• 아이디</p>
-              <input id="id" type="text" required />
+              <input
+                id="id"
+                type="text"
+                value={formData.id}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="input">
-              <p className="label">• 이메일 </p>
-              <input className="email" type="text" required />
+              <p className="label">• 이메일</p>
+              <input
+                className="email"
+                id="email"
+                type="text"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+
               <p id="at">@</p>
               <input
                 className="email"
