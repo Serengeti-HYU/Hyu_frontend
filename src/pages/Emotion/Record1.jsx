@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import Footer from "../../components/footer";
 import LoginHeader from "../../components/LoginHeader";
+import axios from "axios";
 
 const Container = styled.div`
   display: flex;
@@ -39,7 +40,7 @@ const Content = styled.div`
   max-width: 43.75rem;
   margin: 0 auto;
   margin-top: 0;
-margin-bottom: 3rem;
+  margin-bottom: 3rem;
   @media (max-width: 768px) {
     padding: 1.25rem;
     max-width: 100%;
@@ -125,7 +126,6 @@ const TopLine = styled.div`
   margin-bottom: 3rem;
   @media (max-width: 768px) {
     margin-top: -10rem;
-
   }
 `;
 
@@ -161,8 +161,8 @@ const MemoContainer = styled.div`
   margin-bottom: 1.25rem;
   align-items: center;
   border-radius: 1.25rem;
-  border: 0.1875rem solid #35648C;
-  background: #FFF;
+  border: 0.1875rem solid #35648c;
+  background: #fff;
 
   @media (max-width: 768px) {
     max-width: 100%;
@@ -309,8 +309,8 @@ const DayContainer = styled.div`
   border-radius: 1.052rem;
   border: 0.0625rem solid #35648c;
   margin-bottom: 0.625rem;
-  background-color: ${(props) => (props.selected ? '#35648c' : 'transparent')};
-  color: ${(props) => (props.selected ? '#fff' : '#000')};
+  background-color: ${(props) => (props.selected ? "#35648c" : "transparent")};
+  color: ${(props) => (props.selected ? "#fff" : "#000")};
 
   @media (max-width: 768px) {
     width: 4rem;
@@ -334,7 +334,7 @@ const Weekdays = styled.div`
   display: flex;
   justify-content: space-around;
   width: 100%;
-  color: #35648C;
+  color: #35648c;
   font-family: SUIT;
   font-size: 1.25rem;
   font-style: normal;
@@ -363,64 +363,45 @@ const DateSelector = styled.div`
 
 const Record1 = () => {
   const navigate = useNavigate();
-  const [selectedDate, setSelectedDate] = useState(new Date(2024, 0, 19));
-  const [emotions, setEmotions] = useState({
-    14: "😐",
-    15: "😐",
-    16: "😐",
-    17: "😐",
-    18: "😐",
-    19: "😊",
-    20: "😐",
-  });
+  const [selectedDate, setSelectedDate] = useState(new Date()); // 오늘 날짜 불러옴
   const [selectedDay, setSelectedDay] = useState(selectedDate.getDate());
+  const [weeklyRecords, setWeeklyRecords] = useState([]);
 
-  const handleDateChange = (year, month, day) => {
-    const newDate = new Date(year, month - 1, day);
-    setSelectedDate(newDate);
-    setSelectedDay(day);
-  };
+  useEffect(() => {
+    const currentDate = new Date();
+    const startDate = new Date(currentDate);
+    startDate.setDate(currentDate.getDate() - currentDate.getDay() + 1); // 이번주만 출력
 
-  const handlePreviousWeek = () => {
-    setSelectedDate((prevDate) => {
-      const newDate = new Date(prevDate.getFullYear(), prevDate.getMonth(), prevDate.getDate() - 7);
-      setSelectedDay(newDate.getDate());
-      return newDate;
-    });
-  };
+    const endDate = new Date(startDate);
+    endDate.setDate(startDate.getDate() + 6);
 
-  const handleNextWeek = () => {
-    const weekDays = getWeekDays(selectedDate);
-    const isLastDaySelected = selectedDay === weekDays[weekDays.length - 1].getDate();
-    if (!isLastDaySelected) {
-      setSelectedDate((prevDate) => {
-        const newDate = new Date(prevDate.getFullYear(), prevDate.getMonth(), prevDate.getDate() + 7);
-        setSelectedDay(newDate.getDate());
-        return newDate;
+    const formatDate = (date) => {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    };
+
+    const weekStart = formatDate(startDate);
+    const weekEnd = formatDate(endDate);
+
+    axios
+      .get("/hue-records", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+        params: {
+          startDate: weekStart,
+          endDate: weekEnd,
+        },
+      })
+      .then((response) => {
+        setWeeklyRecords(response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
       });
-    }
-  };
-
-  const handleManualDateChange = (type, value) => {
-    const newDate = new Date(selectedDate);
-    if (type === 'year') {
-      newDate.setFullYear(value);
-    } else if (type === 'month') {
-      newDate.setMonth(value - 1);
-    } else if (type === 'day') {
-      newDate.setDate(value);
-    }
-    setSelectedDate(newDate);
-    setSelectedDay(newDate.getDate());
-  };
-
-  const generateOptions = (start, end) => {
-    const options = [];
-    for (let i = start; i <= end; i++) {
-      options.push(<option key={i} value={i}>{i}</option>);
-    }
-    return options;
-  };
+  }, []);
 
   const getWeekDays = (date) => {
     const weekDays = [];
@@ -437,59 +418,39 @@ const Record1 = () => {
 
   const weekDays = getWeekDays(selectedDate);
 
-  useEffect(() => {
-    const year = selectedDate.getFullYear();
-    const month = String(selectedDate.getMonth() + 1).padStart(2, "0");
-    const day = String(selectedDate.getDate()).padStart(2, "0");
-    document.getElementById("top-date-display").textContent = `${year}.${month}.${day}`;
-  }, [selectedDate]);
+  const findRecordForSelectedDate = () => {
+    return weeklyRecords.find(
+      (record) =>
+        new Date(record.recordDate).getDate() === selectedDate.getDate() &&
+        new Date(record.recordDate).getMonth() === selectedDate.getMonth() &&
+        new Date(record.recordDate).getFullYear() === selectedDate.getFullYear()
+    );
+  };
+
+  const selectedDayRecord = findRecordForSelectedDate();
 
   return (
     <Container>
       <LoginHeader />
       <TextContent>
         <Header>00님의 감정 기록</Header>
-        <DateDisplay id="top-date-display">
-          {`${selectedDate.getFullYear()}.${String(selectedDate.getMonth() + 1).padStart(2, "0")}.${String(selectedDate.getDate()).padStart(2, "0")}`}
+        <DateDisplay>
+          {`${new Date().getFullYear()}.${String(
+            new Date().getMonth() + 1
+          ).padStart(2, "0")}.${String(new Date().getDate()).padStart(2, "0")}`}
         </DateDisplay>
       </TextContent>
       <Content>
         <TopLine />
         <TopContainer>
           <CircleContainer>
-            <Circle>{emotions[selectedDay] || "😐"}</Circle>
+            <Circle>😐</Circle>
           </CircleContainer>
           <MemoContainer>
             <MemoInput placeholder="memo" />
           </MemoContainer>
         </TopContainer>
         <Button onClick={() => navigate("/Record2")}>기록하기</Button>
-        <Navigation>
-          <LeftNavButton onClick={handlePreviousWeek} />
-          <DateSelector>
-            <DateInput
-              value={selectedDate.getFullYear()}
-              onChange={(e) => handleManualDateChange('year', e.target.value)}
-            >
-              {generateOptions(2000, 2030)}
-            </DateInput>
-            .
-            <DateInput
-              value={selectedDate.getMonth() + 1}
-              onChange={(e) => handleManualDateChange('month', Number(e.target.value))}
-            >
-              {generateOptions(1, 12)}
-            </DateInput>
-            .
-            <DateInput
-              value={selectedDate.getDate()}
-              onChange={(e) => handleManualDateChange('day', Number(e.target.value))}
-            >
-              {generateOptions(1, 31)}
-            </DateInput>
-          </DateSelector>
-          <RightNavButton onClick={handleNextWeek} />
-        </Navigation>
         <Weekdays>
           <div>MON</div>
           <div>TUE</div>
@@ -502,20 +463,53 @@ const Record1 = () => {
         <Line />
         <BottomContainer>
           <DayContainerWrapper>
-            {weekDays.map((day, index) => (
-              <DayContainer
-                key={day.getDate()}
-                selected={day.getDate() === selectedDay}
-                onClick={() => handleDateChange(day.getFullYear(), day.getMonth() + 1, day.getDate())}
-              >
-                <DayItem selected={day.getDate() === selectedDay}>
-                  <div>{`${String(day.getMonth() + 1).padStart(2, "0")}.${String(day.getDate()).padStart(2, "0")}`}</div>
-                  <Circle1>{emotions[day.getDate()] || "😐"}</Circle1>
-                </DayItem>
-              </DayContainer>
-            ))}
+            {weekDays.map((day, index) => {
+              const record = weeklyRecords.find(
+                (record) =>
+                  new Date(record.recordDate).getDate() === day.getDate()
+              );
+              return (
+                <DayContainer
+                  key={day.getDate()}
+                  selected={day.getDate() === selectedDay}
+                  onClick={() => {
+                    setSelectedDate(
+                      new Date(day.getFullYear(), day.getMonth(), day.getDate())
+                    );
+                    setSelectedDay(day.getDate());
+                  }}
+                >
+                  <DayItem selected={day.getDate() === selectedDay}>
+                    <div>{`${String(day.getMonth() + 1).padStart(
+                      2,
+                      "0"
+                    )}.${String(day.getDate()).padStart(2, "0")}`}</div>
+                    <Circle1>
+                      {record ? (
+                        <img src={record.emotionImg} alt="Emotion" />
+                      ) : (
+                        "😐"
+                      )}
+                    </Circle1>
+                  </DayItem>
+                </DayContainer>
+              );
+            })}
           </DayContainerWrapper>
         </BottomContainer>
+        {selectedDayRecord && (
+          <div>
+            <h3>
+              Record for{" "}
+              {`${String(selectedDate.getMonth() + 1).padStart(
+                2,
+                "0"
+              )}.${String(selectedDate.getDate()).padStart(2, "0")}`}
+            </h3>
+            <p>{selectedDayRecord.memo}</p>
+            <img src={selectedDayRecord.emotionImg} alt="Emotion" />
+          </div>
+        )}
       </Content>
       <Footer />
     </Container>
