@@ -19,7 +19,6 @@ const Profile = () => {
   const [loading, setLoading] = useState(false);
 
   // 임시
-  localStorage.setItem("username", "sojeong");
   const token = localStorage.getItem("access_token");
   const username = localStorage.getItem("username");
 
