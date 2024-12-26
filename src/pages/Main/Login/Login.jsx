@@ -150,6 +150,7 @@ const Login = () => {
     try {
       const response = await axios.post(`/user/login`, formData);
       console.log("로그인 성공:", response.data);
+      localStorage.setItem("username", formData.username);
 
       if (response.data) {
         localStorage.setItem("access_token", response.data);

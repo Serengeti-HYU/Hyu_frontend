@@ -11,7 +11,7 @@ const MyPage = () => {
   const navigate = useNavigate();
 
   const gotoUpdateProfile = () => {
-    navigate(`/update-profile`);
+    navigate(`/profile-edit`);
   };
   const gotoRecordEmotion = () => {
     navigate(`/record1`);
