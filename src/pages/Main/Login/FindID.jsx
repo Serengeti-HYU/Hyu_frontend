@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import Footer from "../../../components/footer";
 import NoLoginHeader from "../../../components/NoLoginHeader";
@@ -105,15 +106,20 @@ const Sec = styled.div`
 
 const FindID = () => {
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+  });
   const [domain, setDomain] = useState("");
   const [domainInput, setDomainInput] = useState("");
-  const [success, setSuccess] = useState(null);
+  const [responseMessage, setResponseMessage] = useState("");
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    navigate("/");
-    // 성공하면 setSuccess true
-    // 실패하면 setSuccess false
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
   };
 
   const handleDomainChange = (e) => {
@@ -123,6 +129,23 @@ const FindID = () => {
     }
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const completeEmail =
+      domain === "type"
+        ? `${formData.email}@${domainInput}`
+        : `${formData.email}@${domain}`;
+    const requestData = { ...formData, email: completeEmail };
+
+    try {
+      const response = await axios.post(`/user/forgot-id`, requestData);
+      console.log("아이디 찾기 성공:", response.data);
+      setResponseMessage(response.data);
+    } catch (error) {
+      console.error("아이디 찾기 실패:", error);
+      setResponseMessage(error.response.data);
+    }
+  };
   return (
     <Container>
       <NoLoginHeader />
@@ -139,15 +162,24 @@ const FindID = () => {
           <form method="post" onSubmit={handleSubmit}>
             <div className="input">
               <p className="label">• 이름</p>
-              <input id="name" type="text" required />
-            </div>
-            <div className="input">
-              <p className="label">• 비밀번호</p>
-              <input id="pw" type="password" required />
+              <input
+                id="name"
+                type="text"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
             </div>
             <div className="input">
               <p className="label">• 이메일 </p>
-              <input className="email" type="text" required />
+              <input
+                className="email"
+                type="text"
+                id="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
               <p id="at">@</p>
               <input
                 className="email"
@@ -169,13 +201,7 @@ const FindID = () => {
               아이디 찾기
             </button>
           </form>
-          {success !== null && (
-            <p id="warn">
-              {success
-                ? "이메일로 전송 된 아이디를 확인해주세요."
-                : "회원 정보가 맞지 않습니다."}
-            </p>
-          )}
+          {responseMessage && <p id="warn">{responseMessage}</p>}
         </Sec>
       </div>
       <Footer />

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import Footer from "../../components/footer";
 import LoginHeader from "../../components/LoginHeader";
@@ -110,24 +111,62 @@ const VerifyBeforeEdit = () => {
   const [domain, setDomain] = useState("");
   const [domainInput, setDomainInput] = useState("");
   const [success, setSuccess] = useState(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    pw: "",
+    email: "",
+  });
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // 성공하면 setSuccess true
-    // 실패하면 setSuccess false
-
-    if (success) {
-      event.preventDefault();
-      navigate("/edit-profile");
-    } else {
-      return;
-    }
-  };
+  const token = localStorage.getItem("access_token"); //토큰 가져오기
+  console.log("Token: ", token);
 
   const handleDomainChange = (e) => {
     setDomain(e.target.value);
     if (e.target.value !== "type") {
       setDomainInput("");
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }));
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const completeEmail =
+      domain === "type"
+        ? `${formData.email}@${domainInput}`
+        : `${formData.email}@${domain}`;
+
+    const requestData = {
+      username: formData.name,
+      password: formData.pw,
+      email: completeEmail,
+    };
+
+    try {
+      const response = await axios.post("/user/info-auth", requestData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log("Response:", response.data);
+
+      // 성공
+      if (response.data.success) {
+        setSuccess(true);
+        navigate("/profile-edit"); // 성공하면면 프로필 수정 페이지로 이동
+      } else {
+        setSuccess(false);
+      }
+    } catch (error) {
+      console.error("API 요청 실패:", error);
+      setSuccess(false);
     }
   };
 
@@ -148,15 +187,33 @@ const VerifyBeforeEdit = () => {
           <form method="post" onSubmit={handleSubmit}>
             <div className="input">
               <p className="label">• 이름</p>
-              <input id="name" required></input>
+              <input
+                id="name"
+                value={formData.name}
+                onChange={handleInputChange}
+                required
+              />
             </div>
             <div className="input">
               <p className="label">• 비밀번호</p>
-              <input id="pw" type="password" required></input>
+              <input
+                id="pw"
+                type="password"
+                value={formData.pw}
+                onChange={handleInputChange}
+                required
+              />
             </div>
             <div className="input">
-              <p className="label">• 이메일 </p>
-              <input className="email" type="text" required />
+              <p className="label">• 이메일</p>
+              <input
+                className="email"
+                id="email"
+                type="text"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+              />
               <p id="at">@</p>
               <input
                 className="email"
@@ -179,7 +236,7 @@ const VerifyBeforeEdit = () => {
             </button>
           </form>
           {success !== null && (
-            <p id="warn">{success ? "" : "회원 정보가 맞지 않습니다."}</p>
+            <p id="warn">{success ? "" : "회원 정보가 일치하지 않습니다."}</p>
           )}
         </Sec>
       </div>
