@@ -83,7 +83,7 @@ const TestResult = () => {
   const [result, setResult] = useState([]);
   const [loading, setLoading] = useState(false);
   // 임시
-  const token = localStorage.getItem("tempToken");
+  const token = localStorage.getItem("access_token");
   const username = localStorage.getItem("username");
 
   useEffect(() => {

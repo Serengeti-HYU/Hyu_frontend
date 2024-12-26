@@ -159,10 +159,8 @@ const SignUp = () => {
 
   const [formData, setFormData] = useState({
     name: "",
-    birthYear: "",
-    birthMonth: "",
-    birthDay: "",
-    id: "",
+    birth: "",
+    username: "",
     password: "",
     phoneNumber: "",
     email: "",
@@ -195,28 +193,10 @@ const SignUp = () => {
     });
   };
 
-  const validateForm = () => {
-    const {
-      name,
-      birthYear,
-      birthMonth,
-      birthDay,
-      id,
-      password,
-      phoneNumber,
-      email,
-    } = formData;
+  const validateForm = (data) => {
+    const { name, birth, username, password, phoneNumber, email } = data;
 
-    if (
-      !name ||
-      !birthYear ||
-      !birthMonth ||
-      !birthDay ||
-      !id ||
-      !password ||
-      !phoneNumber ||
-      !email
-    ) {
+    if (!name || !birth || !username || !password || !phoneNumber || !email) {
       setError("모든 필드를 입력해주세요.");
       return false;
     }
@@ -238,8 +218,14 @@ const SignUp = () => {
       return false;
     }
 
-    if (!email.includes("@") || email.split("@").length !== 2) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
       setError("유효한 이메일 주소를 입력해주세요.");
+      return false;
+    }
+
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(birth)) {
+      setError("생년월일은 YYYY-MM-DD 형식으로 입력해주세요.");
       return false;
     }
 
@@ -247,12 +233,34 @@ const SignUp = () => {
     return true;
   };
 
+  const handleBirthChange = (e, part) => {
+    const value = e.target.value.replace(/[^0-9]/g, "");
+    setFormData((prev) => {
+      const birthParts = prev.birth.split("-");
+      if (birthParts.length !== 3) {
+        birthParts[0] = "";
+        birthParts[1] = "";
+        birthParts[2] = "";
+      }
+      if (part === "year") birthParts[0] = value.slice(0, 4);
+      if (part === "month") birthParts[1] = value.slice(0, 2);
+      if (part === "day") birthParts[2] = value.slice(0, 2);
+
+      return { ...prev, birth: birthParts.join("-") };
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
 
+    const email = `${formData.email}@${
+      domain === "type" ? domainInput : domain
+    }`;
+    const updatedFormData = { ...formData, email };
+
+    if (!validateForm(updatedFormData)) return;
     try {
-      const response = await axios.post(`/user/signup`, formData);
+      const response = await axios.post(`/user/signup`, updatedFormData);
       console.log("response:", response.data);
       navigate("/sign-up-complete");
     } catch (error) {
@@ -266,8 +274,8 @@ const SignUp = () => {
       <NoLoginHeader />
       <div>
         <Header>
-          <p id="message">휴~ 하고 한숨 돌리고 싶지 않으신가요?</p>
-          <p id="login">회원가입</p>
+          <div id="message">휴~ 하고 한숨 돌리고 싶지 않으신가요?</div>
+          <div id="login">회원가입</div>
         </Header>
         <Social>
           <p>카카오계정 회원가입</p>
@@ -287,33 +295,37 @@ const SignUp = () => {
             <div className="input">
               <p className="label">• 생년월일</p>
               <input
-                id="birthYear"
                 type="text"
-                value={formData.birthYear}
-                onChange={handleChange}
+                maxLength="4"
+                placeholder="YYYY"
+                value={formData.birth.split("-")[0] || ""}
+                onChange={(e) => handleBirthChange(e, "year")}
                 required
               />
               <input
-                id="birthMonth"
                 type="text"
-                value={formData.birthMonth}
-                onChange={handleChange}
+                maxLength="2"
+                placeholder="MM"
+                value={formData.birth.split("-")[1] || ""}
+                onChange={(e) => handleBirthChange(e, "month")}
                 required
               />
               <input
-                id="birthDay"
                 type="text"
-                value={formData.birthDay}
-                onChange={handleChange}
+                maxLength="2"
+                placeholder="DD"
+                value={formData.birth.split("-")[2] || ""}
+                onChange={(e) => handleBirthChange(e, "day")}
                 required
               />
             </div>
+
             <div className="input">
               <p className="label">• 아이디</p>
               <input
-                id="id"
+                id="username"
                 type="text"
-                value={formData.id}
+                value={formData.username}
                 onChange={handleChange}
                 required
               />
@@ -379,8 +391,15 @@ const SignUp = () => {
                 disabled={domain !== "type"}
                 required
               />
+              <select onChange={handleDomainChange} value={domain}>
+                <option value="type">직접 입력</option>
+                <option value="naver.com">naver.com</option>
+                <option value="gmail.com">gmail.com</option>
+                <option value="daum.net">daum.net</option>
+                <option value="hanmail.net">hanmail.net</option>
+              </select>
             </div>
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && <div style={{ color: "red" }}>{error}</div>}
             <button id="goLogin" type="submit">
               회원가입 완료
             </button>

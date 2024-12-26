@@ -19,12 +19,8 @@ const Profile = () => {
   const [loading, setLoading] = useState(false);
 
   // 임시
-  localStorage.setItem(
-    "token",
-    "eyJhbGciOiJIUzI1NiJ9.eyJwaG9uZSI6IjEyMzQ1Njc4OTAiLCJlbWFpbCI6InRlc3RAbmF2ZXIuY29tIiwic3ViIjoic29qZW9uZyIsImlhdCI6MTczNDUyMzQ4MywiZXhwIjoxNzM0NTQxNDgzfQ.JbC2yLnbXUISWx_Qid3fn61Xz2FkywEdwwplIcxi3Ss"
-  );
   localStorage.setItem("username", "sojeong");
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("access_token");
   const username = localStorage.getItem("username");
 
   useEffect(() => {

@@ -15,7 +15,7 @@ const EmotionRecords = () => {
   // 임시
   const username = localStorage.getItem("username");
   console.log(username);
-  const token = localStorage.getItem("token");
+  const token = localStorage.getItem("access_token");
 
   useEffect(() => {
     const fetchData = async () => {
