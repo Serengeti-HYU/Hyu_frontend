@@ -20,7 +20,7 @@ const questions = [
 const options = ["매우 그렇다", "그렇다", "그렇지 않다", "매우 그렇지 않다"];
 const optionSizes = [5, 3.6, 3.6, 5];
 // 임시
-const token = localStorage.getItem("tempToken");
+const token = localStorage.getItem("access_token");
 const username = localStorage.getItem("username");
 
 const PersonalityTest = () => {

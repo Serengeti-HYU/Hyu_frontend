@@ -156,6 +156,7 @@ const SignupSec = styled.div`
 
 const SignUp = () => {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "",
     birthYear: "",
@@ -163,28 +164,86 @@ const SignUp = () => {
     birthDay: "",
     id: "",
     password: "",
-    confirmPassword: "",
+    phoneNumber: "",
+    email: "",
   });
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [domain, setDomain] = useState("");
+  const [domainInput, setDomainInput] = useState("");
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.id]: e.target.value,
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
+  };
+
+  const handleDomainChange = (e) => {
+    setDomain(e.target.value);
+    if (e.target.value !== "type") setDomainInput("");
+  };
+
+  const handlePhoneChange = (e, part) => {
+    const value = e.target.value.replace(/[^0-9]/g, "");
+    setFormData((prev) => {
+      const phoneParts = prev.phoneNumber.split("-");
+      phoneParts[part] = value;
+      return { ...prev, phoneNumber: phoneParts.join("-") };
     });
   };
 
   const validateForm = () => {
-    const { password, confirmPassword } = formData;
+    const {
+      name,
+      birthYear,
+      birthMonth,
+      birthDay,
+      id,
+      password,
+      phoneNumber,
+      email,
+    } = formData;
+
+    if (
+      !name ||
+      !birthYear ||
+      !birthMonth ||
+      !birthDay ||
+      !id ||
+      !password ||
+      !phoneNumber ||
+      !email
+    ) {
+      setError("모든 필드를 입력해주세요.");
+      return false;
+    }
+
     const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,12}$/;
     if (!passwordRegex.test(password)) {
       setError("비밀번호는 8~12자, 영문+숫자 조합이어야 합니다.");
       return false;
     }
+
     if (password !== confirmPassword) {
       setError("비밀번호가 일치하지 않습니다.");
       return false;
     }
+
+    const phoneRegex = /^\d{3}-\d{3,4}-\d{4}$/;
+    if (!phoneRegex.test(phoneNumber)) {
+      setError("유효한 전화번호를 입력해주세요. (예: 010-1234-5678)");
+      return false;
+    }
+
+    if (!email.includes("@") || email.split("@").length !== 2) {
+      setError("유효한 이메일 주소를 입력해주세요.");
+      return false;
+    }
+
+    setError("");
     return true;
   };
 
@@ -272,10 +331,52 @@ const SignUp = () => {
             <div className="input">
               <p className="label">• 비밀번호 확인</p>
               <input
-                id="confirmPassword"
                 type="password"
-                value={formData.confirmPassword}
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange}
+                required
+              />
+            </div>
+            <div className="input">
+              <p className="label">• 전화번호</p>
+              <select onChange={(e) => handlePhoneChange(e, 0)}>
+                <option value="">선택</option>
+                <option value="010">010</option>
+                <option value="011">011</option>
+                <option value="016">016</option>
+              </select>
+              <p className="hypen">-</p>
+              <input
+                className="phone"
+                type="tel"
+                maxLength="4"
+                onChange={(e) => handlePhoneChange(e, 1)}
+              />
+              <p className="hypen">-</p>
+              <input
+                className="phone"
+                type="tel"
+                maxLength="4"
+                onChange={(e) => handlePhoneChange(e, 2)}
+              />
+            </div>
+
+            <div className="input">
+              <p className="label">• 이메일 </p>
+              <input
+                id="email"
+                type="text"
+                value={formData.email}
                 onChange={handleChange}
+                placeholder="example"
+                required
+              />
+              <p id="at">@</p>
+              <input
+                type="text"
+                value={domain === "type" ? domainInput : domain}
+                onChange={(e) => setDomainInput(e.target.value)}
+                disabled={domain !== "type"}
                 required
               />
             </div>
