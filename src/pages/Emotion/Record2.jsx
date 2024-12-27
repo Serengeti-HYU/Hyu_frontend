@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Footer from "../../components/footer";
 import LoginHeader from "../../components/LoginHeader";
 import { EmotionContext } from "./EmotionContext";
+import axios from "axios";
 
 const Container = styled.div`
   display: flex;
@@ -209,7 +210,7 @@ const EmotionBox = styled.div`
 
   &::-webkit-scrollbar-thumb {
     border-radius: 51px;
-    background: linear-gradient(90deg, #35648C 0%, #F2E8C9 100%);
+    background: linear-gradient(90deg, #35648c 0%, #f2e8c9 100%);
   }
 
   &::-webkit-scrollbar-track {
@@ -370,8 +371,10 @@ const ModalButton = styled.button`
 const Record2 = () => {
   const { customEmotion } = useContext(EmotionContext);
   const navigate = useNavigate();
-  const [selectedDate, setSelectedDate] = useState(new Date(2024, 0, 19));
-  const [selectedEmotion, setSelectedEmotion] = useState("😐");
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [selectedEmotion, setSelectedEmotion] = useState(
+    "/assets/sampleFace/0.png"
+  );
   const [memo, setMemo] = useState("");
   const [isCustomModalOpen, setIsCustomModalOpen] = useState(false);
   const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
@@ -413,16 +416,64 @@ const Record2 = () => {
     setIsCustomModalOpen(false);
   };
 
-  const handleSaveClick = () => {
-    setIsSaveModalOpen(true);
-  };
-
   const closeSaveModal = () => {
     setIsSaveModalOpen(false);
   };
 
   const handleCustomConfirm = () => {
     navigate("/NoPremium");
+  };
+
+  const handleSaveClick = async () => {
+    try {
+      // emotion_id 추출
+      let emotionId = null;
+      if (customEmotion) {
+        // customEmotion에서 고유 ID 추출 로직
+        emotionId = parseInt(customEmotion.id, 10); // `id`는 customEmotion 객체에 있어야 함
+      } else {
+        const match = selectedEmotion.match(/(\d+)\.png$/);
+        if (match) emotionId = parseInt(match[1], 10);
+      }
+
+      if (emotionId === null || emotionId === -1) {
+        alert("감정을 선택해주세요.");
+        return;
+      }
+
+      // POST 요청 데이터 구성
+      const data = {
+        emotion_id: emotionId,
+        content: memo,
+      };
+      const token = localStorage.getItem("access_token");
+
+      if (!token) {
+        alert("로그인이 필요합니다.");
+        navigate("/login"); // 로그인 페이지로 이동
+        return;
+      }
+
+      // POST 요청 보내기
+      const response = await axios.post("/hue-records", data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // 성공 응답 처리
+      if (response.data === "Emotion record created successfully") {
+        setIsSaveModalOpen(true); // 저장 성공 모달 열기
+      }
+    } catch (error) {
+      // 에러 응답 처리
+      if (error.response && error.response.status === 409) {
+        alert("해당 날짜에 이미 작성된 글이 있습니다.");
+      } else {
+        console.error("Error while saving record:", error);
+        alert("저장 중 문제가 발생했습니다. 다시 시도해주세요.");
+      }
+    }
   };
 
   return (
@@ -459,12 +510,22 @@ const Record2 = () => {
             <Circle>
               {customEmotion ? (
                 <Face>
-                  {customEmotion.selectedEye && <Eye src={customEmotion.selectedEye} alt="Eye" />}
-                  {customEmotion.selectedMouth && <Mouth src={customEmotion.selectedMouth} alt="Mouth" />}
-                  {customEmotion.selectedEtc && <Etc src={customEmotion.selectedEtc} alt="Etc" />}
+                  {customEmotion.selectedEye && (
+                    <Eye src={customEmotion.selectedEye} alt="Eye" />
+                  )}
+                  {customEmotion.selectedMouth && (
+                    <Mouth src={customEmotion.selectedMouth} alt="Mouth" />
+                  )}
+                  {customEmotion.selectedEtc && (
+                    <Etc src={customEmotion.selectedEtc} alt="Etc" />
+                  )}
                 </Face>
               ) : (
-                selectedEmotion
+                <img
+                  src={selectedEmotion}
+                  alt="Selected Emotion"
+                  style={{ width: "50px", height: "50px" }}
+                />
               )}
             </Circle>
           </CircleContainer>
@@ -479,12 +540,18 @@ const Record2 = () => {
         <CustomContainer>
           <EmotionBox>
             <EmotionContainer ref={emotionContainerRef}>
-              {["😴", "😐", "😊", "😆", "😢"].map((emotion, index) => (
+              {[0, 1, 2, 3, 4, 5, 6].map((emotionId) => (
                 <EmotionButton
-                  key={index}
-                  onClick={() => setSelectedEmotion(emotion)}
+                  key={emotionId}
+                  onClick={() =>
+                    setSelectedEmotion(`/assets/sampleFace/${emotionId}.png`)
+                  }
                 >
-                  {emotion}
+                  <img
+                    src={`/assets/sampleFace/${emotionId}.png`}
+                    alt={`Emotion ${emotionId}`}
+                    style={{ width: "50px", height: "50px" }}
+                  />
                 </EmotionButton>
               ))}
               <LockButton onClick={handleLockClick} />
@@ -499,9 +566,7 @@ const Record2 = () => {
         </CustomContainer>
         <ButtonContainer>
           <PreviousButton onClick={() => navigate(-1)}>이전으로</PreviousButton>
-          <ActionButton onClick={handleSaveClick}>
-            저장하기
-          </ActionButton>
+          <ActionButton onClick={handleSaveClick}>저장하기</ActionButton>
         </ButtonContainer>
       </Content>
       {isCustomModalOpen && (

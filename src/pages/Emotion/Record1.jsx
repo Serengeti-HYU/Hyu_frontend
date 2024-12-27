@@ -363,50 +363,53 @@ const DateSelector = styled.div`
 
 const Record1 = () => {
   const navigate = useNavigate();
-  const [selectedDate, setSelectedDate] = useState(new Date()); // 오늘 날짜 불러옴
+  const [selectedDate, setSelectedDate] = useState(new Date()); // 오늘 날짜 설정
   const [selectedDay, setSelectedDay] = useState(selectedDate.getDate());
   const [weeklyRecords, setWeeklyRecords] = useState([]);
+  const [dailyRecord, setDailyRecord] = useState(null);
 
   useEffect(() => {
-    const currentDate = new Date();
-    const startDate = new Date(currentDate);
-    startDate.setDate(currentDate.getDate() - currentDate.getDay() + 1); // 이번주만 출력
-
-    const endDate = new Date(startDate);
-    endDate.setDate(startDate.getDate() + 6);
-
-    const formatDate = (date) => {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-      return `${year}-${month}-${day}`;
-    };
-
-    const weekStart = formatDate(startDate);
-    const weekEnd = formatDate(endDate);
-
+    // API 호출 및 데이터 설정
     axios
       .get("/hue-records", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
-        params: {
-          startDate: weekStart,
-          endDate: weekEnd,
-        },
       })
       .then((response) => {
-        setWeeklyRecords(response.data);
+        setWeeklyRecords(response.data || []);
+        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
   }, []);
 
+  useEffect(() => {
+    //날짜로 조회하는 api 연동
+    const recordDate = `${selectedDate.getFullYear()}-${String(
+      selectedDate.getMonth() + 1
+    ).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}`;
+
+    axios
+      .get(`/hue-records/${recordDate}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+        },
+      })
+      .then((response) => {
+        setDailyRecord(response.data || null);
+        console.log("Daily Record:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching daily data:", error);
+      });
+  }, [selectedDay, selectedDate]);
+
   const getWeekDays = (date) => {
     const weekDays = [];
     const startOfWeek = new Date(date);
-    startOfWeek.setDate(date.getDate() - date.getDay() + 1);
+    startOfWeek.setDate(date.getDate() - date.getDay() + 1); // 월요일부터 시작
 
     for (let i = 0; i < 7; i++) {
       const day = new Date(startOfWeek);
@@ -418,36 +421,37 @@ const Record1 = () => {
 
   const weekDays = getWeekDays(selectedDate);
 
-  const findRecordForSelectedDate = () => {
-    return weeklyRecords.find(
-      (record) =>
-        new Date(record.recordDate).getDate() === selectedDate.getDate() &&
-        new Date(record.recordDate).getMonth() === selectedDate.getMonth() &&
-        new Date(record.recordDate).getFullYear() === selectedDate.getFullYear()
-    );
-  };
-
-  const selectedDayRecord = findRecordForSelectedDate();
-
   return (
     <Container>
       <LoginHeader />
       <TextContent>
         <Header>00님의 감정 기록</Header>
         <DateDisplay>
-          {`${new Date().getFullYear()}.${String(
-            new Date().getMonth() + 1
-          ).padStart(2, "0")}.${String(new Date().getDate()).padStart(2, "0")}`}
+          {`${selectedDate.getFullYear()}.${String(
+            selectedDate.getMonth() + 1
+          ).padStart(2, "0")}.${String(selectedDay).padStart(2, "0")}`}
         </DateDisplay>
       </TextContent>
       <Content>
         <TopLine />
         <TopContainer>
           <CircleContainer>
-            <Circle>😐</Circle>
+            <Circle>
+              {dailyRecord?.emotionImg ? (
+                <img
+                  src={`/assets/sampleFace/${dailyRecord.emotionImg}.png`}
+                  alt="Emotion"
+                  style={{ width: "100%", height: "100%" }}
+                />
+              ) : null}
+            </Circle>
           </CircleContainer>
           <MemoContainer>
-            <MemoInput placeholder="memo" />
+            <MemoInput
+              placeholder="memo"
+              value={dailyRecord?.content || ""}
+              readOnly
+            />
           </MemoContainer>
         </TopContainer>
         <Button onClick={() => navigate("/Record2")}>기록하기</Button>
@@ -466,16 +470,17 @@ const Record1 = () => {
             {weekDays.map((day, index) => {
               const record = weeklyRecords.find(
                 (record) =>
-                  new Date(record.recordDate).getDate() === day.getDate()
+                  new Date(record.recordDate).getDate() === day.getDate() &&
+                  new Date(record.recordDate).getMonth() === day.getMonth() &&
+                  new Date(record.recordDate).getFullYear() ===
+                    day.getFullYear()
               );
               return (
                 <DayContainer
                   key={day.getDate()}
                   selected={day.getDate() === selectedDay}
                   onClick={() => {
-                    setSelectedDate(
-                      new Date(day.getFullYear(), day.getMonth(), day.getDate())
-                    );
+                    // 상태 업데이트 없이 클릭 이벤트로 선택된 Day만 설정
                     setSelectedDay(day.getDate());
                   }}
                 >
@@ -485,11 +490,13 @@ const Record1 = () => {
                       "0"
                     )}.${String(day.getDate()).padStart(2, "0")}`}</div>
                     <Circle1>
-                      {record ? (
-                        <img src={record.emotionImg} alt="Emotion" />
-                      ) : (
-                        "😐"
-                      )}
+                      {record && record.emotionImg ? (
+                        <img
+                          src={`/assets/sampleFace/${record.emotionImg}.png`}
+                          alt="Emotion"
+                          style={{ width: "100%", height: "100%" }}
+                        />
+                      ) : null}
                     </Circle1>
                   </DayItem>
                 </DayContainer>
@@ -497,19 +504,6 @@ const Record1 = () => {
             })}
           </DayContainerWrapper>
         </BottomContainer>
-        {selectedDayRecord && (
-          <div>
-            <h3>
-              Record for{" "}
-              {`${String(selectedDate.getMonth() + 1).padStart(
-                2,
-                "0"
-              )}.${String(selectedDate.getDate()).padStart(2, "0")}`}
-            </h3>
-            <p>{selectedDayRecord.memo}</p>
-            <img src={selectedDayRecord.emotionImg} alt="Emotion" />
-          </div>
-        )}
       </Content>
       <Footer />
     </Container>
