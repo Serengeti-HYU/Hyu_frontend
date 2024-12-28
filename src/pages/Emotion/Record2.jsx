@@ -443,7 +443,7 @@ const Record2 = () => {
 
       // POST 요청 데이터 구성
       const data = {
-        emotion_id: emotionId,
+        emotionImg: emotionId,
         content: memo,
       };
       const token = localStorage.getItem("access_token");
@@ -464,6 +464,7 @@ const Record2 = () => {
       // 성공 응답 처리
       if (response.data === "Emotion record created successfully") {
         setIsSaveModalOpen(true); // 저장 성공 모달 열기
+        console.log(response.data);
       }
     } catch (error) {
       // 에러 응답 처리
