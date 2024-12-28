@@ -127,80 +127,122 @@ const Sec = styled.div`
 
 const ProfileEdit = () => {
   const navigate = useNavigate();
-  const [domain, setDomain] = useState("");
-  const [domainInput, setDomainInput] = useState("");
+
   const [formData, setFormData] = useState({
     name: "",
-    birthYear: "",
-    birthMonth: "",
-    birthDay: "",
-    id: "",
+    birth: "",
+    username: "",
     password: "",
-    confirmPassword: "",
     phoneNumber: "",
     email: "",
   });
-  const [success, setSuccess] = useState(null);
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [domain, setDomain] = useState("");
+  const [domainInput, setDomainInput] = useState("");
+  const [error, setError] = useState("");
 
   const token = localStorage.getItem("access_token");
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
+  };
 
   const handleDomainChange = (e) => {
     setDomain(e.target.value);
     if (e.target.value !== "type") setDomainInput("");
   };
 
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData((formData) => ({
-      ...formData,
-      [id]: value,
-    }));
+  const handlePhoneChange = (e, part) => {
+    const value = e.target.value.replace(/[^0-9]/g, "");
+    setFormData((prev) => {
+      const phoneParts = prev.phoneNumber.split("-");
+      phoneParts[part] = value;
+      return { ...prev, phoneNumber: phoneParts.join("-") };
+    });
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const validateForm = (data) => {
+    const { name, birth, username, password, phoneNumber, email } = data;
 
-    if (formData.password !== formData.confirmPassword) {
-      alert("비밀번호가 일치하지 않습니다.");
-      return;
+    if (!name || !birth || !username || !password || !phoneNumber || !email) {
+      setError("모든 필드를 입력해주세요.");
+      return false;
     }
-    const completeEmail =
-      domain === "type"
-        ? `${formData.email}@${domainInput}`
-        : `${formData.email}@${domain}`;
-    const birthDate = `${formData.birthYear}-${formData.birthMonth.padStart(
-      2,
-      "0"
-    )}-${formData.birthDay.padStart(2, "0")}`;
 
-    const requestData = {
-      name: formData.name,
-      birth: birthDate,
-      username: formData.username,
-      password: formData.password,
-      phoneNumber: formData.phoneNumber,
-      email: completeEmail,
-    };
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,12}$/;
+    if (!passwordRegex.test(password)) {
+      setError("비밀번호는 8~12자, 영문+숫자 조합이어야 합니다.");
+      return false;
+    }
 
+    if (password !== confirmPassword) {
+      setError("비밀번호가 일치하지 않습니다.");
+      return false;
+    }
+
+    const phoneRegex = /^\d{3}-\d{3,4}-\d{4}$/;
+    if (!phoneRegex.test(phoneNumber)) {
+      setError("유효한 전화번호를 입력해주세요. (예: 010-1234-5678)");
+      return false;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError("유효한 이메일 주소를 입력해주세요.");
+      return false;
+    }
+
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(birth)) {
+      setError("생년월일은 YYYY-MM-DD 형식으로 입력해주세요.");
+      return false;
+    }
+
+    setError("");
+    return true;
+  };
+
+  const handleBirthChange = (e, part) => {
+    const value = e.target.value.replace(/[^0-9]/g, "");
+    setFormData((prev) => {
+      const birthParts = prev.birth.split("-");
+      if (birthParts.length !== 3) {
+        birthParts[0] = "";
+        birthParts[1] = "";
+        birthParts[2] = "";
+      }
+      if (part === "year") birthParts[0] = value.slice(0, 4);
+      if (part === "month") birthParts[1] = value.slice(0, 2);
+      if (part === "day") birthParts[2] = value.slice(0, 2);
+
+      return { ...prev, birth: birthParts.join("-") };
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const email = `${formData.email}@${
+      domain === "type" ? domainInput : domain
+    }`;
+    const updatedFormData = { ...formData, email };
+
+    if (!validateForm(updatedFormData)) return;
     try {
-      const response = await axios.post("/user/info-modify", requestData, {
+      const response = await axios.patch(`/user/info-modify`, updatedFormData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      if (response.data.success) {
-        setSuccess(true);
-        navigate("/mypage");
-      } else {
-        setSuccess(false);
-      }
+      console.log("response:", response.data);
+      navigate("/mypage");
     } catch (error) {
-      console.error(
-        "API Request Failed:",
-        error.response?.data || error.message
-      );
-      setSuccess(false);
+      console.error("수정 실패:", error);
+      setError("수정 중 문제가 발생했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -222,6 +264,7 @@ const ProfileEdit = () => {
             <p className="label">• 이름</p>
             <input
               id="name"
+              type="text"
               value={formData.name}
               onChange={handleChange}
               required
@@ -230,31 +273,36 @@ const ProfileEdit = () => {
           <div className="input">
             <p className="label">• 생년월일</p>
             <input
-              id="birthYear"
               type="text"
-              value={formData.birthYear}
-              onChange={handleChange}
+              maxLength="4"
+              placeholder="YYYY"
+              value={formData.birth.split("-")[0] || ""}
+              onChange={(e) => handleBirthChange(e, "year")}
               required
             />
             <input
-              id="birthMonth"
               type="text"
-              value={formData.birthMonth}
-              onChange={handleChange}
+              maxLength="2"
+              placeholder="MM"
+              value={formData.birth.split("-")[1] || ""}
+              onChange={(e) => handleBirthChange(e, "month")}
               required
             />
             <input
-              id="birthDay"
               type="text"
-              value={formData.birthDay}
-              onChange={handleChange}
+              maxLength="2"
+              placeholder="DD"
+              value={formData.birth.split("-")[2] || ""}
+              onChange={(e) => handleBirthChange(e, "day")}
               required
             />
           </div>
+
           <div className="input">
             <p className="label">• 아이디</p>
             <input
               id="username"
+              type="text"
               value={formData.username}
               onChange={handleChange}
               required
@@ -273,28 +321,44 @@ const ProfileEdit = () => {
           <div className="input">
             <p className="label">• 비밀번호 확인</p>
             <input
-              id="confirmPassword"
               type="password"
-              value={formData.confirmPassword}
-              onChange={handleChange}
+              value={confirmPassword}
+              onChange={handleConfirmPasswordChange}
               required
             />
           </div>
           <div className="input">
             <p className="label">• 전화번호</p>
+            <select onChange={(e) => handlePhoneChange(e, 0)}>
+              <option value="">선택</option>
+              <option value="010">010</option>
+              <option value="011">011</option>
+              <option value="016">016</option>
+            </select>
+            <p className="hypen">-</p>
             <input
-              id="phoneNumber"
-              value={formData.phoneNumber}
-              onChange={handleChange}
-              required
+              className="phone"
+              type="tel"
+              maxLength="4"
+              onChange={(e) => handlePhoneChange(e, 1)}
+            />
+            <p className="hypen">-</p>
+            <input
+              className="phone"
+              type="tel"
+              maxLength="4"
+              onChange={(e) => handlePhoneChange(e, 2)}
             />
           </div>
+
           <div className="input">
-            <p className="label">• 이메일</p>
+            <p className="label">• 이메일 </p>
             <input
               id="email"
+              type="text"
               value={formData.email}
               onChange={handleChange}
+              placeholder="example"
               required
             />
             <p id="at">@</p>
@@ -313,13 +377,11 @@ const ProfileEdit = () => {
               <option value="hanmail.net">hanmail.net</option>
             </select>
           </div>
-          <button type="submit" id="goLogin">
+          {error && <div style={{ color: "red" }}>{error}</div>}
+          <button id="goLogin" type="submit">
             수정하기
           </button>
         </form>
-        {success !== null && (
-          <p id="warn">{success ? "" : "수정에 실패했습니다."}</p>
-        )}
       </Sec>
       <Footer />
     </Container>

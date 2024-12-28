@@ -112,13 +112,12 @@ const VerifyBeforeEdit = () => {
   const [domainInput, setDomainInput] = useState("");
   const [success, setSuccess] = useState(null);
   const [formData, setFormData] = useState({
-    name: "",
-    pw: "",
+    username: "",
+    password: "",
     email: "",
   });
 
-  const token = localStorage.getItem("access_token"); //토큰 가져오기
-  console.log("Token: ", token);
+  const token = localStorage.getItem("access_token");
 
   const handleDomainChange = (e) => {
     setDomain(e.target.value);
@@ -144,8 +143,8 @@ const VerifyBeforeEdit = () => {
         : `${formData.email}@${domain}`;
 
     const requestData = {
-      username: formData.name,
-      password: formData.pw,
+      username: formData.username,
+      password: formData.password,
       email: completeEmail,
     };
 
@@ -158,9 +157,9 @@ const VerifyBeforeEdit = () => {
       console.log("Response:", response.data);
 
       // 성공
-      if (response.data.success) {
+      if (response.data === "인증 성공 : 사용자 인증 완료") {
         setSuccess(true);
-        navigate("/profile-edit"); // 성공하면면 프로필 수정 페이지로 이동
+        navigate("/profile-edit"); // 성공하면 프로필 수정 페이지로 이동
       } else {
         setSuccess(false);
       }
@@ -188,8 +187,8 @@ const VerifyBeforeEdit = () => {
             <div className="input">
               <p className="label">• 이름</p>
               <input
-                id="name"
-                value={formData.name}
+                id="username"
+                value={formData.username}
                 onChange={handleInputChange}
                 required
               />
@@ -197,9 +196,9 @@ const VerifyBeforeEdit = () => {
             <div className="input">
               <p className="label">• 비밀번호</p>
               <input
-                id="pw"
+                id="password"
                 type="password"
-                value={formData.pw}
+                value={formData.password}
                 onChange={handleInputChange}
                 required
               />
