@@ -44,7 +44,13 @@ const EmotionRecords = () => {
             <TodayEmotionCard key={index}>
               <DateText $isToday>{recordDate}</DateText>
               <TodayMark>Today</TodayMark>
-              <EmotionFace src={record.emotionImg} />
+              <EmotionFace>
+                <img
+                  src={`/assets/sampleFace/${record.emotionImg}.png`}
+                  alt="Emotion"
+                  style={{ width: "100%", height: "100%" }}
+                />
+              </EmotionFace>
               <EmotionMemo $isToday>
                 <div id="content">{record.memo || "todaymemo..."}</div>
               </EmotionMemo>
@@ -52,7 +58,13 @@ const EmotionRecords = () => {
           ) : (
             <EmotionCard key={index}>
               <DateText>{recordDate}</DateText>
-              <EmotionFace src={record.emotionImg} />
+              <EmotionFace>
+                <img
+                  src={`/assets/sampleFace/${record.emotionImg}.png`}
+                  alt="Emotion"
+                  style={{ width: "100%", height: "100%" }}
+                />
+              </EmotionFace>
               <EmotionMemo>
                 <div id="content">{record.memo || "memo..."}</div>
               </EmotionMemo>
@@ -136,7 +148,7 @@ const EmotionMemo = styled.div`
     text-overflow: ellipsis;
   }
 `;
-const EmotionFace = styled.img`
+const EmotionFace = styled.div`
   width: 84.776px;
   height: 84.776px;
   background-color: #fff;
