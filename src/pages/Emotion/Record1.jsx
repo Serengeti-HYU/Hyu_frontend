@@ -368,13 +368,11 @@ const Record1 = () => {
   const [weeklyRecords, setWeeklyRecords] = useState([]);
   const [dailyRecord, setDailyRecord] = useState(null);
 
-  // 선택한 날짜를 기준으로 해당 주의 월요일부터 일요일까지 데이터 조회
   useEffect(() => {
-    const startOfWeek = new Date(selectedDate);
-    startOfWeek.setDate(selectedDate.getDate() - selectedDate.getDay() + 1); // 월요일 날짜 계산
-    const recordDate = `${startOfWeek.getFullYear()}-${String(
-      startOfWeek.getMonth() + 1
-    ).padStart(2, "0")}-${String(startOfWeek.getDate()).padStart(2, "0")}`;
+    // 주간 데이터 조회
+    const recordDate = `${selectedDate.getFullYear()}-${String(
+      selectedDate.getMonth() + 1
+    ).padStart(2, "0")}-${String(selectedDate.getDate()).padStart(2, "0")}`;
 
     axios
       .get(`/hue-records?date=${recordDate}`, {
@@ -396,14 +394,14 @@ const Record1 = () => {
       });
   }, [selectedDate, navigate]);
 
-  // 선택된 날짜의 데이터를 개별적으로 조회
   useEffect(() => {
+    // 일일 데이터 조회
     const recordDate = `${selectedDate.getFullYear()}-${String(
       selectedDate.getMonth() + 1
     ).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}`;
 
     axios
-      .get(`/hue-records/${recordDate}`, {
+      .get(`/hue-records?date=${recordDate}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
@@ -436,7 +434,6 @@ const Record1 = () => {
   };
 
   const weekDays = getWeekDays(selectedDate);
-
   return (
     <Container>
       <LoginHeader />
@@ -483,7 +480,7 @@ const Record1 = () => {
         <Line />
         <BottomContainer>
           <DayContainerWrapper>
-            {weekDays.map((day) => {
+            {weekDays.map((day, index) => {
               const record = weeklyRecords.find(
                 (record) =>
                   new Date(record.recordDate).getDate() === day.getDate() &&
@@ -505,13 +502,13 @@ const Record1 = () => {
                       "0"
                     )}.${String(day.getDate()).padStart(2, "0")}`}</div>
                     <Circle1>
-                      {record?.emotionImg && (
+                      {record && record.emotionImg ? (
                         <img
                           src={`/assets/sampleFace/${record.emotionImg}.png`}
                           alt="Emotion"
                           style={{ width: "100%", height: "100%" }}
                         />
-                      )}
+                      ) : null}
                     </Circle1>
                   </DayItem>
                 </DayContainer>
@@ -524,5 +521,6 @@ const Record1 = () => {
     </Container>
   );
 };
+
 
 export default Record1;
