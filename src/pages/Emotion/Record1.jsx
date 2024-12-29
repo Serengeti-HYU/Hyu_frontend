@@ -368,25 +368,36 @@ const Record1 = () => {
   const [weeklyRecords, setWeeklyRecords] = useState([]);
   const [dailyRecord, setDailyRecord] = useState(null);
 
+  // 선택한 날짜를 기준으로 해당 주의 월요일부터 일요일까지 데이터 조회
   useEffect(() => {
-    // API 호출 및 데이터 설정
+    const startOfWeek = new Date(selectedDate);
+    startOfWeek.setDate(selectedDate.getDate() - selectedDate.getDay() + 1); // 월요일 날짜 계산
+    const recordDate = `${startOfWeek.getFullYear()}-${String(
+      startOfWeek.getMonth() + 1
+    ).padStart(2, "0")}-${String(startOfWeek.getDate()).padStart(2, "0")}`;
+
     axios
-      .get("/hue-records", {
+      .get(`/hue-records?date=${recordDate}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("access_token")}`,
         },
       })
       .then((response) => {
         setWeeklyRecords(response.data || []);
-        console.log(response.data);
+        console.log("Weekly Records:", response.data);
       })
       .catch((error) => {
-        console.error("Error fetching data:", error);
+        if (error.response?.status === 401) {
+          alert("세션이 만료되었습니다. 다시 로그인해주세요.");
+          navigate("/login");
+        } else {
+          console.error("Error fetching weekly data:", error);
+        }
       });
-  }, []);
+  }, [selectedDate, navigate]);
 
+  // 선택된 날짜의 데이터를 개별적으로 조회
   useEffect(() => {
-    //날짜로 조회하는 api 연동
     const recordDate = `${selectedDate.getFullYear()}-${String(
       selectedDate.getMonth() + 1
     ).padStart(2, "0")}-${String(selectedDay).padStart(2, "0")}`;
@@ -402,9 +413,14 @@ const Record1 = () => {
         console.log("Daily Record:", response.data);
       })
       .catch((error) => {
-        console.error("Error fetching daily data:", error);
+        if (error.response?.status === 401) {
+          alert("세션이 만료되었습니다. 다시 로그인해주세요.");
+          navigate("/login");
+        } else {
+          console.error("Error fetching daily data:", error);
+        }
       });
-  }, [selectedDay, selectedDate]);
+  }, [selectedDay, selectedDate, navigate]);
 
   const getWeekDays = (date) => {
     const weekDays = [];
@@ -467,7 +483,7 @@ const Record1 = () => {
         <Line />
         <BottomContainer>
           <DayContainerWrapper>
-            {weekDays.map((day, index) => {
+            {weekDays.map((day) => {
               const record = weeklyRecords.find(
                 (record) =>
                   new Date(record.recordDate).getDate() === day.getDate() &&
@@ -480,7 +496,6 @@ const Record1 = () => {
                   key={day.getDate()}
                   selected={day.getDate() === selectedDay}
                   onClick={() => {
-                    // 상태 업데이트 없이 클릭 이벤트로 선택된 Day만 설정
                     setSelectedDay(day.getDate());
                   }}
                 >
@@ -490,13 +505,13 @@ const Record1 = () => {
                       "0"
                     )}.${String(day.getDate()).padStart(2, "0")}`}</div>
                     <Circle1>
-                      {record && record.emotionImg ? (
+                      {record?.emotionImg && (
                         <img
                           src={`/assets/sampleFace/${record.emotionImg}.png`}
                           alt="Emotion"
                           style={{ width: "100%", height: "100%" }}
                         />
-                      ) : null}
+                      )}
                     </Circle1>
                   </DayItem>
                 </DayContainer>
